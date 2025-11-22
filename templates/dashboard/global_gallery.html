@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Galerie globale - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="flex justify-between items-center">
+        <h1 class="text-4xl font-bold text-neutral-dark">Galerie globale</h1>
+        
+        <!-- Filter by club -->
+        <div>
+            <select onchange="window.location.href='?club=' + this.value" class="border border-gray-300 rounded-lg px-4 py-2">
+                <option value="">Tous les clubs</option>
+                {% for club in clubs %}
+                <option value="{{ club.slug }}" {% if selected_club == club.slug %}selected{% endif %}>
+                    {{ club.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Photos Grid -->
+    {% if photos %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for photo in photos %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="w-full h-64 object-cover">
+            <div class="p-4">
+                <p class="text-sm font-semibold text-primary mb-1">{{ photo.activity.club.name }}</p>
+                <p class="font-medium text-neutral-dark mb-1">{{ photo.activity.title }}</p>
+                {% if photo.caption %}
+                <p class="text-sm text-gray-600">{{ photo.caption }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-12 text-center text-gray-500">
+        <p class="text-lg">Aucune photo pour le moment.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

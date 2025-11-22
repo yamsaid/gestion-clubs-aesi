@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}À propos - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold text-neutral-dark mb-6">À propos de l'AESI</h1>
+    
+    <div class="bg-white rounded-lg shadow-md p-8 space-y-6">
+        <div>
+            <h2 class="text-2xl font-semibold text-primary mb-3">Qui sommes-nous ?</h2>
+            <p class="text-gray-700 leading-relaxed">
+                L'Amical des Élèves Statisticiens de l'ISSP (AESI) est une organisation des étudiants 
+                du département de statistique de l'Institut Supérieur des sciences de la Population (ISSP) 
+                qui œuvre pour le bien être des étudiants et le renforcement de leurs compétences.
+            </p>
+        </div>
+
+        <div>
+            <h2 class="text-2xl font-semibold text-primary mb-3">Nos Clubs</h2>
+            <div class="space-y-4">
+                <div class="border-l-4 border-primary pl-4">
+                    <h3 class="font-semibold text-lg">Club d'Informatique</h3>
+                    <p class="text-gray-600">Renforcement des compétences en informatique et nouvelles technologies</p>
+                </div>
+                <div class="border-l-4 border-primary pl-4">
+                    <h3 class="font-semibold text-lg">Club d'Anglais</h3>
+                    <p class="text-gray-600">Cadre idéal pour l'apprentissage de l'anglais</p>
+                </div>
+                <div class="border-l-4 border-primary pl-4">
+                    <h3 class="font-semibold text-lg">Club d'Art Oratoire</h3>
+                    <p class="text-gray-600">Développement des compétences de prise de parole en public</p>
+                </div>
+                <div class="border-l-4 border-primary pl-4">
+                    <h3 class="font-semibold text-lg">Club de Sport</h3>
+                    <p class="text-gray-600">Bien-être de santé physique et mentale à travers les activités physiques</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h2 class="text-2xl font-semibold text-primary mb-3">Notre Plateforme</h2>
+            <p class="text-gray-700 leading-relaxed">
+                Cette plateforme permet de centraliser et gérer toutes les activités des clubs de l'AESI. 
+                Elle offre des fonctionnalités de gestion des participants, de suivi financier, 
+                et de génération de statistiques en temps réel.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

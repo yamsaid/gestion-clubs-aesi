@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-primary to-primary-light rounded-lg shadow-xl p-8 text-white">
+        <h1 class="text-4xl font-bold mb-4">Bienvenue sur la plateforme AESI</h1>
+        <p class="text-xl mb-6">
+            Plateforme de gestion des clubs de l'Amical des Élèves Statisticiens de l'ISSP
+        </p>
+        <a href="{% url 'clubs:club_list' %}" class="inline-block bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-neutral-light transition">
+            Découvrir nos clubs
+        </a>
+    </div>
+
+    <!-- Clubs Section -->
+    <div>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">Nos Clubs</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for club in clubs %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+                {% if club.cover_image %}
+                    <img src="{{ club.cover_image.url }}" alt="{{ club.name }}" class="w-full h-48 object-cover">
+                {% else %}
+                    <div class="w-full h-48 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
+                        <span class="text-white text-4xl font-bold">{{ club.name.0 }}</span>
+                    </div>
+                {% endif %}
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-neutral-dark mb-2">{{ club.name }}</h3>
+                    <p class="text-gray-600 mb-4 line-clamp-2">{{ club.description|truncatewords:20 }}</p>
+                    <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="text-primary hover:text-primary-dark font-medium">
+                        En savoir plus →
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-4 text-center py-12 text-gray-500">
+                Aucun club disponible pour le moment.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <svg class="h-12 w-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-5">
+                    <p class="text-gray-500 text-sm">Clubs actifs</p>
+                    <p class="text-3xl font-bold text-neutral-dark">{{ clubs|length }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <svg class="h-12 w-12 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-5">
+                    <p class="text-gray-500 text-sm">Activités réalisées</p>
+                    <p class="text-3xl font-bold text-neutral-dark">-</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <svg class="h-12 w-12 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-5">
+                    <p class="text-gray-500 text-sm">Participants</p>
+                    <p class="text-3xl font-bold text-neutral-dark">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

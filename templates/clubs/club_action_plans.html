@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Programmes d'action - {{ club.name }} - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div>
+        <nav class="text-sm mb-2">
+            <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="text-primary hover:text-primary-dark">{{ club.name }}</a>
+            <span class="text-gray-500 mx-2">/</span>
+            <span class="text-gray-600">Programmes d'action</span>
+        </nav>
+        <h1 class="text-4xl font-bold text-neutral-dark">Programmes d'action - {{ club.name }}</h1>
+    </div>
+
+    <!-- Action Plans -->
+    <div class="space-y-6">
+        {% for plan in action_plans %}
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-neutral-dark">{{ plan.title }}</h2>
+                    <p class="text-gray-600 mt-2">{{ plan.description }}</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-bold text-primary">{{ plan.completion_rate }}%</div>
+                    <div class="text-sm text-gray-500">Complété</div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-6 text-sm text-gray-600 mb-4">
+                <span>📅 Du {{ plan.start_date|date:"d/m/Y" }} au {{ plan.end_date|date:"d/m/Y" }}</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+                <div class="bg-primary h-2.5 rounded-full" style="width: {{ plan.completion_rate }}%"></div>
+            </div>
+            
+            <!-- Tasks -->
+            {% if plan.tasks.all %}
+            <div class="mt-4">
+                <h3 class="font-semibold text-neutral-dark mb-3">Tâches:</h3>
+                <div class="space-y-2">
+                    {% for task in plan.tasks.all %}
+                    <div class="flex items-center p-3 border border-gray-200 rounded-lg">
+                        <input type="checkbox" {% if task.is_completed %}checked{% endif %} disabled class="h-5 w-5 text-primary rounded">
+                        <div class="ml-3 flex-1">
+                            <span class="{% if task.is_completed %}line-through text-gray-500{% else %}text-neutral-dark{% endif %}">
+                                {{ task.title }}
+                            </span>
+                            {% if task.assigned_to %}
+                            <span class="text-sm text-gray-500 ml-2">
+                                (Assigné à: {{ task.assigned_to.user.get_full_name }})
+                            </span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm text-gray-500">{{ task.due_date|date:"d/m/Y" }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="bg-white rounded-lg shadow-md p-12 text-center text-gray-500">
+            <p class="text-lg">Aucun programme d'action pour le moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

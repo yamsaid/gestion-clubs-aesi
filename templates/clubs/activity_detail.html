@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ activity.title }} - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div>
+        <nav class="text-sm mb-2">
+            <a href="{% url 'clubs:club_detail' slug=activity.club.slug %}" class="text-primary hover:text-primary-dark">{{ activity.club.name }}</a>
+            <span class="text-gray-500 mx-2">/</span>
+            <a href="{% url 'clubs:club_activities' slug=activity.club.slug %}" class="text-primary hover:text-primary-dark">Activités</a>
+            <span class="text-gray-500 mx-2">/</span>
+            <span class="text-gray-600">{{ activity.title }}</span>
+        </nav>
+        <h1 class="text-4xl font-bold text-neutral-dark">{{ activity.title }}</h1>
+    </div>
+
+    <!-- Main Info -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        {% if activity.cover_image %}
+            <img src="{{ activity.cover_image.url }}" alt="{{ activity.title }}" class="w-full h-96 object-cover">
+        {% endif %}
+        
+        <div class="p-8">
+            <div class="flex items-center space-x-3 mb-4">
+                <span class="px-3 py-1 rounded-full text-sm font-medium
+                    {% if activity.status == 'COMPLETED' %}bg-green-100 text-green-800
+                    {% elif activity.status == 'ONGOING' %}bg-blue-100 text-blue-800
+                    {% elif activity.status == 'PLANNED' %}bg-yellow-100 text-yellow-800
+                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {{ activity.get_status_display }}
+                </span>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-neutral-dark mb-2">{{ activity.theme }}</h2>
+            <p class="text-gray-700 text-lg mb-6">{{ activity.description }}</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                    <svg class="h-8 w-8 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <div>
+                        <p class="text-sm text-gray-600">Date</p>
+                        <p class="font-semibold text-neutral-dark">{{ activity.date|date:"d/m/Y" }}</p>
+                        {% if activity.time %}
+                        <p class="text-sm text-gray-600">{{ activity.time }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                    <svg class="h-8 w-8 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <div>
+                        <p class="text-sm text-gray-600">Lieu</p>
+                        <p class="font-semibold text-neutral-dark">{{ activity.location }}</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                    <svg class="h-8 w-8 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <div>
+                        <p class="text-sm text-gray-600">Participants</p>
+                        <p class="font-semibold text-neutral-dark">{{ activity.participants_count }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            {% if activity.otp_enabled and user.is_authenticated %}
+            <div class="border-t pt-6">
+                <a href="{% url 'participation:verify_otp' activity_id=activity.id %}" class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition">
+                    📝 Participer à cette activité
+                </a>
+            </div>
+            {% endif %}
+            
+            {% if activity.difficulties %}
+            <div class="border-t pt-6 mt-6">
+                <h3 class="font-semibold text-neutral-dark mb-2">Difficultés rencontrées:</h3>
+                <p class="text-gray-700">{{ activity.difficulties }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Competitions -->
+    {% if competitions %}
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-neutral-dark mb-6">Compétitions</h2>
+        
+        {% for competition in competitions %}
+        <div class="mb-6 last:mb-0">
+            <h3 class="text-xl font-semibold text-neutral-dark mb-3">{{ competition.name }}</h3>
+            {% if competition.description %}
+            <p class="text-gray-600 mb-3">{{ competition.description }}</p>
+            {% endif %}
+            
+            {% if competition.winners.all %}
+            <div class="space-y-2">
+                <h4 class="font-medium text-neutral-dark">Gagnants:</h4>
+                {% for winner in competition.winners.all %}
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0">
+                            {% if winner.rank == 1 %}
+                                <span class="text-2xl">🥇</span>
+                            {% elif winner.rank == 2 %}
+                                <span class="text-2xl">🥈</span>
+                            {% elif winner.rank == 3 %}
+                                <span class="text-2xl">🥉</span>
+                            {% else %}
+                                <span class="text-xl font-bold text-gray-600">{{ winner.rank }}</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <p class="font-semibold text-neutral-dark">{{ winner.participant.get_full_name }}</p>
+                            {% if winner.prize %}
+                            <p class="text-sm text-gray-600">{{ winner.prize }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Photos Gallery -->
+    {% if photos %}
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-neutral-dark">Galerie photos</h2>
+            <a href="{% url 'clubs:activity_gallery' pk=activity.pk %}" class="text-primary hover:text-primary-dark font-medium">
+                Voir toutes les photos →
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for photo in photos|slice:":8" %}
+            <div class="aspect-square rounded-lg overflow-hidden hover:opacity-75 transition cursor-pointer">
+                <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="w-full h-full object-cover">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

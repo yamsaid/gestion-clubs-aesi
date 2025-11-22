@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Galerie - {{ activity.title }} - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div>
+        <nav class="text-sm mb-2">
+            <a href="{% url 'clubs:club_detail' slug=activity.club.slug %}" class="text-primary hover:text-primary-dark">{{ activity.club.name }}</a>
+            <span class="text-gray-500 mx-2">/</span>
+            <a href="{% url 'clubs:activity_detail' pk=activity.pk %}" class="text-primary hover:text-primary-dark">{{ activity.title }}</a>
+            <span class="text-gray-500 mx-2">/</span>
+            <span class="text-gray-600">Galerie</span>
+        </nav>
+        <h1 class="text-4xl font-bold text-neutral-dark">Galerie - {{ activity.title }}</h1>
+    </div>
+
+    <!-- Photos Grid -->
+    {% if photos %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for photo in photos %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+            <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="w-full h-64 object-cover">
+            {% if photo.caption %}
+            <div class="p-4">
+                <p class="text-gray-700">{{ photo.caption }}</p>
+                {% if photo.uploaded_by %}
+                <p class="text-sm text-gray-500 mt-2">Par {{ photo.uploaded_by.get_full_name }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-12 text-center text-gray-500">
+        <p class="text-lg">Aucune photo pour le moment.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
