@@ -1,0 +1,47 @@
+Focus sur la page du club d’informatique
+
+Section vue d’ensemble
+Déjà créé 
+
+Section activités 
+Déjà créé 
+
+
+Section Bureau
+Cette section présente les membres exécutifs du club
+Leur profil et poste, leurs missions pour chacun
+
+Section Participants 
+Cette section est consacrée aux participants 
+-	Une table bien personnalisée présentant les top 10 des participants en termes de présence
+-	Une table spéciale pour les gagnants des compétitions donnant leus noms, filiere, niveau, type de competitions, rang pouvant être filtré par activité
+-	Une table pour afficher les participants. Filtrable par activité. Dix individus par affichage (pagination). La structure : nom, prenom,sexe, mail, filiere, niveau
+
+Section programmes 
+-	Présentation du programme complet
+-	Les activités réalisées 
+-	Le taux d’execution
+-	Possibilité de marquer comme exécuter une tâche dans le programme
+
+Section budget
+-	Formulaire de remplissage des dépenses pour chaque activité : activité, date, montant, motif, commentaires
+-	Total depenses et par activité
+-	Une table affichant les depenses et filtrable par activité
+
+Section générer un formulaire participant
+Cette section vise à permettre aux membres executifs du club de créer un formulaire puis envoyer le lien aux participants qui rempliront puis soumettront. Pour acceder au formulaire, les participants doivent saisir un OTP (6 chiffres) envoyé par les organisateurs. 
+Pour créer le formulaire, les organisateurs renseignent ces informations : numéro d’activité, date, heure, lieu puis cliquez sur générer un formulaire, le lien du formulaire et le code otp affichent. Le formulaire intègre les informations remplis par l’organisateur puis, le nom, prenom, mail, filiere, niveau a remplire par les participants. Lors de soumission, les informations sont enregistrés dans la base participant.
+
+Section Tableau de bord
+Cette muni tableau de bord synthétise les informations du club :
+Participants :
+-	Diagramme en bâtons (vertical) donnant le nombre de participants par activité 
+-	Les tops dix des participants 
+-	Les gagnants 
+-	Analyse plus fine : nombre de participants par sexe, filiere, niveau filtrable par activité 
+Budget
+-	L’evolution des depenses par activité 
+-	Totale sortie, entrée, restant
+Programme :
+-	Le taux d’execution
+

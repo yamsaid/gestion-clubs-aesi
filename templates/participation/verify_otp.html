@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Vérification OTP - {{ activity.title }} - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-primary-light py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="bg-white rounded-lg shadow-2xl p-8">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-light rounded-full mb-4">
+                    <svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-extrabold text-neutral-dark">
+                    Vérification OTP
+                </h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Entrez le code OTP pour accéder au formulaire
+                </p>
+            </div>
+
+            <!-- Activity Info -->
+            <div class="bg-blue-50 rounded-lg p-4 mb-6">
+                <div class="flex items-start">
+                    <svg class="h-5 w-5 text-blue-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div class="flex-1">
+                        <h3 class="text-sm font-medium text-blue-800 mb-1">{{ activity.title }}</h3>
+                        <div class="text-xs text-blue-700 space-y-1">
+                            <p><strong>Date:</strong> {{ activity.date|date:"d/m/Y" }} à {{ activity.time|date:"H:i"|default:"--:--" }}</p>
+                            <p><strong>Lieu:</strong> {{ activity.location }}</p>
+                            {% if activity.club %}
+                            <p><strong>Club:</strong> {{ activity.club.name }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OTP Form -->
+            <form method="POST" action="" class="space-y-6">
+                {% csrf_token %}
+                
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="rounded-md {% if message.tags == 'error' %}bg-red-50 border border-red-200{% else %}bg-green-50 border border-green-200{% endif %} p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                {% if message.tags == 'error' %}
+                                <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                                {% else %}
+                                <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                {% endif %}
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm {% if message.tags == 'error' %}text-red-800{% else %}text-green-800{% endif %}">
+                                    {{ message }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div>
+                    <label for="otp_code" class="block text-sm font-medium text-gray-700 mb-2">
+                        Code OTP (6 chiffres)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="otp_code" 
+                        name="otp_code" 
+                        maxlength="6" 
+                        pattern="[0-9]{6}"
+                        required 
+                        autofocus
+                        class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-center text-2xl tracking-widest font-mono font-bold"
+                        placeholder="000000">
+                    <p class="mt-2 text-xs text-gray-500 text-center">
+                        Entrez le code OTP fourni par l'organisateur
+                    </p>
+                </div>
+
+                {% if expiry_time %}
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    <div class="flex items-center text-sm text-yellow-800">
+                        <svg class="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Le code expire le {{ expiry_time|date:"d/m/Y à H:i" }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <button 
+                    type="submit"
+                    class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-200">
+                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Vérifier le Code
+                </button>
+            </form>
+
+            <!-- Help Section -->
+            <div class="mt-6 border-t border-gray-200 pt-6">
+                <h4 class="text-sm font-medium text-gray-700 mb-2">Besoin d'aide ?</h4>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• Le code OTP est fourni par l'organisateur de l'activité</li>
+                    <li>• Le code contient 6 chiffres</li>
+                    <li>• Assurez-vous d'entrer le code correct</li>
+                    <li>• Si le code a expiré, contactez l'organisateur</li>
+                </ul>
+            </div>
+
+            <!-- Back Link -->
+            <div class="mt-6 text-center">
+                <a href="{% url 'clubs:club_detail' slug=activity.club.slug %}" class="text-sm text-primary hover:text-primary-dark">
+                    ← Retour au club
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-sm text-white">
+            <p>AESI Platform - Système de Participation Sécurisé</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-format OTP input
+document.getElementById('otp_code').addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+// Auto-submit when 6 digits entered
+document.getElementById('otp_code').addEventListener('input', function(e) {
+    if (this.value.length === 6) {
+        // Optional: auto-submit form
+        // this.form.submit();
+    }
+});
+</script>
+{% endblock %}

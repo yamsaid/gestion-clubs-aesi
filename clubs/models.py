@@ -89,6 +89,11 @@ class ClubMember(AuditModel):
         max_length=20,
         choices=POSITION_CHOICES
     )
+    missions = models.TextField(
+        _('missions spécifiques'),
+        blank=True,
+        help_text=_('Décrivez les missions et responsabilités spécifiques de ce membre')
+    )
     start_date = models.DateField(_('date de début'))
     end_date = models.DateField(_('date de fin'), blank=True, null=True)
     is_active = models.BooleanField(_('actif'), default=True)

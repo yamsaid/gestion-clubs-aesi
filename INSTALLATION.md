@@ -1,3 +1,8 @@
+# excecution
+.\acli rovodev run
+
+Connexion : .\acli rovodev auth login
+
 # Guide d'Installation - AESI Platform
 
 ## Prérequis

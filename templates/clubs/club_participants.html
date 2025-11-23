@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+
+{% block title %}Participants - {{ club.name }} - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        {% if club.cover_image %}
+            <img src="{{ club.cover_image.url }}" alt="{{ club.name }}" class="w-full h-48 object-cover">
+        {% else %}
+            <div class="w-full h-48 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
+                <span class="text-white text-4xl font-bold">{{ club.name.0 }}</span>
+            </div>
+        {% endif %}
+        
+        <div class="p-6">
+            <h1 class="text-3xl font-bold text-neutral-dark mb-2">{{ club.name }}</h1>
+            <p class="text-gray-600">Participants</p>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white rounded-lg shadow-md">
+        <div class="border-b border-gray-200">
+            <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Vue d'ensemble
+                </a>
+                <a href="{% url 'clubs:club_activities' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Activités
+                </a>
+                <a href="{% url 'clubs:club_bureau' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Bureau
+                </a>
+                <a href="{% url 'clubs:club_participants' slug=club.slug %}" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Participants
+                </a>
+                <a href="{% url 'clubs:club_programs' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Programmes
+                </a>
+                <a href="{% url 'clubs:club_budget' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Budget
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'clubs:club_form_generator' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Générateur
+                </a>
+                {% endif %}
+                <a href="{% url 'clubs:club_dashboard' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Tableau de bord
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Table 1: TOP 10 Participants par Taux de Présence -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-neutral-dark flex items-center">
+                <svg class="h-8 w-8 mr-3 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+                TOP 10 - Meilleurs Participants
+            </h2>
+            <span class="text-sm text-gray-500">Classement par taux de présence</span>
+        </div>
+        
+        {% if top_participants %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rang</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filière</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Participations</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Taux de présence</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for participant in top_participants %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full {% if forloop.counter == 1 %}bg-yellow-400 text-white{% elif forloop.counter == 2 %}bg-gray-400 text-white{% elif forloop.counter == 3 %}bg-yellow-600 text-white{% else %}bg-gray-100 text-gray-700{% endif %} font-bold">
+                                {{ forloop.counter }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                {% if participant.user.profile_picture %}
+                                    <img src="{{ participant.user.profile_picture.url }}" alt="{{ participant.user.get_full_name }}" class="h-10 w-10 rounded-full object-cover mr-3">
+                                {% else %}
+                                    <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold mr-3">
+                                        {{ participant.user.first_name.0 }}{{ participant.user.last_name.0 }}
+                                    </div>
+                                {% endif %}
+                                <span class="font-medium text-gray-900">{{ participant.user.get_full_name }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participant.user.get_filiere_display|default:"-" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participant.user.get_niveau_display|default:"-" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                {{ participant.participation_count }} activité{{ participant.participation_count|pluralize }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-1 mr-3">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: {{ participant.attendance_percentage }}%"></div>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-900">{{ participant.attendance_percentage }}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center text-gray-500 py-8">Aucun participant pour le moment.</p>
+        {% endif %}
+    </div>
+
+    <!-- Table 2: Gagnants de Compétitions -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-neutral-dark flex items-center">
+                <svg class="h-8 w-8 mr-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                Gagnants de Compétitions
+            </h2>
+            {% if activities %}
+            <div class="flex items-center space-x-2">
+                <label for="activity-filter" class="text-sm text-gray-700">Filtrer par activité:</label>
+                <select id="activity-filter" class="px-3 py-2 border border-gray-300 rounded-md text-sm" onchange="filterWinners(this.value)">
+                    <option value="">Toutes les activités</option>
+                    {% for activity in activities %}
+                    <option value="{{ activity.id }}">{{ activity.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if winners %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filière</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Compétition</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activité</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rang</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200" id="winners-table-body">
+                    {% for winner in winners %}
+                    <tr class="hover:bg-gray-50 winner-row" data-activity-id="{{ winner.competition.activity.id }}">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                {% if winner.participant.profile_picture %}
+                                    <img src="{{ winner.participant.profile_picture.url }}" alt="{{ winner.participant.get_full_name }}" class="h-10 w-10 rounded-full object-cover mr-3">
+                                {% else %}
+                                    <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold mr-3">
+                                        {{ winner.participant.first_name.0 }}{{ winner.participant.last_name.0 }}
+                                    </div>
+                                {% endif %}
+                                <span class="font-medium text-gray-900">{{ winner.participant.get_full_name }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ winner.participant.get_filiere_display|default:"-" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ winner.participant.get_niveau_display|default:"-" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ winner.competition.name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ winner.competition.activity.title }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if winner.rank == 1 %}bg-yellow-100 text-yellow-800{% elif winner.rank == 2 %}bg-gray-100 text-gray-800{% elif winner.rank == 3 %}bg-orange-100 text-orange-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                                {{ winner.rank }}{% if winner.rank == 1 %}er{% else %}ème{% endif %}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center text-gray-500 py-8">Aucun gagnant pour le moment.</p>
+        {% endif %}
+    </div>
+
+    <!-- Table 3: Liste Complète des Participants -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-neutral-dark flex items-center">
+                <svg class="h-8 w-8 mr-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                </svg>
+                Liste Complète des Participants
+            </h2>
+            {% if activities %}
+            <div class="flex items-center space-x-2">
+                <label for="participant-activity-filter" class="text-sm text-gray-700">Filtrer par activité:</label>
+                <select id="participant-activity-filter" class="px-3 py-2 border border-gray-300 rounded-md text-sm" onchange="filterParticipants(this.value)">
+                    <option value="">Toutes les activités</option>
+                    {% for activity in activities %}
+                    <option value="{{ activity.id }}">{{ activity.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if all_participants %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prénom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sexe</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filière</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activité</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200" id="participants-table-body">
+                    {% for participation in page_obj %}
+                    <tr class="hover:bg-gray-50 participant-row" data-activity-id="{{ participation.activity.id }}">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ participation.user.last_name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.user.first_name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {% if participation.user.gender == 'M' %}
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">M</span>
+                            {% elif participation.user.gender == 'F' %}
+                                <span class="px-2 py-1 bg-pink-100 text-pink-800 rounded text-xs">F</span>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.user.email }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.user.get_filiere_display|default:"-" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.user.get_niveau_display|default:"-" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.activity.title }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-4">
+            <div class="flex flex-1 justify-between sm:hidden">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Précédent</a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Suivant</a>
+                {% endif %}
+            </div>
+            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Affichage de <span class="font-medium">{{ page_obj.start_index }}</span> à <span class="font-medium">{{ page_obj.end_index }}</span> sur <span class="font-medium">{{ page_obj.paginator.count }}</span> résultats
+                    </p>
+                </div>
+                <div>
+                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                        {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                            <span class="sr-only">Précédent</span>
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        {% endif %}
+                        
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <span class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">{{ num }}</span>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                            <span class="sr-only">Suivant</span>
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+        <p class="text-center text-gray-500 py-8">Aucun participant pour le moment.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function filterWinners(activityId) {
+    const rows = document.querySelectorAll('.winner-row');
+    rows.forEach(row => {
+        if (activityId === '' || row.dataset.activityId === activityId) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function filterParticipants(activityId) {
+    const rows = document.querySelectorAll('.participant-row');
+    rows.forEach(row => {
+        if (activityId === '' || row.dataset.activityId === activityId) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+</script>
+{% endblock %}

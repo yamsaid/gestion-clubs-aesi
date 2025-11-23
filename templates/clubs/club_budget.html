@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+
+{% block title %}Budget - {{ club.name }} - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        {% if club.cover_image %}
+            <img src="{{ club.cover_image.url }}" alt="{{ club.name }}" class="w-full h-48 object-cover">
+        {% else %}
+            <div class="w-full h-48 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
+                <span class="text-white text-4xl font-bold">{{ club.name.0 }}</span>
+            </div>
+        {% endif %}
+        
+        <div class="p-6">
+            <h1 class="text-3xl font-bold text-neutral-dark mb-2">{{ club.name }}</h1>
+            <p class="text-gray-600">Gestion du Budget</p>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white rounded-lg shadow-md">
+        <div class="border-b border-gray-200">
+            <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Vue d'ensemble
+                </a>
+                <a href="{% url 'clubs:club_activities' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Activités
+                </a>
+                <a href="{% url 'clubs:club_bureau' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Bureau
+                </a>
+                <a href="{% url 'clubs:club_participants' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Participants
+                </a>
+                <a href="{% url 'clubs:club_programs' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Programmes
+                </a>
+                <a href="{% url 'clubs:club_budget' slug=club.slug %}" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Budget
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'clubs:club_form_generator' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Générateur
+                </a>
+                {% endif %}
+                <a href="{% url 'clubs:club_dashboard' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Tableau de bord
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Financial Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Total Income -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-green-100 rounded-full p-3">
+                    <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                    <dl>
+                        <dt class="text-sm font-medium text-gray-500 truncate">Total Entrées</dt>
+                        <dd class="flex items-baseline">
+                            <div class="text-2xl font-semibold text-gray-900">{{ total_income|floatformat:0 }} FCFA</div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Expenses -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-red-100 rounded-full p-3">
+                    <svg class="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                    <dl>
+                        <dt class="text-sm font-medium text-gray-500 truncate">Total Sorties</dt>
+                        <dd class="flex items-baseline">
+                            <div class="text-2xl font-semibold text-gray-900">{{ total_expenses|floatformat:0 }} FCFA</div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balance -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-blue-100 rounded-full p-3">
+                    <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                    <dl>
+                        <dt class="text-sm font-medium text-gray-500 truncate">Solde Restant</dt>
+                        <dd class="flex items-baseline">
+                            <div class="text-2xl font-semibold {% if balance >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                                {{ balance|floatformat:0 }} FCFA
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expense Chart -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-neutral-dark mb-6">Évolution des Dépenses par Activité</h2>
+        <div id="expense-chart" style="width:100%;height:400px;"></div>
+    </div>
+
+    <!-- Add Expense Form -->
+    {% if user.is_authenticated and user.is_club_executive or user.is_aesi_executive %}
+    <div class="bg-white rounded-lg shadow-md p-6" x-data="{ showForm: false }">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-neutral-dark">Ajouter une Dépense</h2>
+            <button @click="showForm = !showForm" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md transition">
+                <span x-show="!showForm">+ Nouvelle Dépense</span>
+                <span x-show="showForm">Annuler</span>
+            </button>
+        </div>
+        
+        <div x-show="showForm" x-transition class="border-t pt-6">
+            <form method="POST" action="{% url 'clubs:add_expense' slug=club.slug %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="activity" class="block text-sm font-medium text-gray-700 mb-2">Activité *</label>
+                        <select id="activity" name="activity" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="">Sélectionner une activité</option>
+                            {% for activity in activities %}
+                            <option value="{{ activity.id }}">{{ activity.title }} - {{ activity.date|date:"d/m/Y" }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="transaction_date" class="block text-sm font-medium text-gray-700 mb-2">Date *</label>
+                        <input type="date" id="transaction_date" name="transaction_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+
+                    <div>
+                        <label for="amount" class="block text-sm font-medium text-gray-700 mb-2">Montant (FCFA) *</label>
+                        <input type="number" id="amount" name="amount" step="0.01" min="0" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="0">
+                    </div>
+
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Catégorie *</label>
+                        <input type="text" id="category" name="category" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Transport, Logistique, etc.">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Motif *</label>
+                        <input type="text" id="description" name="description" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Description de la dépense">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">Commentaires</label>
+                        <textarea id="notes" name="notes" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Informations supplémentaires..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button type="submit" class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-md transition">
+                        Enregistrer la Dépense
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Expenses Table with Filter -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-neutral-dark">Liste des Dépenses</h2>
+            <div class="flex items-center space-x-2">
+                <label for="expense-activity-filter" class="text-sm text-gray-700">Filtrer par activité:</label>
+                <select id="expense-activity-filter" class="px-3 py-2 border border-gray-300 rounded-md text-sm" onchange="filterExpenses(this.value)">
+                    <option value="">Toutes les activités</option>
+                    {% for activity in activities %}
+                    <option value="{{ activity.id }}">{{ activity.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        {% if expenses %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activité</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catégorie</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Motif</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commentaires</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200" id="expenses-table-body">
+                    {% for expense in expenses %}
+                    <tr class="hover:bg-gray-50 expense-row" data-activity-id="{% if expense.activity %}{{ expense.activity.id }}{% endif %}">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {{ expense.transaction_date|date:"d/m/Y" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {% if expense.activity %}
+                                {{ expense.activity.title }}
+                            {% else %}
+                                <span class="text-gray-400">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                {{ expense.category }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                            {{ expense.description }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">
+                            {{ expense.amount|floatformat:0 }} FCFA
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ expense.notes|truncatewords:10 }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-gray-50">
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-right text-sm font-bold text-gray-900">Total:</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-red-600" id="total-expenses">
+                            {{ total_expenses|floatformat:0 }} FCFA
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Statistics by Activity -->
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for stat in expense_by_activity %}
+            <div class="bg-gray-50 rounded-lg p-4">
+                <h4 class="font-semibold text-sm text-neutral-dark mb-2">{{ stat.activity__title }}</h4>
+                <p class="text-2xl font-bold text-red-600">{{ stat.total|floatformat:0 }} FCFA</p>
+                <p class="text-xs text-gray-500 mt-1">{{ stat.count }} dépense{{ stat.count|pluralize }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-gray-500 py-8">Aucune dépense enregistrée pour le moment.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// Plotly Expense Chart
+const expenseData = {{ expense_chart_data|safe }};
+const layout = {
+    title: '',
+    xaxis: { title: 'Activité' },
+    yaxis: { title: 'Montant (FCFA)' },
+    plot_bgcolor: '#f7fafc',
+    paper_bgcolor: '#ffffff',
+    font: { family: 'Inter, system-ui, sans-serif' },
+    margin: { l: 60, r: 40, t: 40, b: 120 },
+};
+const config = { responsive: true, displayModeBar: false };
+Plotly.newPlot('expense-chart', expenseData, layout, config);
+
+// Filter expenses by activity
+function filterExpenses(activityId) {
+    const rows = document.querySelectorAll('.expense-row');
+    let total = 0;
+    
+    rows.forEach(row => {
+        const rowActivityId = row.dataset.activityId;
+        if (activityId === '' || rowActivityId === activityId) {
+            row.style.display = '';
+            const amountText = row.querySelector('td:nth-child(5)').textContent;
+            const amount = parseFloat(amountText.replace(/[^0-9.-]+/g, ''));
+            total += amount;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    
+    document.getElementById('total-expenses').textContent = total.toFixed(0) + ' FCFA';
+}
+</script>
+{% endblock %}

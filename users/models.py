@@ -55,6 +55,11 @@ class User(AbstractUser):
         ('4', '4ème année'),
     ]
     
+    GENDER_CHOICES = [
+        ('M', 'Masculin'),
+        ('F', 'Féminin'),
+    ]
+    
     username = None  # Remove username field
     email = models.EmailField(_('adresse email'), unique=True)
     first_name = models.CharField(_('prénom'), max_length=150)
@@ -68,6 +73,12 @@ class User(AbstractUser):
     )
     
     # Student information
+    gender = models.CharField(
+        _('sexe'),
+        max_length=1,
+        choices=GENDER_CHOICES,
+        blank=True
+    )
     filiere = models.CharField(
         _('filière'),
         max_length=10,
@@ -125,3 +136,35 @@ class User(AbstractUser):
     @property
     def is_student(self):
         return self.role == 'STUDENT'
+    
+    def get_attendance_rate(self, club=None):
+        """Calculate attendance rate for this user"""
+        from participation.models import Participation
+        
+        participations = Participation.objects.filter(
+            user=self,
+            otp_verified=True
+        )
+        
+        if club:
+            participations = participations.filter(activity__club=club)
+        
+        return participations.count()
+    
+    def get_attendance_percentage(self, club=None):
+        """Calculate attendance percentage based on total activities"""
+        from clubs.models import Activity
+        
+        # Get total completed activities
+        total_activities_query = Activity.objects.filter(status='COMPLETED')
+        
+        if club:
+            total_activities_query = total_activities_query.filter(club=club)
+        
+        total_activities = total_activities_query.count()
+        
+        if total_activities == 0:
+            return 0
+        
+        attended = self.get_attendance_rate(club)
+        return round((attended / total_activities) * 100, 2)

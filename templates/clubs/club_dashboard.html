@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+
+{% block title %}Tableau de Bord - {{ club.name }} - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        {% if club.cover_image %}
+            <img src="{{ club.cover_image.url }}" alt="{{ club.name }}" class="w-full h-48 object-cover">
+        {% else %}
+            <div class="w-full h-48 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
+                <span class="text-white text-4xl font-bold">{{ club.name.0 }}</span>
+            </div>
+        {% endif %}
+        
+        <div class="p-6">
+            <h1 class="text-3xl font-bold text-neutral-dark mb-2">{{ club.name }}</h1>
+            <p class="text-gray-600">Tableau de Bord Analytique</p>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white rounded-lg shadow-md">
+        <div class="border-b border-gray-200">
+            <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Vue d'ensemble
+                </a>
+                <a href="{% url 'clubs:club_activities' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Activités
+                </a>
+                <a href="{% url 'clubs:club_bureau' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Bureau
+                </a>
+                <a href="{% url 'clubs:club_participants' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Participants
+                </a>
+                <a href="{% url 'clubs:club_programs' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Programmes
+                </a>
+                <a href="{% url 'clubs:club_budget' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Budget
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'clubs:club_form_generator' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Générateur
+                </a>
+                {% endif %}
+                <a href="{% url 'clubs:club_dashboard' slug=club.slug %}" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Tableau de bord
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Total Participants</p>
+                    <p class="text-3xl font-bold text-neutral-dark mt-2">{{ total_participants }}</p>
+                </div>
+                <div class="bg-blue-100 rounded-full p-3">
+                    <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Total Activités</p>
+                    <p class="text-3xl font-bold text-neutral-dark mt-2">{{ total_activities }}</p>
+                </div>
+                <div class="bg-green-100 rounded-full p-3">
+                    <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Taux d'Exécution</p>
+                    <p class="text-3xl font-bold text-neutral-dark mt-2">{{ club.execution_rate }}%</p>
+                </div>
+                <div class="bg-yellow-100 rounded-full p-3">
+                    <svg class="h-8 w-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Budget Restant</p>
+                    <p class="text-3xl font-bold {% if balance >= 0 %}text-green-600{% else %}text-red-600{% endif %} mt-2">
+                        {{ balance|floatformat:0 }}
+                    </p>
+                    <p class="text-xs text-gray-500">FCFA</p>
+                </div>
+                <div class="bg-purple-100 rounded-full p-3">
+                    <svg class="h-8 w-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Participants Analytics Section -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-neutral-dark mb-6">📊 Analyses des Participants</h2>
+        
+        <!-- Participants by Activity Chart -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold text-neutral-dark mb-4">Nombre de Participants par Activité</h3>
+            <div id="participants-by-activity-chart" style="width:100%;height:400px;"></div>
+        </div>
+
+        <!-- TOP 10 Participants -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold text-neutral-dark mb-4">TOP 10 Participants</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                {% for participant in top_10_participants %}
+                <div class="bg-gradient-to-br from-primary to-primary-light rounded-lg p-4 text-white text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        {% if participant.user.profile_picture %}
+                            <img src="{{ participant.user.profile_picture.url }}" alt="{{ participant.user.get_full_name }}" class="h-16 w-16 rounded-full object-cover border-4 border-white">
+                        {% else %}
+                            <div class="h-16 w-16 rounded-full bg-white text-primary flex items-center justify-center text-xl font-bold border-4 border-white">
+                                {{ participant.user.first_name.0 }}{{ participant.user.last_name.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <p class="font-semibold text-sm truncate">{{ participant.user.get_full_name }}</p>
+                    <p class="text-xs opacity-90">{{ participant.participation_count }} activités</p>
+                    <p class="text-lg font-bold mt-1">{{ participant.attendance_percentage }}%</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Winners List -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold text-neutral-dark mb-4">🏆 Gagnants de Compétitions</h3>
+            {% if winners %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for winner in winners %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                    <div class="flex items-center space-x-3">
+                        <span class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 text-yellow-800 flex items-center justify-center font-bold">
+                            #{{ winner.rank }}
+                        </span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate">{{ winner.participant.get_full_name }}</p>
+                            <p class="text-xs text-gray-500">{{ winner.competition.name }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-500 text-center py-4">Aucun gagnant pour le moment.</p>
+            {% endif %}
+        </div>
+
+        <!-- Detailed Analysis with Filters -->
+        <div>
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-neutral-dark">Analyse Détaillée par Activité</h3>
+                <select id="analysis-activity-filter" class="px-3 py-2 border border-gray-300 rounded-md text-sm" onchange="updateAnalysisCharts(this.value)">
+                    <option value="">Toutes les activités</option>
+                    {% for activity in activities %}
+                    <option value="{{ activity.id }}">{{ activity.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- By Gender -->
+                <div>
+                    <h4 class="font-medium text-gray-700 mb-3 text-center">Répartition par Sexe</h4>
+                    <div id="gender-chart" style="width:100%;height:300px;"></div>
+                </div>
+                
+                <!-- By Filiere -->
+                <div>
+                    <h4 class="font-medium text-gray-700 mb-3 text-center">Répartition par Filière</h4>
+                    <div id="filiere-chart" style="width:100%;height:300px;"></div>
+                </div>
+                
+                <!-- By Niveau -->
+                <div>
+                    <h4 class="font-medium text-gray-700 mb-3 text-center">Répartition par Niveau</h4>
+                    <div id="niveau-chart" style="width:100%;height:300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Budget Analytics Section -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-neutral-dark mb-6">💰 Analyses Budgétaires</h2>
+        
+        <!-- Financial Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-500">
+                <p class="text-sm font-medium text-green-800">Total Entrées</p>
+                <p class="text-2xl font-bold text-green-900 mt-1">{{ total_income|floatformat:0 }} FCFA</p>
+            </div>
+            <div class="bg-red-50 rounded-lg p-4 border-l-4 border-red-500">
+                <p class="text-sm font-medium text-red-800">Total Sorties</p>
+                <p class="text-2xl font-bold text-red-900 mt-1">{{ total_expenses|floatformat:0 }} FCFA</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+                <p class="text-sm font-medium text-blue-800">Solde Restant</p>
+                <p class="text-2xl font-bold {% if balance >= 0 %}text-blue-900{% else %}text-red-900{% endif %} mt-1">{{ balance|floatformat:0 }} FCFA</p>
+            </div>
+        </div>
+
+        <!-- Expense Evolution Chart -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold text-neutral-dark mb-4">Évolution des Dépenses par Activité</h3>
+            <div id="expense-evolution-chart" style="width:100%;height:400px;"></div>
+        </div>
+    </div>
+
+    <!-- Program Execution Section -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-neutral-dark mb-6">📋 Exécution du Programme</h2>
+        
+        <div class="mb-6">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-gray-700">Taux d'Exécution Global</span>
+                <span class="text-lg font-bold text-primary">{{ club.execution_rate }}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div class="bg-primary h-4 rounded-full transition-all duration-500" style="width: {{ club.execution_rate }}%"></div>
+            </div>
+        </div>
+
+        {% if action_plans %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for plan in action_plans %}
+            <div class="border border-gray-200 rounded-lg p-4">
+                <h4 class="font-semibold text-neutral-dark mb-2">{{ plan.title }}</h4>
+                <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
+                    <span>{{ plan.tasks.filter.count }} tâches</span>
+                    <span class="font-medium {% if plan.completion_rate == 100 %}text-green-600{% elif plan.completion_rate >= 50 %}text-blue-600{% else %}text-yellow-600{% endif %}">
+                        {{ plan.completion_rate }}%
+                    </span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="{% if plan.completion_rate == 100 %}bg-green-500{% elif plan.completion_rate >= 50 %}bg-blue-500{% else %}bg-yellow-500{% endif %} h-2 rounded-full" style="width: {{ plan.completion_rate }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-center py-4">Aucun programme d'action défini.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// Store all data for filtering
+const allAnalysisData = {{ analysis_data|safe }};
+
+// Participants by Activity Chart
+const participantsByActivity = {{ participants_by_activity_data|safe }};
+const layoutBar = {
+    title: '',
+    xaxis: { title: 'Activité', tickangle: -45 },
+    yaxis: { title: 'Nombre de Participants' },
+    plot_bgcolor: '#f7fafc',
+    paper_bgcolor: '#ffffff',
+    font: { family: 'Inter, system-ui, sans-serif' },
+    margin: { l: 60, r: 40, t: 40, b: 150 },
+};
+Plotly.newPlot('participants-by-activity-chart', participantsByActivity, layoutBar, {responsive: true, displayModeBar: false});
+
+// Expense Evolution Chart
+const expenseEvolution = {{ expense_evolution_data|safe }};
+const layoutLine = {
+    title: '',
+    xaxis: { title: 'Activité' },
+    yaxis: { title: 'Montant (FCFA)' },
+    plot_bgcolor: '#f7fafc',
+    paper_bgcolor: '#ffffff',
+    font: { family: 'Inter, system-ui, sans-serif' },
+    margin: { l: 60, r: 40, t: 40, b: 120 },
+};
+Plotly.newPlot('expense-evolution-chart', expenseEvolution, layoutLine, {responsive: true, displayModeBar: false});
+
+// Initial analysis charts
+updateAnalysisCharts('');
+
+function updateAnalysisCharts(activityId) {
+    let data = activityId ? allAnalysisData[activityId] : allAnalysisData['all'];
+    
+    if (!data) {
+        data = {gender: {}, filiere: {}, niveau: {}};
+    }
+    
+    // Gender Chart
+    const genderData = [{
+        values: Object.values(data.gender),
+        labels: Object.keys(data.gender).map(k => k === 'M' ? 'Masculin' : 'Féminin'),
+        type: 'pie',
+        marker: { colors: ['#3B82F6', '#EC4899'] },
+    }];
+    Plotly.newPlot('gender-chart', genderData, {margin: {t: 20, b: 20, l: 20, r: 20}}, {responsive: true, displayModeBar: false});
+    
+    // Filiere Chart
+    const filiereData = [{
+        values: Object.values(data.filiere),
+        labels: Object.keys(data.filiere),
+        type: 'pie',
+        marker: { colors: ['#10B981', '#F59E0B', '#8B5CF6', '#EF4444', '#06B6D4'] },
+    }];
+    Plotly.newPlot('filiere-chart', filiereData, {margin: {t: 20, b: 20, l: 20, r: 20}}, {responsive: true, displayModeBar: false});
+    
+    // Niveau Chart
+    const niveauData = [{
+        values: Object.values(data.niveau),
+        labels: Object.keys(data.niveau).map(k => k + 'ère année'),
+        type: 'pie',
+        marker: { colors: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'] },
+    }];
+    Plotly.newPlot('niveau-chart', niveauData, {margin: {t: 20, b: 20, l: 20, r: 20}}, {responsive: true, displayModeBar: false});
+}
+</script>
+{% endblock %}

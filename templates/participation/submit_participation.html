@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Soumettre Participation - {{ activity.title }} - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Success Message -->
+        <div class="bg-white rounded-lg shadow-md p-8 text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
+                <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-neutral-dark mb-4">Participation Enregistrée !</h1>
+            <p class="text-gray-600 mb-8">Votre participation à <strong>{{ activity.title }}</strong> a été confirmée avec succès.</p>
+            
+            <div class="bg-blue-50 rounded-lg p-6 mb-8">
+                <h3 class="font-semibold text-blue-900 mb-3">Détails de l'Activité</h3>
+                <div class="text-sm text-blue-800 space-y-2">
+                    <p>📅 <strong>Date :</strong> {{ activity.date|date:"d/m/Y" }} à {{ activity.time|date:"H:i"|default:"--:--" }}</p>
+                    <p>📍 <strong>Lieu :</strong> {{ activity.location }}</p>
+                    <p>🏛️ <strong>Club :</strong> {{ activity.club.name }}</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'clubs:club_detail' slug=activity.club.slug %}" 
+                   class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition">
+                    Retour au Club
+                </a>
+                <a href="{% url 'clubs:club_activities' slug=activity.club.slug %}" 
+                   class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-lg text-sm font-medium text-white bg-primary hover:bg-primary-dark transition">
+                    Voir Plus d'Activités
+                </a>
+            </div>
+        </div>
+        
+        <!-- Additional Info -->
+        <div class="mt-6 bg-white rounded-lg shadow-md p-6">
+            <h4 class="font-semibold text-gray-900 mb-4">Prochaines Étapes</h4>
+            <ul class="space-y-2 text-sm text-gray-700">
+                <li class="flex items-start">
+                    <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    Vous recevrez un email de confirmation
+                </li>
+                <li class="flex items-start">
+                    <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    Votre participation est enregistrée dans votre profil
+                </li>
+                <li class="flex items-start">
+                    <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    Consultez les statistiques dans votre tableau de bord
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

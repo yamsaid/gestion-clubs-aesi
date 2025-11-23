@@ -74,6 +74,12 @@ class Participation(TimeStampedModel):
     def is_completed(self):
         """Check if participation form is completed"""
         return self.otp_verified and self.submitted_at is not None
+    
+    @property
+    def attendance_rate(self):
+        """Calculate attendance rate for this user across all activities"""
+        total_activities = self.user.participations.filter(otp_verified=True).count()
+        return total_activities
 
 
 class ParticipationStats(models.Model):
@@ -140,3 +146,60 @@ class ParticipationStats(models.Model):
         self.total_wins = Winner.objects.filter(participant=self.user).count()
         
         self.save()
+
+
+class DynamicParticipationForm(TimeStampedModel):
+    """Model for dynamically generated participation forms"""
+    
+    activity = models.OneToOneField(
+        'clubs.Activity',
+        on_delete=models.CASCADE,
+        related_name='dynamic_form',
+        verbose_name=_('activité')
+    )
+    
+    # Form creator (organizer)
+    created_by = models.ForeignKey(
+        'users.User',
+        on_delete=models.CASCADE,
+        related_name='created_forms',
+        verbose_name=_('créé par')
+    )
+    
+    # OTP for form access
+    otp_code = models.CharField(_('code OTP'), max_length=6)
+    otp_generated_at = models.DateTimeField(_('OTP généré le'), auto_now_add=True)
+    otp_expires_at = models.DateTimeField(_('OTP expire le'))
+    
+    # Form link
+    form_link = models.CharField(_('lien du formulaire'), max_length=255, unique=True)
+    
+    # Form status
+    is_active = models.BooleanField(_('actif'), default=True)
+    
+    # Statistics
+    access_count = models.IntegerField(_('nombre d\'accès'), default=0)
+    submission_count = models.IntegerField(_('nombre de soumissions'), default=0)
+    
+    class Meta:
+        verbose_name = _('formulaire de participation dynamique')
+        verbose_name_plural = _('formulaires de participation dynamiques')
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Formulaire - {self.activity.title}"
+    
+    def is_expired(self):
+        """Check if OTP is expired"""
+        from django.utils import timezone
+        return timezone.now() > self.otp_expires_at
+    
+    def increment_access(self):
+        """Increment access count"""
+        self.access_count += 1
+        self.save(update_fields=['access_count'])
+    
+    def increment_submission(self):
+        """Increment submission count"""
+        self.submission_count += 1
+        self.save(update_fields=['submission_count'])

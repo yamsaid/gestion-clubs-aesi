@@ -54,21 +54,33 @@
     <!-- Navigation Tabs -->
     <div class="bg-white rounded-lg shadow-md">
         <div class="border-b border-gray-200">
-            <nav class="flex space-x-8 px-6" aria-label="Tabs">
+            <nav class="flex space-x-8 px-6 overflow-x-auto" aria-label="Tabs">
                 <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                     Vue d'ensemble
                 </a>
                 <a href="{% url 'clubs:club_activities' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                     Activités
                 </a>
-                <a href="{% url 'clubs:club_members' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Membres
+                <a href="{% url 'clubs:club_bureau' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Bureau
+                </a>
+                <a href="{% url 'clubs:club_participants' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Participants
+                </a>
+                <a href="{% url 'clubs:club_programs' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Programmes
+                </a>
+                <a href="{% url 'clubs:club_budget' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Budget
                 </a>
                 {% if user.is_authenticated %}
-                <a href="{% url 'clubs:club_action_plans' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Programmes d'action
+                <a href="{% url 'clubs:club_form_generator' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Générateur
                 </a>
                 {% endif %}
+                <a href="{% url 'clubs:club_dashboard' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Tableau de bord
+                </a>
             </nav>
         </div>
     </div>

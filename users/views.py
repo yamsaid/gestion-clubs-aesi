@@ -3,6 +3,8 @@ Views for users app
 """
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .forms import UserProfileForm
 
@@ -12,7 +14,18 @@ def profile(request):
     """
     User profile page
     """
-    return render(request, 'users/profile.html', {'user': request.user})
+    from participation.models import Participation
+    
+    participations = Participation.objects.filter(
+        user=request.user,
+        otp_verified=True
+    ).select_related('activity', 'activity__club').order_by('-created_at')[:10]
+    
+    context = {
+        'user': request.user,
+        'participations': participations,
+    }
+    return render(request, 'users/profile.html', context)
 
 
 @login_required
@@ -30,3 +43,23 @@ def edit_profile(request):
         form = UserProfileForm(instance=request.user)
     
     return render(request, 'users/edit_profile.html', {'form': form})
+
+
+@login_required
+def change_password(request):
+    """
+    Change user password
+    """
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important to keep user logged in
+            messages.success(request, 'Votre mot de passe a été changé avec succès.')
+            return redirect('users:profile')
+        else:
+            messages.error(request, 'Veuillez corriger les erreurs ci-dessous.')
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return render(request, 'users/change_password.html', {'form': form})
