@@ -78,38 +78,77 @@ def club_budget(request, slug):
     """Club budget page with expense tracking"""
     from django.db.models import Sum, Count
     from finances.models import Transaction
+    from django.http import HttpResponse
+    import csv
     import json
     
     club = get_object_or_404(Club, slug=slug)
     
+    # Get year filter from request
+    year_filter = request.GET.get('year', '')
+    
     # Get all activities
     activities = club.activities.all()
     
+    # Base queryset for transactions
+    income_qs = Transaction.objects.filter(club=club, transaction_type='INCOME')
+    expense_qs = Transaction.objects.filter(club=club, transaction_type='EXPENSE')
+    
+    # Apply year filter if provided
+    if year_filter:
+        income_qs = income_qs.filter(transaction_date__year=year_filter)
+        expense_qs = expense_qs.filter(transaction_date__year=year_filter)
+    
     # Calculate totals
-    total_income = Transaction.objects.filter(
-        club=club,
-        transaction_type='INCOME'
-    ).aggregate(total=Sum('amount'))['total'] or 0
-    
-    total_expenses = Transaction.objects.filter(
-        club=club,
-        transaction_type='EXPENSE'
-    ).aggregate(total=Sum('amount'))['total'] or 0
-    
+    total_income = income_qs.aggregate(total=Sum('amount'))['total'] or 0
+    total_expenses = expense_qs.aggregate(total=Sum('amount'))['total'] or 0
     balance = total_income - total_expenses
     
     # Get all expenses
-    expenses = Transaction.objects.filter(
-        club=club,
-        transaction_type='EXPENSE'
-    ).select_related('activity').order_by('-transaction_date')
+    expenses = expense_qs.select_related('activity').order_by('-transaction_date')
+    
+    # Get available years for filter
+    available_years = Transaction.objects.filter(
+        club=club
+    ).dates('transaction_date', 'year', order='DESC')
+    
+    # Export to CSV if requested
+    if request.GET.get('export') == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="depenses_{club.slug}_{timezone.now().strftime("%Y%m%d")}.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['#', 'Date', 'Type', 'Catégorie', 'Description', 'Montant (FCFA)', 'Activité', 'Notes'])
+        
+        all_transactions = Transaction.objects.filter(club=club, transaction_type='EXPENSE')
+        if year_filter:
+            all_transactions = all_transactions.filter(transaction_date__year=year_filter)
+        all_transactions = all_transactions.select_related('activity').order_by('-transaction_date')
+        
+        for idx, transaction in enumerate(all_transactions, 1):
+            writer.writerow([
+                idx,
+                transaction.transaction_date.strftime('%d/%m/%Y'),
+                'Dépense',
+                transaction.category,
+                transaction.description,
+                float(transaction.amount),
+                transaction.activity.title if transaction.activity else '-',
+                transaction.notes or '-'
+            ])
+        
+        return response
     
     # Expenses by activity for statistics
     expense_by_activity = Transaction.objects.filter(
         club=club,
         transaction_type='EXPENSE',
         activity__isnull=False
-    ).values('activity__title').annotate(
+    )
+    if year_filter:
+        expense_by_activity = expense_by_activity.filter(transaction_date__year=year_filter)
+    
+    expense_by_activity = expense_by_activity.values('activity__title').annotate(
         total=Sum('amount'),
         count=Count('id')
     ).order_by('-total')
@@ -136,6 +175,8 @@ def club_budget(request, slug):
         'expenses': expenses,
         'expense_by_activity': expense_by_activity,
         'expense_chart_data': expense_chart_data,
+        'available_years': available_years,
+        'year_filter': year_filter,
     }
     return render(request, 'clubs/club_budget.html', context)
 
@@ -191,6 +232,7 @@ def club_programs(request, slug):
 def club_form_generator(request, slug):
     """Club form generator page"""
     from participation.models import DynamicParticipationForm
+    from django.db.models import Q
     
     club = get_object_or_404(Club, slug=slug)
     
@@ -199,12 +241,16 @@ def club_form_generator(request, slug):
         messages.error(request, "Vous n'avez pas accès au générateur de formulaires.")
         return redirect('clubs:club_detail', slug=slug)
     
-    # Get all activities
-    activities = club.activities.all().order_by('-date')
+    # Get only non-completed activities (planned or ongoing)
+    activities = club.activities.filter(
+        Q(status='PLANNED') | Q(status='ONGOING')
+    ).order_by('-date')
     
-    # Get active forms
+    # Get active non-expired forms
     active_forms = DynamicParticipationForm.objects.filter(
-        activity__club=club
+        activity__club=club,
+        is_active=True,
+        otp_expires_at__gt=timezone.now()
     ).select_related('activity', 'created_by').order_by('-created_at')
     
     context = {
@@ -436,17 +482,63 @@ def club_participants(request, slug):
     from django.db.models import Count, Q
     from participation.models import Participation
     from clubs.models import Winner
+    from django.http import HttpResponse
+    import csv
     
     club = get_object_or_404(Club, slug=slug)
     
+    # Get year filter from request
+    year_filter = request.GET.get('year', '')
+    
     # Get all activities for this club
     activities = club.activities.filter(status='COMPLETED')
+    if year_filter:
+        activities = activities.filter(date__year=year_filter)
     
-    # Table 1: TOP 10 participants by attendance rate
-    top_participants_data = Participation.objects.filter(
+    # Base queryset for participations
+    base_participations = Participation.objects.filter(
         activity__club=club,
         otp_verified=True
-    ).values('user').annotate(
+    )
+    if year_filter:
+        base_participations = base_participations.filter(activity__date__year=year_filter)
+    
+    # Get available years for filter
+    available_years = Participation.objects.filter(
+        activity__club=club,
+        otp_verified=True
+    ).dates('activity__date', 'year', order='DESC')
+    
+    # Export to CSV if requested
+    if request.GET.get('export') == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="participants_{club.slug}_{timezone.now().strftime("%Y%m%d")}.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['#', 'Nom', 'Prénom', 'Email', 'Filière', 'Niveau', 'Sexe', 'Téléphone', 'Activité', 'Date activité', 'Note', 'Date de participation'])
+        
+        export_participations = base_participations.select_related('user', 'activity').order_by('-created_at')
+        
+        for idx, participation in enumerate(export_participations, 1):
+            writer.writerow([
+                idx,
+                participation.user.last_name,
+                participation.user.first_name,
+                participation.user.email,
+                participation.user.get_filiere_display() or '-',
+                participation.user.get_niveau_display() or '-',
+                participation.user.get_gender_display() or '-',
+                participation.user.phone or '-',
+                participation.activity.title,
+                participation.activity.date.strftime('%d/%m/%Y') if participation.activity.date else '-',
+                participation.rating or '-',
+                participation.submitted_at.strftime('%d/%m/%Y %H:%M') if participation.submitted_at else '-'
+            ])
+        
+        return response
+    
+    # Table 1: TOP 10 participants by attendance rate
+    top_participants_data = base_participations.values('user').annotate(
         participation_count=Count('id')
     ).order_by('-participation_count')[:10]
     
@@ -467,12 +559,11 @@ def club_participants(request, slug):
     winners = Winner.objects.filter(
         competition__activity__club=club
     ).select_related('participant', 'competition', 'competition__activity').order_by('rank')
+    if year_filter:
+        winners = winners.filter(competition__activity__date__year=year_filter)
     
     # Table 3: All participants with pagination
-    all_participants = Participation.objects.filter(
-        activity__club=club,
-        otp_verified=True
-    ).select_related('user', 'activity').order_by('-created_at')
+    all_participants = base_participations.select_related('user', 'activity').order_by('-created_at')
     
     # Pagination
     paginator = Paginator(all_participants, 10)  # 10 items per page
@@ -486,6 +577,8 @@ def club_participants(request, slug):
         'winners': winners,
         'all_participants': all_participants,
         'page_obj': page_obj,
+        'available_years': available_years,
+        'year_filter': year_filter,
     }
     return render(request, 'clubs/club_participants.html', context)
 

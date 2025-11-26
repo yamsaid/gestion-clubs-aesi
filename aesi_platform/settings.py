@@ -260,11 +260,11 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = 'optional'  # Changed from 'mandatory' for development
-ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Use email instead of username
-ACCOUNT_USERNAME_REQUIRED = False  # Username is not required
-ACCOUNT_EMAIL_REQUIRED = True  # Email is required
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # No username field
-# ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.CustomSignupForm'  # Disabled due to circular import
+ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'  # Custom adapter to save additional fields
+ACCOUNT_FORMS = {
+    'signup': 'users.forms.CustomSignupForm',
+}
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 

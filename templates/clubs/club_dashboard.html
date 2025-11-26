@@ -320,23 +320,45 @@ function updateAnalysisCharts(activityId) {
     }];
     Plotly.newPlot('gender-chart', genderData, {margin: {t: 20, b: 20, l: 20, r: 20}}, {responsive: true, displayModeBar: false});
     
-    // Filiere Chart
+    // Filiere Chart (Bar Chart)
     const filiereData = [{
-        values: Object.values(data.filiere),
-        labels: Object.keys(data.filiere),
-        type: 'pie',
-        marker: { colors: ['#10B981', '#F59E0B', '#8B5CF6', '#EF4444', '#06B6D4'] },
+        x: Object.keys(data.filiere),
+        y: Object.values(data.filiere),
+        type: 'bar',
+        marker: { 
+            color: ['#10B981', '#F59E0B', '#8B5CF6', '#EF4444', '#06B6D4'],
+        },
+        text: Object.values(data.filiere),
+        textposition: 'auto',
     }];
-    Plotly.newPlot('filiere-chart', filiereData, {margin: {t: 20, b: 20, l: 20, r: 20}}, {responsive: true, displayModeBar: false});
+    const filiereLayout = {
+        margin: {t: 20, b: 80, l: 40, r: 20},
+        xaxis: { title: 'Filière', tickangle: -45 },
+        yaxis: { title: 'Nombre' },
+        plot_bgcolor: '#f7fafc',
+        paper_bgcolor: '#ffffff',
+    };
+    Plotly.newPlot('filiere-chart', filiereData, filiereLayout, {responsive: true, displayModeBar: false});
     
-    // Niveau Chart
+    // Niveau Chart (Bar Chart)
     const niveauData = [{
-        values: Object.values(data.niveau),
-        labels: Object.keys(data.niveau).map(k => k + 'ère année'),
-        type: 'pie',
-        marker: { colors: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'] },
+        x: Object.keys(data.niveau).map(k => k + 'ère année'),
+        y: Object.values(data.niveau),
+        type: 'bar',
+        marker: { 
+            color: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'],
+        },
+        text: Object.values(data.niveau),
+        textposition: 'auto',
     }];
-    Plotly.newPlot('niveau-chart', niveauData, {margin: {t: 20, b: 20, l: 20, r: 20}}, {responsive: true, displayModeBar: false});
+    const niveauLayout = {
+        margin: {t: 20, b: 60, l: 40, r: 20},
+        xaxis: { title: 'Niveau' },
+        yaxis: { title: 'Nombre' },
+        plot_bgcolor: '#f7fafc',
+        paper_bgcolor: '#ffffff',
+    };
+    Plotly.newPlot('niveau-chart', niveauData, niveauLayout, {responsive: true, displayModeBar: false});
 }
 </script>
 {% endblock %}

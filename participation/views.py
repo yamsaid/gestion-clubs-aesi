@@ -139,15 +139,59 @@ def submit_participation(request, activity_id):
 @login_required
 def participant_list(request, activity_id):
     """List of participants for an activity"""
+    import csv
+    from django.http import HttpResponse
+    
     activity = get_object_or_404(Activity, id=activity_id)
+    
+    # Get year filter from request
+    year_filter = request.GET.get('year', '')
+    
+    # Base queryset
     participants = Participation.objects.filter(
         activity=activity,
         otp_verified=True
     ).select_related('user')
     
+    # Apply year filter if provided
+    if year_filter:
+        participants = participants.filter(activity__date__year=year_filter)
+    
+    # Get available years for filter
+    available_years = Participation.objects.filter(
+        activity__club=activity.club,
+        otp_verified=True
+    ).dates('activity__date', 'year', order='DESC')
+    
+    # Export to CSV if requested
+    if request.GET.get('export') == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="participants_{activity.title}_{timezone.now().strftime("%Y%m%d")}.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['#', 'Nom', 'Prénom', 'Email', 'Filière', 'Niveau', 'Sexe', 'Téléphone', 'Note', 'Date de participation'])
+        
+        for idx, participation in enumerate(participants, 1):
+            writer.writerow([
+                idx,
+                participation.user.last_name,
+                participation.user.first_name,
+                participation.user.email,
+                participation.user.get_filiere_display() or '-',
+                participation.user.get_niveau_display() or '-',
+                participation.user.get_gender_display() or '-',
+                participation.user.phone or '-',
+                participation.rating or '-',
+                participation.submitted_at.strftime('%d/%m/%Y %H:%M') if participation.submitted_at else '-'
+            ])
+        
+        return response
+    
     context = {
         'activity': activity,
         'participants': participants,
+        'available_years': available_years,
+        'year_filter': year_filter,
     }
     
     return render(request, 'participation/participant_list.html', context)

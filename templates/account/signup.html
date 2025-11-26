@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inscription - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl w-full space-y-8">
+        <!-- Logo et titre -->
+        <div>
+            <div class="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-light shadow-lg">
+                <svg class="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-neutral-dark">
+                Créer un compte
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Rejoignez la communauté AESI
+            </p>
+        </div>
+
+        <!-- Formulaire d'inscription -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8 space-y-6">
+            {% if form.errors %}
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700 font-medium">
+                                Veuillez corriger les erreurs ci-dessous
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'account_signup' %}" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Section: Informations personnelles -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-lg font-medium text-neutral-dark mb-4">Informations personnelles</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Prénom -->
+                        <div>
+                            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Prénom <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.first_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Nom -->
+                        <div>
+                            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nom <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.last_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mt-4">
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Adresse email <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <!-- Téléphone -->
+                        <div>
+                            <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Téléphone
+                            </label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.phone.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Sexe -->
+                        <div>
+                            <label for="{{ form.gender.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Sexe
+                            </label>
+                            {{ form.gender }}
+                            {% if form.gender.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.gender.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Informations académiques -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-lg font-medium text-neutral-dark mb-4">Informations académiques</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Filière -->
+                        <div>
+                            <label for="{{ form.filiere.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Filière
+                            </label>
+                            {{ form.filiere }}
+                            {% if form.filiere.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.filiere.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Niveau -->
+                        <div>
+                            <label for="{{ form.niveau.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Niveau
+                            </label>
+                            {{ form.niveau }}
+                            {% if form.niveau.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.niveau.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Mot de passe -->
+                <div class="pb-6">
+                    <h3 class="text-lg font-medium text-neutral-dark mb-4">Sécurité du compte</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Mot de passe -->
+                        <div>
+                            <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Mot de passe <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.password1 }}
+                            <p class="mt-1 text-xs text-gray-500">Minimum 8 caractères</p>
+                            {% if form.password1.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.password1.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Confirmation mot de passe -->
+                        <div>
+                            <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Confirmer le mot de passe <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.password2.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bouton d'inscription -->
+                <div>
+                    <button 
+                        type="submit"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-primary to-primary-light hover:from-primary-dark hover:to-primary shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition duration-150 ease-in-out"
+                    >
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                        </span>
+                        Créer mon compte
+                    </button>
+                </div>
+
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+            </form>
+
+            <!-- Divider -->
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">
+                        Vous avez déjà un compte ?
+                    </span>
+                </div>
+            </div>
+
+            <!-- Lien connexion -->
+            <div>
+                <a 
+                    href="{% url 'account_login' %}"
+                    class="w-full flex justify-center py-3 px-4 border-2 border-primary text-sm font-medium rounded-lg text-primary hover:bg-primary hover:text-white transition duration-150 ease-in-out"
+                >
+                    Se connecter
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer info -->
+        <p class="text-center text-xs text-gray-500">
+            En créant un compte, vous acceptez nos 
+            <a href="#" class="text-primary hover:text-primary-dark">Conditions d'utilisation</a> et notre
+            <a href="#" class="text-primary hover:text-primary-dark">Politique de confidentialité</a>.
+        </p>
+    </div>
+</div>
+
+{% endblock %}

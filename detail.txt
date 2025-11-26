@@ -45,3 +45,13 @@ Budget
 Programme :
 -	Le taux d’execution
 
+Les ajustements:
+
+- ajout un filtre par année  et l'option d'exporter la base de données des Participants en csv 
+- ajout un filtre par année  et l'option d'exporter la base de données des depenses en csv 
+
+- dans le tableau de bord : remplacer Répartition par Filière et Répartition par Niveau par des diagrammes en barre
+- Ajouter le logo du club (media/logos/ci_logo.jpeg)
+- dans le generateur de formulaire : ne propose pas les activités terminées et n'affiche pas les formulaires expirés
+- Revoir le design de toute la page du club informatique 
+- revoir le formulaire d'inscription : assurer que tous les champs existent

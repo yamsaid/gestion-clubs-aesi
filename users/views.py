@@ -3,10 +3,11 @@ Views for users app
 """
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, login
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .forms import UserProfileForm
+from .models import User
 
 
 @login_required
@@ -63,3 +64,11 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     
     return render(request, 'users/change_password.html', {'form': form})
+
+
+def custom_signup(request):
+    """
+    Custom signup view - redirects to allauth signup
+    Note: This view is kept for URL compatibility but allauth handles the actual signup
+    """
+    return redirect('account_signup')

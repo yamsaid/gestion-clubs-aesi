@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}{{ club.name }} - AESI Platform{% endblock %}
 
 {% block content %}
@@ -8,6 +8,15 @@
     <div class="bg-white rounded-lg shadow-md overflow-hidden">
         {% if club.cover_image %}
             <img src="{{ club.cover_image.url }}" alt="{{ club.name }}" class="w-full h-64 object-cover">
+        {% elif club.slug == 'informatique' %}
+            <div class="w-full h-64 bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-10 left-10 text-white text-9xl">{'<>'}</div>
+                    <div class="absolute bottom-10 right-10 text-white text-9xl">01</div>
+                </div>
+                {% load static %}
+                <img src="{% static 'images/ci_logo.jpg' %}" alt="{{ club.name }}" class="h-40 w-40 object-contain relative z-10">
+            </div>
         {% else %}
             <div class="w-full h-64 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
                 <span class="text-white text-6xl font-bold">{{ club.name.0 }}</span>

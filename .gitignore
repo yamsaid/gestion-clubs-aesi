@@ -54,5 +54,8 @@ tmp_rovodev_*
 acli.exe
 
 *.docx
+*.pdf
 db.sqlite3
 *.sqlite3
+!README.md
+*.md
