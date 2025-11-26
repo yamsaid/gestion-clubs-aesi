@@ -19,7 +19,9 @@ from users.models import User
 
 # Template views
 def global_dashboard(request):
-    """Global dashboard page"""
+    """Global dashboard page with comprehensive statistics"""
+    import json
+    from decimal import Decimal
     
     # Get cached data or compute
     cache_key = 'global_dashboard_data'
@@ -28,39 +30,260 @@ def global_dashboard(request):
     if not dashboard_data:
         clubs = Club.objects.filter(is_active=True)
         
-        # Aggregate statistics
+        # ==================== KEY METRICS ====================
         total_activities = Activity.objects.filter(status='COMPLETED').count()
-        total_participants = Participation.objects.filter(otp_verified=True).count()
+        total_participants_unique = Participation.objects.filter(
+            otp_verified=True
+        ).values('user').distinct().count()
+        total_participations = Participation.objects.filter(otp_verified=True).count()
         total_clubs = clubs.count()
         
-        # Recent activities
-        recent_activities = Activity.objects.filter(
-            status='COMPLETED'
-        ).select_related('club')[:10]
+        # Total budget (income and expenses)
+        total_income = Transaction.objects.filter(
+            transaction_type='INCOME'
+        ).aggregate(total=Sum('amount'))['total'] or Decimal('0')
         
-        # Club execution rates
+        total_expenses = Transaction.objects.filter(
+            transaction_type='EXPENSE'
+        ).aggregate(total=Sum('amount'))['total'] or Decimal('0')
+        
+        total_budget = total_income - total_expenses
+        
+        # Total winners
+        total_winners = Winner.objects.count()
+        
+        # ==================== CLUB COMPARISON ====================
         club_stats = []
         for club in clubs:
+            activities_completed = club.activities.filter(status='COMPLETED').count()
+            activities_total = club.activities.count()
+            
+            participants_count = Participation.objects.filter(
+                activity__club=club,
+                otp_verified=True
+            ).count()
+            
+            participants_unique = Participation.objects.filter(
+                activity__club=club,
+                otp_verified=True
+            ).values('user').distinct().count()
+            
+            # Financial data
+            club_income = Transaction.objects.filter(
+                club=club,
+                transaction_type='INCOME'
+            ).aggregate(total=Sum('amount'))['total'] or Decimal('0')
+            
+            club_expenses = Transaction.objects.filter(
+                club=club,
+                transaction_type='EXPENSE'
+            ).aggregate(total=Sum('amount'))['total'] or Decimal('0')
+            
+            club_balance = club_income - club_expenses
+            
+            # Winners count
+            club_winners = Winner.objects.filter(
+                competition__activity__club=club
+            ).count()
+            
+            # Average rating
+            avg_rating = Participation.objects.filter(
+                activity__club=club,
+                otp_verified=True,
+                rating__isnull=False
+            ).aggregate(avg=Avg('rating'))['avg'] or 0
+            
             club_stats.append({
                 'club': club,
                 'execution_rate': club.execution_rate,
-                'activities_count': club.activities.filter(status='COMPLETED').count(),
-                'participants_count': Participation.objects.filter(
-                    activity__club=club,
-                    otp_verified=True
-                ).count()
+                'activities_completed': activities_completed,
+                'activities_total': activities_total,
+                'participants_count': participants_count,
+                'participants_unique': participants_unique,
+                'club_income': float(club_income),
+                'club_expenses': float(club_expenses),
+                'club_balance': float(club_balance),
+                'winners_count': club_winners,
+                'average_rating': round(avg_rating, 2),
             })
         
+        # ==================== TOP 5 PARTICIPANTS (GLOBAL) ====================
+        top_participants_data = Participation.objects.filter(
+            otp_verified=True
+        ).values('user').annotate(
+            participation_count=Count('id'),
+            avg_rating=Avg('rating')
+        ).order_by('-participation_count')[:5]
+        
+        top_participants = []
+        for item in top_participants_data:
+            user = User.objects.get(id=item['user'])
+            
+            # Count wins
+            wins_count = Winner.objects.filter(participant=user).count()
+            
+            # Participation rate
+            participation_rate = (item['participation_count'] / total_activities * 100) if total_activities > 0 else 0
+            
+            top_participants.append({
+                'user': user,
+                'participation_count': item['participation_count'],
+                'avg_rating': round(item['avg_rating'], 2) if item['avg_rating'] else 0,
+                'wins_count': wins_count,
+                'participation_rate': round(participation_rate, 2)
+            })
+        
+        # ==================== RECENT WINNERS ====================
+        recent_winners = Winner.objects.select_related(
+            'participant', 'competition', 'competition__activity', 'competition__activity__club'
+        ).order_by('-created_at')[:10]
+        
+        # ==================== ACTIVITY PROGRESSION (LAST 6 MONTHS) ====================
+        six_months_ago = timezone.now() - timedelta(days=180)
+        
+        # Activities by month (compatible SQLite et PostgreSQL)
+        from django.db.models.functions import TruncMonth
+        
+        activities_by_month = Activity.objects.filter(
+            status='COMPLETED',
+            date__gte=six_months_ago
+        ).annotate(
+            month=TruncMonth('date')
+        ).values('month').annotate(
+            count=Count('id')
+        ).order_by('month')
+        
+        # Participations by month
+        participations_by_month = Participation.objects.filter(
+            otp_verified=True,
+            activity__date__gte=six_months_ago
+        ).annotate(
+            month=TruncMonth('activity__date')
+        ).values('month').annotate(
+            count=Count('id')
+        ).order_by('month')
+        
+        # ==================== CHARTS DATA ====================
+        
+        # 1. Club Comparison Chart (Activities)
+        club_names = [stat['club'].name for stat in club_stats]
+        club_activities = [stat['activities_completed'] for stat in club_stats]
+        club_participants = [stat['participants_count'] for stat in club_stats]
+        
+        club_comparison_chart = json.dumps([
+            {
+                'x': club_names,
+                'y': club_activities,
+                'type': 'bar',
+                'name': 'Activités',
+                'marker': {'color': '#3B82F6'},
+                'text': club_activities,
+                'textposition': 'auto',
+            },
+            {
+                'x': club_names,
+                'y': club_participants,
+                'type': 'bar',
+                'name': 'Participations',
+                'marker': {'color': '#10B981'},
+                'text': club_participants,
+                'textposition': 'auto',
+            }
+        ])
+        
+        # 2. Budget Comparison Chart
+        club_budgets = [stat['club_balance'] for stat in club_stats]
+        colors = ['#10B981' if b >= 0 else '#EF4444' for b in club_budgets]
+        
+        budget_comparison_chart = json.dumps([{
+            'x': club_names,
+            'y': club_budgets,
+            'type': 'bar',
+            'marker': {'color': colors},
+            'text': [f"{b:,.0f} FCFA" for b in club_budgets],
+            'textposition': 'auto',
+        }])
+        
+        # 3. Execution Rate Chart (Radar/Polar)
+        execution_rates = [stat['execution_rate'] for stat in club_stats]
+        
+        execution_rate_chart = json.dumps([{
+            'type': 'scatterpolar',
+            'r': execution_rates + [execution_rates[0]],  # Close the loop
+            'theta': club_names + [club_names[0]],
+            'fill': 'toself',
+            'fillcolor': 'rgba(59, 130, 246, 0.3)',
+            'line': {'color': '#3B82F6', 'width': 3},
+            'marker': {'size': 8, 'color': '#3B82F6'}
+        }])
+        
+        # 4. Progression Chart (Activities over time)
+        months = [item['month'].strftime('%Y-%m') if item['month'] else '' for item in activities_by_month]
+        activities_counts = [item['count'] for item in activities_by_month]
+        
+        progression_chart = json.dumps([{
+            'x': months,
+            'y': activities_counts,
+            'type': 'scatter',
+            'mode': 'lines+markers',
+            'name': 'Activités',
+            'line': {'color': '#3B82F6', 'width': 3},
+            'marker': {'size': 10, 'color': '#3B82F6'},
+            'fill': 'tozeroy',
+            'fillcolor': 'rgba(59, 130, 246, 0.1)',
+        }])
+        
+        # 5. Participation Distribution (Pie Chart)
+        participation_distribution_chart = json.dumps([{
+            'values': club_participants,
+            'labels': club_names,
+            'type': 'pie',
+            'hole': 0.4,
+            'marker': {
+                'colors': ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B']
+            },
+            'textinfo': 'label+percent',
+            'textposition': 'outside',
+        }])
+        
+        # ==================== RECENT ACTIVITIES ====================
+        recent_activities = Activity.objects.filter(
+            status='COMPLETED'
+        ).select_related('club').order_by('-date')[:10]
+        
         dashboard_data = {
+            # Key metrics
             'total_activities': total_activities,
-            'total_participants': total_participants,
+            'total_participants': total_participants_unique,
+            'total_participations': total_participations,
             'total_clubs': total_clubs,
-            'recent_activities': recent_activities,
+            'total_income': float(total_income),
+            'total_expenses': float(total_expenses),
+            'total_budget': float(total_budget),
+            'total_winners': total_winners,
+            
+            # Club stats
             'club_stats': club_stats,
+            
+            # Top participants
+            'top_participants': top_participants,
+            
+            # Recent winners
+            'recent_winners': recent_winners,
+            
+            # Recent activities
+            'recent_activities': recent_activities,
+            
+            # Charts
+            'club_comparison_chart': club_comparison_chart,
+            'budget_comparison_chart': budget_comparison_chart,
+            'execution_rate_chart': execution_rate_chart,
+            'progression_chart': progression_chart,
+            'participation_distribution_chart': participation_distribution_chart,
         }
         
-        # Cache for 15 minutes
-        cache.set(cache_key, dashboard_data, 900)
+        # Cache for 5 minutes
+        cache.set(cache_key, dashboard_data, 300)
     
     context = dashboard_data
     

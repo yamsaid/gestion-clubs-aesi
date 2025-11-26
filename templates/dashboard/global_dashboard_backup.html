@@ -1,0 +1,488 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tableau de Bord Global - AESI Platform{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+<style>
+    .stat-card {
+        background: linear-gradient(135deg, var(--tw-gradient-stops));
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .club-card {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+    .club-card:hover {
+        border-left-color: #3B82F6;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transform: translateX(5px);
+    }
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    .badge-primary {
+        background-color: #DBEAFE;
+        color: #1E40AF;
+    }
+    .badge-success {
+        background-color: #D1FAE5;
+        color: #065F46;
+    }
+    .badge-warning {
+        background-color: #FEF3C7;
+        color: #92400E;
+    }
+    .badge-danger {
+        background-color: #FEE2E2;
+        color: #991B1B;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">
+                Tableau de Bord Global
+            </h1>
+            <p class="text-gray-600 text-lg">
+                Vue d'ensemble des activites de tous les clubs AESI
+            </p>
+        </div>
+
+        <!-- Key Metrics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            
+            <!-- Card 1: Clubs -->
+            <div class="stat-card from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-blue-100 text-sm font-medium mb-1">Total Clubs</p>
+                        <p class="text-4xl font-bold">{{ total_clubs }}</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-full p-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Activities -->
+            <div class="stat-card from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-green-100 text-sm font-medium mb-1">ActivitÃ©s RÃ©alisÃ©es</p>
+                        <p class="text-4xl font-bold">{{ total_activities }}</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-full p-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Participants -->
+            <div class="stat-card from-purple-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-purple-100 text-sm font-medium mb-1">Participants Uniques</p>
+                        <p class="text-4xl font-bold">{{ total_participants }}</p>
+                        <p class="text-purple-100 text-xs mt-1">{{ total_participations }} participations</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-full p-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Budget -->
+            <div class="stat-card {% if total_budget >= 0 %}from-emerald-500 to-emerald-600{% else %}from-red-500 to-red-600{% endif %} rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="{% if total_budget >= 0 %}text-emerald-100{% else %}text-red-100{% endif %} text-sm font-medium mb-1">Budget Total</p>
+                        <p class="text-3xl font-bold">{{ total_budget|floatformat:0 }} FCFA</p>
+                        <p class="{% if total_budget >= 0 %}text-emerald-100{% else %}text-red-100{% endif %} text-xs mt-1">Revenus - DÃ©penses</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-full p-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 1: Comparison -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            
+            <!-- Club Comparison Chart -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="bg-blue-100 text-blue-600 rounded-lg p-2 mr-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </span>
+                    Comparaison des Clubs
+                </h2>
+                <div id="clubComparisonChart" style="height: 400px;"></div>
+            </div>
+
+            <!-- Execution Rate Radar Chart -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="bg-purple-100 text-purple-600 rounded-lg p-2 mr-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </span>
+                    Taux d'ExÃ©cution
+                </h2>
+                <div id="executionRateChart" style="height: 400px;"></div>
+            </div>
+        </div>
+
+<!-- PARTIE 2 - Ã€ insÃ©rer dans global_dashboard_new.html avant les scripts -->
+
+        <!-- Charts Row 2: Budget & Distribution -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            
+            <!-- Budget Comparison Chart -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="bg-green-100 text-green-600 rounded-lg p-2 mr-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </span>
+                    Budget par Club
+                </h2>
+                <div id="budgetComparisonChart" style="height: 400px;"></div>
+            </div>
+
+            <!-- Participation Distribution Pie Chart -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="bg-orange-100 text-orange-600 rounded-lg p-2 mr-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                        </svg>
+                    </span>
+                    RÃ©partition des Participations
+                </h2>
+                <div id="participationDistributionChart" style="height: 400px;"></div>
+            </div>
+        </div>
+
+        <!-- Progression Chart -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-600 rounded-lg p-2 mr-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </span>
+                Progression des ActivitÃ©s (6 derniers mois)
+            </h2>
+            <div id="progressionChart" style="height: 350px;"></div>
+        </div>
+
+        <!-- Club Details Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {% for stat in club_stats %}
+            <div class="club-card bg-white rounded-2xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ stat.club.name }}</h3>
+                    <span class="badge badge-primary">{{ stat.execution_rate }}% exÃ©cution</span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="text-sm text-gray-600 mb-1">ActivitÃ©s</p>
+                        <p class="text-2xl font-bold text-blue-600">{{ stat.activities_completed }}</p>
+                        <p class="text-xs text-gray-500">/ {{ stat.activities_total }} planifiÃ©es</p>
+                    </div>
+                    
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <p class="text-sm text-gray-600 mb-1">Participations</p>
+                        <p class="text-2xl font-bold text-green-600">{{ stat.participants_count }}</p>
+                        <p class="text-xs text-gray-500">{{ stat.participants_unique }} uniques</p>
+                    </div>
+                    
+                    <div class="bg-purple-50 rounded-lg p-4">
+                        <p class="text-sm text-gray-600 mb-1">Gagnants</p>
+                        <p class="text-2xl font-bold text-purple-600">{{ stat.winners_count }}</p>
+                        <p class="text-xs text-gray-500">CompÃ©titions</p>
+                    </div>
+                    
+                    <div class="bg-yellow-50 rounded-lg p-4">
+                        <p class="text-sm text-gray-600 mb-1">Note Moyenne</p>
+                        <p class="text-2xl font-bold text-yellow-600">{{ stat.average_rating }}/5</p>
+                        <p class="text-xs text-gray-500">Satisfaction</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-600">Budget</span>
+                        <span class="font-bold {% if stat.club_balance >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                            {{ stat.club_balance|floatformat:0 }} FCFA
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-500">
+                        <span>Revenus: {{ stat.club_income|floatformat:0 }} FCFA</span>
+                        <span>DÃ©penses: {{ stat.club_expenses|floatformat:0 }} FCFA</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{% url 'clubs:club_dashboard' slug=stat.club.slug %}" 
+                       class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-medium py-2 px-4 rounded-lg transition">
+                        Voir le Dashboard â†’
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Top 5 Participants -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span class="bg-yellow-100 text-yellow-600 rounded-lg p-2 mr-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                    </svg>
+                </span>
+                TOP 5 Participants les Plus Actifs
+            </h2>
+            
+            <div class="space-y-4">
+                {% for participant in top_participants %}
+                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl hover:shadow-md transition">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold text-lg">
+                                #{{ forloop.counter }}
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">{{ participant.user.get_full_name }}</h3>
+                            <p class="text-sm text-gray-600">{{ participant.user.get_filiere_display }} - {{ participant.user.niveau }}Ã¨me annÃ©e</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-right">
+                        <div class="flex items-center space-x-4">
+                            <div>
+                                <p class="text-2xl font-bold text-blue-600">{{ participant.participation_count }}</p>
+                                <p class="text-xs text-gray-500">Participations</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-yellow-600">{{ participant.wins_count }}</p>
+                                <p class="text-xs text-gray-500">Victoires</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-purple-600">{{ participant.avg_rating }}/5</p>
+                                <p class="text-xs text-gray-500">Note moy.</p>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge badge-success">{{ participant.participation_rate }}% taux</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recent Winners -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span class="bg-red-100 text-red-600 rounded-lg p-2 mr-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                    </svg>
+                </span>
+                Gagnants Recents des Competitions
+            </h2>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rang</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Participant</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CompÃ©tition</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Club</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for winner in recent_winners %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if winner.rank == 1 %}
+                                <span class="text-2xl">ðŸ¥‡</span>
+                                {% elif winner.rank == 2 %}
+                                <span class="text-2xl">ðŸ¥ˆ</span>
+                                {% elif winner.rank == 3 %}
+                                <span class="text-2xl">ðŸ¥‰</span>
+                                {% else %}
+                                <span class="font-bold text-gray-600">#{{ winner.rank }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-medium text-gray-900">{{ winner.participant.get_full_name }}</div>
+                                <div class="text-sm text-gray-500">{{ winner.participant.get_filiere_display }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">{{ winner.competition.name }}</div>
+                                <div class="text-xs text-gray-500">{{ winner.competition.activity.title }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="badge badge-primary">{{ winner.competition.activity.club.name }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ winner.prize }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span class="bg-pink-100 text-pink-600 rounded-lg p-2 mr-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </span>
+                Activites Recentes
+            </h2>
+            
+            {% if recent_activities %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for activity in recent_activities %}
+                <a href="{% url 'clubs:activity_detail' pk=activity.pk %}" 
+                   class="block p-4 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-900 mb-1">{{ activity.title }}</h3>
+                            <p class="text-sm text-gray-600 mb-2">{{ activity.theme }}</p>
+                            <div class="flex items-center space-x-2 text-xs text-gray-500">
+                                <span class="badge badge-primary">{{ activity.club.name }}</span>
+                                <span>ðŸ“… {{ activity.date|date:"d/m/Y" }}</span>
+                                <span>ðŸ“ {{ activity.location }}</span>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-500 text-center py-8">Aucune activitÃ© rÃ©cente.</p>
+            {% endif %}
+        </div>
+
+<!-- SCRIPTS POUR LES GRAPHIQUES ADDITIONNELS -->
+<script>
+// Budget Comparison Chart
+var budgetComparisonData = {{ budget_comparison_chart|safe }};
+var budgetComparisonLayout = {
+    title: '',
+    xaxis: {title: 'Clubs'},
+    yaxis: {title: 'Budget (FCFA)'},
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: {l: 80, r: 50, t: 20, b: 80}
+};
+Plotly.newPlot('budgetComparisonChart', budgetComparisonData, budgetComparisonLayout, {responsive: true});
+
+// Participation Distribution Pie Chart
+var participationDistributionData = {{ participation_distribution_chart|safe }};
+var participationDistributionLayout = {
+    title: '',
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: {l: 20, r: 20, t: 20, b: 20}
+};
+Plotly.newPlot('participationDistributionChart', participationDistributionData, participationDistributionLayout, {responsive: true});
+
+// Progression Chart
+var progressionData = {{ progression_chart|safe }};
+var progressionLayout = {
+    title: '',
+    xaxis: {title: 'Mois'},
+    yaxis: {title: 'Nombre d\'activitÃ©s'},
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: {l: 50, r: 50, t: 20, b: 80}
+};
+Plotly.newPlot('progressionChart', progressionData, progressionLayout, {responsive: true});
+</script>
+
+        
+    </div>
+</div>
+
+<script>
+// Club Comparison Chart
+var clubComparisonData = {{ club_comparison_chart|safe }};
+var clubComparisonLayout = {
+    title: '',
+    barmode: 'group',
+    xaxis: {title: 'Clubs'},
+    yaxis: {title: 'Nombre'},
+    legend: {x: 0, y: 1.1, orientation: 'h'},
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: {l: 50, r: 50, t: 20, b: 80}
+};
+Plotly.newPlot('clubComparisonChart', clubComparisonData, clubComparisonLayout, {responsive: true});
+
+// Execution Rate Radar Chart
+var executionRateData = {{ execution_rate_chart|safe }};
+var executionRateLayout = {
+    polar: {
+        radialaxis: {
+            visible: true,
+            range: [0, 100]
+        }
+    },
+    showlegend: false,
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: {l: 80, r: 80, t: 20, b: 80}
+};
+Plotly.newPlot('executionRateChart', executionRateData, executionRateLayout, {responsive: true});
+</script>
+
+{% endblock %}
+
