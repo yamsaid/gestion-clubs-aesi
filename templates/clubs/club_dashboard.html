@@ -1,58 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Tableau de Bord - {{ club.name }} - AESI Platform{% endblock %}
 
 {% block content %}
 <div class="space-y-8">
-    <!-- Header -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        {% if club.cover_image %}
-            <img src="{{ club.cover_image.url }}" alt="{{ club.name }}" class="w-full h-48 object-cover">
-        {% else %}
-            <div class="w-full h-48 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
-                <span class="text-white text-4xl font-bold">{{ club.name.0 }}</span>
-            </div>
-        {% endif %}
-        
-        <div class="p-6">
-            <h1 class="text-3xl font-bold text-neutral-dark mb-2">{{ club.name }}</h1>
-            <p class="text-gray-600">Tableau de Bord Analytique</p>
-        </div>
-    </div>
+    <!-- Modern Header -->
+    {% include 'clubs/_club_header.html' with club=club show_contact=False show_stats=True %}
 
-    <!-- Navigation Tabs -->
-    <div class="bg-white rounded-lg shadow-md">
-        <div class="border-b border-gray-200">
-            <nav class="flex space-x-8 px-6" aria-label="Tabs">
-                <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Vue d'ensemble
-                </a>
-                <a href="{% url 'clubs:club_activities' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Activités
-                </a>
-                <a href="{% url 'clubs:club_bureau' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Bureau
-                </a>
-                <a href="{% url 'clubs:club_participants' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Participants
-                </a>
-                <a href="{% url 'clubs:club_programs' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Programmes
-                </a>
-                <a href="{% url 'clubs:club_budget' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Budget
-                </a>
-                {% if user.is_authenticated %}
-                <a href="{% url 'clubs:club_form_generator' slug=club.slug %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Générateur
-                </a>
-                {% endif %}
-                <a href="{% url 'clubs:club_dashboard' slug=club.slug %}" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Tableau de bord
-                </a>
-            </nav>
-        </div>
-    </div>
+    <!-- Modern Navigation -->
+    {% include 'clubs/_club_nav.html' with club=club active_tab='dashboard' %}
 
     <!-- Key Metrics -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -121,9 +78,16 @@
         <h2 class="text-2xl font-bold text-neutral-dark mb-6">📊 Analyses des Participants</h2>
         
         <!-- Participants by Activity Chart -->
-        <div class="mb-8">
-            <h3 class="text-lg font-semibold text-neutral-dark mb-4">Nombre de Participants par Activité</h3>
-            <div id="participants-by-activity-chart" style="width:100%;height:400px;"></div>
+        <div class="mb-8 bg-gradient-to-br from-white to-green-50 rounded-2xl shadow-xl p-8 border border-green-100">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold bg-gradient-to-r from-gray-800 to-green-600 bg-clip-text text-transparent">Nombre de Participants par Activité</h3>
+            </div>
+            <div id="participants-by-activity-chart" style="width:100%;height:500px;"></div>
         </div>
 
         <!-- TOP 10 Participants -->
@@ -275,18 +239,45 @@
 // Store all data for filtering
 const allAnalysisData = {{ analysis_data|safe }};
 
-// Participants by Activity Chart
+// Participants by Activity Chart - HORIZONTAL
 const participantsByActivity = {{ participants_by_activity_data|safe }};
+// Transform data for horizontal bar chart
+const horizontalParticipantsData = participantsByActivity.map(trace => ({
+    ...trace,
+    x: trace.y,  // Swap x and y
+    y: trace.x,
+    type: 'bar',
+    orientation: 'h',  // Make it horizontal
+    marker: {
+        color: ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444', '#06B6D4', '#EC4899', '#14B8A6'],
+        line: { color: '#fff', width: 2 }
+    },
+    text: trace.y.map(val => val + ' participants'),
+    textposition: 'outside',
+    textfont: { size: 12, color: '#374151', weight: 'bold' }
+}));
+
 const layoutBar = {
     title: '',
-    xaxis: { title: 'Activité', tickangle: -45 },
-    yaxis: { title: 'Nombre de Participants' },
-    plot_bgcolor: '#f7fafc',
+    xaxis: { 
+        title: 'Nombre de Participants',
+        showgrid: true,
+        gridcolor: '#E5E7EB',
+        zeroline: false
+    },
+    yaxis: { 
+        title: '',
+        automargin: true,
+        tickfont: { size: 12 }
+    },
+    plot_bgcolor: '#F9FAFB',
     paper_bgcolor: '#ffffff',
-    font: { family: 'Inter, system-ui, sans-serif' },
-    margin: { l: 60, r: 40, t: 40, b: 150 },
+    font: { family: 'Inter, system-ui, sans-serif', color: '#374151' },
+    margin: { l: 180, r: 80, t: 20, b: 60 },
+    bargap: 0.25,
+    height: 500
 };
-Plotly.newPlot('participants-by-activity-chart', participantsByActivity, layoutBar, {responsive: true, displayModeBar: false});
+Plotly.newPlot('participants-by-activity-chart', horizontalParticipantsData, layoutBar, {responsive: true, displayModeBar: false});
 
 // Expense Evolution Chart
 const expenseEvolution = {{ expense_evolution_data|safe }};

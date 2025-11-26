@@ -1,0 +1,114 @@
+{% load static %}
+<!-- Modern Club Header Component -->
+<div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 rounded-2xl shadow-2xl overflow-hidden">
+    <!-- Animated Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-full h-full">
+            <div class="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full animate-pulse"></div>
+            <div class="absolute bottom-10 right-10 w-40 h-40 border-4 border-white rounded-lg rotate-45 animate-spin-slow"></div>
+            <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-white rounded-full blur-xl"></div>
+            <div class="absolute bottom-1/4 right-1/3 w-32 h-32 bg-blue-300 rounded-full blur-2xl"></div>
+        </div>
+    </div>
+    
+    <!-- Tech Pattern for Informatique Club -->
+    {% if club.slug == 'informatique' %}
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute top-5 left-5 text-white text-6xl font-mono">&lt;/&gt;</div>
+        <div class="absolute top-20 right-20 text-white text-5xl font-mono">{ }</div>
+        <div class="absolute bottom-10 left-20 text-white text-7xl font-mono">01</div>
+        <div class="absolute bottom-20 right-10 text-white text-6xl font-mono">10</div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl font-mono opacity-20">&lt;/&gt;</div>
+    </div>
+    {% endif %}
+    
+    <div class="relative z-10 p-8 md:p-12">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+            <!-- Left: Logo and Info -->
+            <div class="flex items-center gap-6 md:gap-8">
+                <!-- Club Logo -->
+                {% if club.logo %}
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="relative bg-white rounded-2xl p-3 shadow-xl">
+                            <img src="{{ club.logo.url }}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                        </div>
+                    </div>
+                {% elif club.slug == 'informatique' %}
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                        <div class="relative bg-white rounded-2xl p-3 shadow-xl">
+                            <img src="{% static 'images/ci_logo.jpg' %}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="h-24 w-24 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-white text-5xl font-bold shadow-xl">
+                        {{ club.name.0 }}
+                    </div>
+                {% endif %}
+                
+                <!-- Club Name and Description -->
+                <div class="text-white">
+                    <h1 class="text-3xl md:text-5xl font-extrabold mb-2 tracking-tight">
+                        {{ club.name }}
+                    </h1>
+                    <p class="text-blue-100 text-sm md:text-lg font-light max-w-2xl leading-relaxed">
+                        {{ club.description|truncatewords:20 }}
+                    </p>
+                    
+                    <!-- Contact Info -->
+                    {% if show_contact %}
+                    <div class="flex flex-wrap items-center gap-4 mt-4 text-sm">
+                        {% if club.email %}
+                        <a href="mailto:{{ club.email }}" class="flex items-center gap-2 text-blue-200 hover:text-white transition group">
+                            <svg class="h-5 w-5 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>{{ club.email }}</span>
+                        </a>
+                        {% endif %}
+                        
+                        {% if club.phone %}
+                        <div class="flex items-center gap-2 text-blue-200">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span>{{ club.phone }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Right: Stats Card -->
+            {% if show_stats %}
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:bg-white/15 transition duration-300">
+                <div class="text-center">
+                    <div class="text-blue-200 text-sm font-medium mb-1">Taux d'exécution</div>
+                    <div class="text-5xl font-bold text-white mb-1">{{ club.execution_rate }}%</div>
+                    <div class="h-2 bg-white/20 rounded-full overflow-hidden mt-3">
+                        <div class="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500" style="width: {{ club.execution_rate }}%"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Add custom animation -->
+<style>
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+}
+</style>

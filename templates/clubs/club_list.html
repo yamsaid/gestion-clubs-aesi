@@ -1,45 +1,89 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Nos Clubs - AESI Platform{% endblock %}
 
 {% block content %}
 <div class="space-y-8">
-    <div class="flex justify-between items-center">
-        <h1 class="text-4xl font-bold text-neutral-dark">Nos Clubs</h1>
+    <!-- Header Section -->
+    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl shadow-2xl p-12 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-5 left-5 text-white text-8xl">★</div>
+            <div class="absolute bottom-5 right-5 text-white text-8xl">★</div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl">◆</div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-4">Nos Clubs</h1>
+            <p class="text-xl text-blue-100 max-w-2xl mx-auto">Découvrez les différents clubs de l'AESI et rejoignez celui qui correspond à vos passions</p>
+        </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Clubs Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {% for club in clubs %}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition card-hover">
-            {% if club.cover_image %}
-                <img src="{{ club.cover_image.url }}" alt="{{ club.name }}" class="w-full h-48 object-cover">
-            {% else %}
-                <div class="w-full h-48 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
-                    <span class="text-white text-5xl font-bold">{{ club.name.0 }}</span>
+        <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-300 transform hover:-translate-y-2">
+            <!-- Club Image/Logo -->
+            <div class="relative h-48 overflow-hidden">
+                {% if club.cover_image %}
+                    <img src="{{ club.cover_image.url }}" alt="{{ club.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                {% elif club.slug == 'informatique' %}
+                    <div class="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10">
+                            <div class="absolute top-5 left-5 text-white text-6xl font-mono">&lt;/&gt;</div>
+                            <div class="absolute bottom-5 right-5 text-white text-5xl font-mono">01</div>
+                        </div>
+                        <img src="{% static 'images/ci_logo.jpg' %}" alt="{{ club.name }}" class="h-24 w-24 object-contain relative z-10 group-hover:scale-110 transition duration-500">
+                    </div>
+                {% else %}
+                    <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <span class="text-white text-6xl font-bold group-hover:scale-110 transition duration-500">{{ club.name.0 }}</span>
+                    </div>
+                {% endif %}
+                
+                <!-- Logo Badge -->
+                {% if club.logo %}
+                <div class="absolute top-4 right-4 bg-white rounded-xl p-2 shadow-lg">
+                    <img src="{{ club.logo.url }}" alt="{{ club.name }}" class="h-12 w-12 object-contain">
                 </div>
-            {% endif %}
+                {% elif club.slug == 'informatique' %}
+                <div class="absolute top-4 right-4 bg-white rounded-xl p-2 shadow-lg">
+                    <img src="{% static 'images/ci_logo.jpg' %}" alt="{{ club.name }}" class="h-12 w-12 object-contain">
+                </div>
+                {% endif %}
+            </div>
             
             <div class="p-6">
-                <h3 class="text-xl font-semibold text-neutral-dark mb-2">{{ club.name }}</h3>
-                <p class="text-gray-600 mb-4 line-clamp-3">{{ club.description|truncatewords:25 }}</p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition">{{ club.name }}</h3>
+                <p class="text-gray-600 mb-4 line-clamp-3 leading-relaxed">{{ club.description|truncatewords:20 }}</p>
                 
-                <div class="space-y-2 mb-4">
-                    <div class="flex items-center text-sm text-gray-500">
-                        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>Taux d'exécution: {{ club.execution_rate }}%</span>
+                <!-- Execution Rate -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Taux d'exécution</span>
+                        <span class="text-sm font-bold text-blue-600">{{ club.execution_rate }}%</span>
+                    </div>
+                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-500" style="width: {{ club.execution_rate }}%"></div>
                     </div>
                 </div>
                 
-                <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="inline-block w-full text-center bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-medium transition">
-                    Voir les détails
+                <a href="{% url 'clubs:club_detail' slug=club.slug %}" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-bold transition-all duration-300 shadow-md hover:shadow-xl group">
+                    <span>Découvrir</span>
+                    <svg class="h-5 w-5 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
                 </a>
             </div>
         </div>
         {% empty %}
-        <div class="col-span-4 text-center py-12 text-gray-500">
-            Aucun club disponible pour le moment.
+        <div class="col-span-4 text-center py-20">
+            <div class="inline-block p-8 bg-gray-100 rounded-full mb-6">
+                <svg class="h-20 w-20 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+            </div>
+            <p class="text-xl font-bold text-gray-700 mb-2">Aucun club disponible</p>
+            <p class="text-gray-500">Les clubs seront bientôt disponibles</p>
         </div>
         {% endfor %}
     </div>
