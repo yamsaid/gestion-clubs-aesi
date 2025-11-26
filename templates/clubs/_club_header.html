@@ -22,6 +22,28 @@
     </div>
     {% endif %}
     
+    <!-- Oratory Pattern for Art Oratoire Club -->
+    {% if club.slug == 'art-oratoire' %}
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute top-5 left-5 text-white text-6xl">💬</div>
+        <div class="absolute top-20 right-20 text-white text-5xl">🎤</div>
+        <div class="absolute bottom-10 left-20 text-white text-7xl font-serif">"</div>
+        <div class="absolute bottom-20 right-10 text-white text-6xl font-serif">"</div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl opacity-20">🗣️</div>
+    </div>
+    {% endif %}
+    
+    <!-- Sport Pattern for Sport Club -->
+    {% if club.slug == 'sport' %}
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute top-5 left-5 text-white text-6xl">⚽</div>
+        <div class="absolute top-20 right-20 text-white text-5xl">🏀</div>
+        <div class="absolute bottom-10 left-20 text-white text-7xl">🏃</div>
+        <div class="absolute bottom-20 right-10 text-white text-6xl">🏆</div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl opacity-20">⚡</div>
+    </div>
+    {% endif %}
+    
     <div class="relative z-10 p-8 md:p-12">
         <div class="flex flex-col md:flex-row items-center justify-between gap-8">
             <!-- Left: Logo and Info -->
@@ -39,6 +61,20 @@
                         <div class="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
                         <div class="relative bg-white rounded-2xl p-3 shadow-xl">
                             <img src="{% static 'images/ci_logo.jpg' %}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                        </div>
+                    </div>
+                {% elif club.slug == 'art-oratoire' %}
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-purple-400 via-pink-500 to-red-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                        <div class="relative bg-white rounded-2xl p-3 shadow-xl">
+                            <img src="{% static 'images/ao_logo.jpg' %}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                        </div>
+                    </div>
+                {% elif club.slug == 'sport' %}
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-green-400 via-yellow-500 to-orange-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                        <div class="relative bg-white rounded-2xl p-3 shadow-xl">
+                            <img src="{% static 'images/sport_logo.jpg' %}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
                         </div>
                     </div>
                 {% else %}

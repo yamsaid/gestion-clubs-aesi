@@ -12,6 +12,10 @@
                 <img src="{{ activity.club.logo.url }}" alt="{{ activity.club.name }}" class="h-6 w-6 rounded">
             {% elif activity.club.slug == 'informatique' %}
                 <img src="{% static 'images/ci_logo.jpg' %}" alt="{{ activity.club.name }}" class="h-6 w-6 rounded">
+            {% elif activity.club.slug == 'art-oratoire' %}
+                <img src="{% static 'images/ao_logo.jpg' %}" alt="{{ activity.club.name }}" class="h-6 w-6 rounded">
+            {% elif activity.club.slug == 'sport' %}
+                <img src="{% static 'images/sport_logo.jpg' %}" alt="{{ activity.club.name }}" class="h-6 w-6 rounded">
             {% endif %}
             <span>{{ activity.club.name }}</span>
         </a>
@@ -55,6 +59,10 @@
                     <img src="{{ activity.club.logo.url }}" alt="{{ activity.club.name }}" class="h-10 w-10 rounded-lg shadow">
                 {% elif activity.club.slug == 'informatique' %}
                     <img src="{% static 'images/ci_logo.jpg' %}" alt="{{ activity.club.name }}" class="h-10 w-10 rounded-lg shadow">
+                {% elif activity.club.slug == 'art-oratoire' %}
+                    <img src="{% static 'images/ao_logo.jpg' %}" alt="{{ activity.club.name }}" class="h-10 w-10 rounded-lg shadow">
+                {% elif activity.club.slug == 'sport' %}
+                    <img src="{% static 'images/sport_logo.jpg' %}" alt="{{ activity.club.name }}" class="h-10 w-10 rounded-lg shadow">
                 {% endif %}
             </div>
             
