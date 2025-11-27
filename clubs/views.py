@@ -41,13 +41,124 @@ def club_detail(request, slug):
 def club_activities(request, slug):
     """Club activities page"""
     club = get_object_or_404(Club, slug=slug)
-    activities = club.activities.all()
+    activities = club.activities.all().order_by('-date')
     
     context = {
         'club': club,
         'activities': activities,
     }
     return render(request, 'clubs/club_activities.html', context)
+
+
+@login_required
+def add_activity(request, slug):
+    """Add a new activity to a club"""
+    from .forms import ActivityForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    
+    # Check permissions - only club executives, AESI executives, or staff can add activities
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Vous n'avez pas la permission d'ajouter une activité.")
+        return redirect('clubs:club_activities', slug=slug)
+    
+    # Additional check: club executives can only add activities to their own club
+    if request.user.is_club_executive and hasattr(request.user, 'club_member'):
+        if request.user.club_member.club != club:
+            messages.error(request, "Vous ne pouvez ajouter des activités que pour votre propre club.")
+            return redirect('clubs:club_activities', slug=slug)
+    
+    if request.method == 'POST':
+        form = ActivityForm(request.POST, request.FILES)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.club = club
+            activity.created_by = request.user
+            activity.save()
+            
+            messages.success(request, f'L\'activité "{activity.title}" a été ajoutée avec succès!')
+            return redirect('clubs:club_activities', slug=slug)
+        else:
+            messages.error(request, "Erreur lors de l'ajout de l'activité. Veuillez vérifier les champs.")
+    else:
+        form = ActivityForm()
+    
+    context = {
+        'club': club,
+        'form': form,
+    }
+    return render(request, 'clubs/add_activity.html', context)
+
+
+@login_required
+def edit_activity(request, slug, activity_id):
+    """Edit an existing activity"""
+    from .forms import ActivityForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Vous n'avez pas la permission de modifier cette activité.")
+        return redirect('clubs:club_activities', slug=slug)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive and hasattr(request.user, 'club_member'):
+        if request.user.club_member.club != club:
+            messages.error(request, "Vous ne pouvez modifier que les activités de votre propre club.")
+            return redirect('clubs:club_activities', slug=slug)
+    
+    if request.method == 'POST':
+        form = ActivityForm(request.POST, request.FILES, instance=activity)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.updated_by = request.user
+            activity.save()
+            
+            messages.success(request, f'L\'activité "{activity.title}" a été modifiée avec succès!')
+            return redirect('clubs:club_activities', slug=slug)
+        else:
+            messages.error(request, "Erreur lors de la modification de l'activité. Veuillez vérifier les champs.")
+    else:
+        form = ActivityForm(instance=activity)
+    
+    context = {
+        'club': club,
+        'activity': activity,
+        'form': form,
+    }
+    return render(request, 'clubs/edit_activity.html', context)
+
+
+@login_required
+def delete_activity(request, slug, activity_id):
+    """Delete an activity"""
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Vous n'avez pas la permission de supprimer cette activité.")
+        return redirect('clubs:club_activities', slug=slug)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive and hasattr(request.user, 'club_member'):
+        if request.user.club_member.club != club:
+            messages.error(request, "Vous ne pouvez supprimer que les activités de votre propre club.")
+            return redirect('clubs:club_activities', slug=slug)
+    
+    if request.method == 'POST':
+        activity_title = activity.title
+        activity.delete()
+        messages.success(request, f'L\'activité "{activity_title}" a été supprimée avec succès!')
+        return redirect('clubs:club_activities', slug=slug)
+    
+    context = {
+        'club': club,
+        'activity': activity,
+    }
+    return render(request, 'clubs/delete_activity.html', context)
 
 
 def club_members(request, slug):
