@@ -89,7 +89,7 @@
                                    id="checkbox-{{ task.id }}"
                                    class="h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
                                    {% if task.is_completed %}checked{% endif %}
-                                   {% if user.is_authenticated and user.is_club_executive or user.is_aesi_executive %}
+                                   {% if user.is_authenticated and user.is_club_executive %}
                                    onchange="toggleTaskCompletion({{ task.id }}, this.checked)"
                                    {% else %}
                                    disabled
@@ -234,3 +234,4 @@ function toggleTaskCompletion(taskId, isCompleted) {
 <!-- CSRF Token -->
 {% csrf_token %}
 {% endblock %}
+

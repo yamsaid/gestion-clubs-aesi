@@ -21,7 +21,7 @@ def club_finances(request, club_slug):
     club = get_object_or_404(Club, slug=club_slug)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         messages.error(request, "Vous n'avez pas accès aux données financières.")
         return redirect('clubs:club_detail', slug=club_slug)
     
@@ -65,7 +65,7 @@ def add_transaction(request, club_slug):
     club = get_object_or_404(Club, slug=club_slug)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         messages.error(request, "Vous n'avez pas la permission d'ajouter une transaction.")
         return redirect('clubs:club_detail', slug=club_slug)
     
@@ -100,7 +100,7 @@ def edit_transaction(request, pk):
     transaction = get_object_or_404(Transaction, pk=pk)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         messages.error(request, "Vous n'avez pas la permission de modifier cette transaction.")
         return redirect('finances:club_finances', club_slug=transaction.club.slug)
     
@@ -134,7 +134,7 @@ def delete_transaction(request, pk):
     club_slug = transaction.club.slug
     
     # Check permissions
-    if not (request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_staff):
         messages.error(request, "Seuls les membres AESI peuvent supprimer des transactions.")
         return redirect('finances:club_finances', club_slug=club_slug)
     
@@ -157,7 +157,7 @@ def club_budgets(request, club_slug):
     club = get_object_or_404(Club, slug=club_slug)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         messages.error(request, "Vous n'avez pas accès aux budgets.")
         return redirect('clubs:club_detail', slug=club_slug)
     
@@ -177,7 +177,7 @@ def add_budget(request, club_slug):
     club = get_object_or_404(Club, slug=club_slug)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         messages.error(request, "Vous n'avez pas la permission de créer un budget.")
         return redirect('clubs:club_detail', slug=club_slug)
     
@@ -208,7 +208,7 @@ def budget_detail(request, pk):
     budget = get_object_or_404(Budget, pk=pk)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         messages.error(request, "Vous n'avez pas accès aux détails du budget.")
         return redirect('clubs:club_detail', slug=budget.club.slug)
     
@@ -233,7 +233,7 @@ def financial_reports(request, club_slug):
     club = get_object_or_404(Club, slug=club_slug)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         messages.error(request, "Vous n'avez pas accès aux rapports financiers.")
         return redirect('clubs:club_detail', slug=club_slug)
     
@@ -301,3 +301,4 @@ class CashBalanceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CashBalance.objects.all()
     serializer_class = CashBalanceSerializer
     permission_classes = [IsAuthenticated, CanViewFinancialData]
+

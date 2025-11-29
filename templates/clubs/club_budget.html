@@ -76,7 +76,7 @@
     </div>
 
     <!-- Add Expense Form -->
-    {% if user.is_authenticated and user.is_club_executive or user.is_aesi_executive %}
+    {% if user.is_authenticated and user.is_club_executive %}
     <div class="bg-white rounded-lg shadow-md p-6" x-data="{ showForm: false }">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-neutral-dark">Ajouter une Dépense</h2>
@@ -344,3 +344,4 @@ function filterExpenses(activityId) {
 }
 </script>
 {% endblock %}
+

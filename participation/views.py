@@ -24,7 +24,7 @@ def generate_otp_view(request, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
     
     # Check if user has permission (club executive or AESI executive)
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         messages.error(request, "Vous n'avez pas la permission de générer un code OTP.")
         return redirect('clubs:activity_detail', pk=activity_id)
     
@@ -205,7 +205,7 @@ def generate_otp_api(request, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_club_executive or request.user.is_staff):
         return Response(
             {'error': 'Permission denied'},
             status=status.HTTP_403_FORBIDDEN
@@ -270,8 +270,9 @@ class ParticipationViewSet(viewsets.ModelViewSet):
         
         # Only show verified participations for non-executives
         if not (self.request.user.is_club_executive or 
-                self.request.user.is_aesi_executive or 
+                self.
                 self.request.user.is_staff):
             queryset = queryset.filter(otp_verified=True)
         
         return queryset
+

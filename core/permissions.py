@@ -47,25 +47,57 @@ class IsClubExecutiveOrAESI(permissions.BasePermission):
 
 class CanViewFinancialData(permissions.BasePermission):
     """
-    Permission to view financial data - restricted to executives only
+    Permission to view financial data
+    
+    Rules:
+    - Étudiant: NO
+    - Membre exécutif du club: Only their club
+    - Trésorier AESI: ALL clubs (read-only)
+    - Staff: ALL clubs
     """
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
         
-        return request.user.role in ['CLUB_EXECUTIVE', 'AESI_EXECUTIVE'] or request.user.is_staff
+        # Students cannot view finances
+        if request.user.is_student:
+            return False
+        
+        # Club executives, treasurers, and staff can view
+        return request.user.role in ['CLUB_EXECUTIVE', 'AESI_TREASURER'] or request.user.is_staff
 
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated:
             return False
         
-        # AESI executives can view all financial data
-        if request.user.role == 'AESI_EXECUTIVE' or request.user.is_staff:
-            return True
+        club = getattr(obj, 'club', None)
+        return request.user.can_view_finances(club)
+
+
+class CanModifyFinancialData(permissions.BasePermission):
+    """
+    Permission to modify financial data
+    
+    Rules:
+    - Étudiant: NO
+    - Membre exécutif du club: Only their club
+    - Trésorier AESI: NO (read-only)
+    - Staff: ALL clubs
+    """
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
         
-        # Club executives can only view their club's financial data
-        if request.user.role == 'CLUB_EXECUTIVE':
-            club = getattr(obj, 'club', None)
-            return hasattr(request.user, 'club_member') and request.user.club_member.club == club
+        # Students and treasurers cannot modify
+        if request.user.is_student or request.user.is_aesi_treasurer:
+            return False
         
-        return False
+        # Club executives and staff can modify
+        return request.user.is_club_executive or request.user.is_staff
+
+    def has_object_permission(self, request, view, obj):
+        if not request.user.is_authenticated:
+            return False
+        
+        club = getattr(obj, 'club', None)
+        return request.user.can_modify_finances(club)

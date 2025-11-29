@@ -27,7 +27,7 @@
                     {{ activities|length }} activité{{ activities|length|pluralize }}
                 </div>
                 {% if user.is_authenticated %}
-                    {% if user.is_club_executive or user.is_aesi_executive or user.is_staff %}
+                    {% if user.is_club_executive or user.is_staff %}
                         <a href="{% url 'clubs:add_activity' slug=club.slug %}" class="flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-5 py-2.5 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -112,7 +112,7 @@
                             </a>
                             
                             {% if user.is_authenticated %}
-                                {% if user.is_club_executive or user.is_aesi_executive or user.is_staff %}
+                                {% if user.is_club_executive or user.is_staff %}
                                     <!-- Complete/Cancel buttons for PLANNED or ONGOING activities -->
                                     {% if activity.status == 'PLANNED' or activity.status == 'ONGOING' %}
                                         <a href="{% url 'clubs:complete_activity' slug=club.slug activity_id=activity.pk %}" 
@@ -237,3 +237,4 @@ document.getElementById('deleteModal').addEventListener('click', function(event)
 });
 </script>
 {% endblock %}
+

@@ -328,7 +328,7 @@ def global_gallery(request):
 def global_statistics(request):
     """Global statistics page (restricted to AESI executives)"""
     
-    if not (request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_staff):
         return render(request, 'dashboard/access_denied.html')
     
     # Compute various statistics
@@ -365,7 +365,7 @@ def global_statistics(request):
 def all_participants(request):
     """All participants page (restricted to AESI executives)"""
     
-    if not (request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_staff):
         return render(request, 'dashboard/access_denied.html')
     
     # Get all participations with filters
@@ -547,7 +547,7 @@ def financial_summary_api(request):
     """API endpoint for financial summary (restricted)"""
     
     # Check permissions
-    if not (request.user.is_aesi_executive or request.user.is_staff):
+    if not (request.user.is_staff):
         return Response(
             {'error': 'Permission denied'},
             status=403
@@ -578,3 +578,4 @@ def financial_summary_api(request):
         })
     
     return Response(financial_data)
+

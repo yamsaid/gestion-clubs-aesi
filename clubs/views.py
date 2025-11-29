@@ -1,4 +1,4 @@
-"""
+﻿"""
 Views for clubs app
 """
 from django.shortcuts import render, get_object_or_404, redirect
@@ -51,14 +51,19 @@ def club_activities(request, slug):
 
 
 @login_required
+@login_required
 def add_activity(request, slug):
     """Add a new activity to a club"""
     from .forms import ActivityForm
     
     club = get_object_or_404(Club, slug=slug)
     
-    # Check permissions - only club executives, AESI executives, or staff can add activities
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    # Check permissions
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission d'ajouter une activité.")
         return redirect('clubs:club_activities', slug=slug)
     
@@ -99,7 +104,11 @@ def edit_activity(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission de modifier cette activité.")
         return redirect('clubs:club_activities', slug=slug)
     
@@ -138,7 +147,11 @@ def delete_activity(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission de supprimer cette activité.")
         return redirect('clubs:club_activities', slug=slug)
     
@@ -306,7 +319,11 @@ def add_expense(request, slug):
     club = get_object_or_404(Club, slug=slug)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission d'ajouter une dépense.")
         return redirect('clubs:club_budget', slug=slug)
     
@@ -345,6 +362,7 @@ def club_programs(request, slug):
     return render(request, 'clubs/club_programs.html', context)
 
 
+@login_required
 def club_form_generator(request, slug):
     """Club form generator page"""
     from participation.models import DynamicParticipationForm
@@ -353,7 +371,11 @@ def club_form_generator(request, slug):
     club = get_object_or_404(Club, slug=slug)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas accès au générateur de formulaires.")
         return redirect('clubs:club_detail', slug=slug)
     
@@ -389,7 +411,11 @@ def generate_participation_form(request, slug):
     club = get_object_or_404(Club, slug=slug)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission de générer un formulaire.")
         return redirect('clubs:club_form_generator', slug=slug)
     
@@ -754,7 +780,11 @@ def complete_activity(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission de marquer cette activité comme terminée.")
         return redirect('clubs:activity_detail', pk=activity_id)
     
@@ -794,7 +824,11 @@ def cancel_activity(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission d'annuler cette activité.")
         return redirect('clubs:activity_detail', pk=activity_id)
     
@@ -834,7 +868,11 @@ def activity_completion_details(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission d'accéder à cette page.")
         return redirect('clubs:activity_detail', pk=activity_id)
     
@@ -867,6 +905,7 @@ def activity_completion_details(request, slug, activity_id):
 
 @login_required
 @require_http_methods(["POST"])
+@login_required
 def add_activity_photo(request, slug, activity_id):
     """Add a photo to an activity (AJAX)"""
     from .forms import ActivityPhotoForm
@@ -875,7 +914,11 @@ def add_activity_photo(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Permission refusée.")
         return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
     
@@ -894,6 +937,7 @@ def add_activity_photo(request, slug, activity_id):
 
 @login_required
 @require_http_methods(["POST"])
+@login_required
 def add_activity_resource(request, slug, activity_id):
     """Add a resource to an activity"""
     from .forms import ActivityResourceForm
@@ -902,7 +946,11 @@ def add_activity_resource(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Permission refusée.")
         return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
     
@@ -921,6 +969,7 @@ def add_activity_resource(request, slug, activity_id):
 
 @login_required
 @require_http_methods(["POST"])
+@login_required
 def add_competition(request, slug, activity_id):
     """Add a competition to an activity"""
     from .forms import CompetitionForm
@@ -929,7 +978,11 @@ def add_competition(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Permission refusée.")
         return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
     
@@ -957,7 +1010,11 @@ def add_winner(request, slug, activity_id, competition_id):
     competition = get_object_or_404(Competition, id=competition_id, activity=activity)
     
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         messages.error(request, "Permission refusée.")
         return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
     
@@ -995,7 +1052,11 @@ def add_winner(request, slug, activity_id, competition_id):
 def toggle_task_completion(request, task_id):
     """Toggle task completion status (AJAX endpoint)"""
     # Check permissions
-    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+    if not request.user.is_authenticated:
+        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        return redirect('account_login')
+    
+    if not request.user.can_manage_club(club):
         return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
     
     task = get_object_or_404(Task, id=task_id)
@@ -1063,3 +1124,7 @@ class CompetitionViewSet(viewsets.ModelViewSet):
     serializer_class = CompetitionSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['activity']
+
+
+
+

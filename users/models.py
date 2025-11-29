@@ -36,8 +36,8 @@ class User(AbstractUser):
     
     ROLE_CHOICES = [
         ('STUDENT', 'Étudiant'),
-        ('CLUB_EXECUTIVE', 'Membre exécutif de club'),
-        ('AESI_EXECUTIVE', 'Membre exécutif AESI'),
+        ('CLUB_EXECUTIVE', 'Membre exécutif du club'),
+        ('AESI_TREASURER', 'Trésorier de l\'AESI'),
     ]
     
     FILIERE_CHOICES = [
@@ -127,15 +127,115 @@ class User(AbstractUser):
     
     @property
     def is_club_executive(self):
+        """Check if user is a club executive"""
         return self.role == 'CLUB_EXECUTIVE'
     
     @property
-    def is_aesi_executive(self):
-        return self.role == 'AESI_EXECUTIVE'
+    def is_aesi_treasurer(self):
+        """Check if user is AESI treasurer"""
+        return self.role == 'AESI_TREASURER'
     
     @property
     def is_student(self):
+        """Check if user is a student"""
         return self.role == 'STUDENT'
+    
+    def get_user_club(self):
+        """
+        Get the club this user is a member of (if any)
+        Returns: Club object or None
+        """
+        from clubs.models import ClubMember
+        try:
+            club_member = ClubMember.objects.filter(user=self, is_executive=True).first()
+            return club_member.club if club_member else None
+        except:
+            return None
+    
+    def can_manage_club(self, club):
+        """
+        Check if user can manage a specific club
+        
+        Rules:
+        - Étudiant: NO
+        - Membre exécutif du club: YES only for their club
+        - Trésorier AESI: NO (read-only access)
+        - Staff: YES for all clubs
+        """
+        # Staff can manage all clubs
+        if self.is_staff:
+            return True
+        
+        # Treasurer cannot manage clubs
+        if self.is_aesi_treasurer:
+            return False
+        
+        # Club executives can only manage their own club
+        if self.is_club_executive:
+            user_club = self.get_user_club()
+            if user_club and club:
+                return user_club.id == club.id
+        
+        # Students cannot manage
+        return False
+    
+    def can_view_finances(self, club=None):
+        """
+        Check if user can view financial data
+        
+        Rules:
+        - Étudiant: NO
+        - Membre exécutif du club: YES only for their club
+        - Trésorier AESI: YES for ALL clubs
+        - Staff: YES for all clubs
+        """
+        # Staff can view all finances
+        if self.is_staff:
+            return True
+        
+        # Treasurer can view all finances
+        if self.is_aesi_treasurer:
+            return True
+        
+        # Club executives can only view their own club's finances
+        if self.is_club_executive:
+            if club is None:
+                return False
+            user_club = self.get_user_club()
+            if user_club:
+                return user_club.id == club.id
+        
+        # Students cannot view finances
+        return False
+    
+    def can_modify_finances(self, club=None):
+        """
+        Check if user can modify financial data
+        
+        Rules:
+        - Étudiant: NO
+        - Membre exécutif du club: YES only for their club
+        - Trésorier AESI: NO (read-only)
+        - Staff: YES for all clubs
+        """
+        # Staff can modify all finances
+        if self.is_staff:
+            return True
+        
+        # Treasurer CANNOT modify (read-only)
+        if self.is_aesi_treasurer:
+            return False
+        
+        # Club executives can only modify their own club's finances
+        if self.is_club_executive:
+            if club is None:
+                return False
+            user_club = self.get_user_club()
+            if user_club:
+                return user_club.id == club.id
+        
+        # Students cannot modify finances
+        return False
     
     def get_attendance_rate(self, club=None):
         """Calculate attendance rate for this user"""
