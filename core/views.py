@@ -21,3 +21,10 @@ def about(request):
     About AESI page
     """
     return render(request, 'core/about.html')
+
+
+def user_guide(request):
+    """
+    User guide page
+    """
+    return render(request, 'core/user_guide.html')
