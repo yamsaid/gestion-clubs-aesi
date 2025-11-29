@@ -4,7 +4,7 @@ Admin configuration for clubs app
 from django.contrib import admin
 from .models import (
     Club, ClubMember, ActionPlan, Task, Activity,
-    ActivityPhoto, Competition, Winner, MemberAttendance
+    ActivityPhoto, ActivityResource, Competition, Winner, MemberAttendance
 )
 
 
@@ -57,6 +57,12 @@ class ActivityPhotoInline(admin.TabularInline):
     fields = ['image', 'caption', 'uploaded_by']
 
 
+class ActivityResourceInline(admin.TabularInline):
+    model = ActivityResource
+    extra = 1
+    fields = ['title', 'resource_type', 'file', 'uploaded_by']
+
+
 class CompetitionInline(admin.TabularInline):
     model = Competition
     extra = 0
@@ -67,7 +73,26 @@ class ActivityAdmin(admin.ModelAdmin):
     list_display = ['title', 'club', 'date', 'status', 'participants_count', 'otp_enabled']
     list_filter = ['club', 'status', 'date']
     search_fields = ['title', 'description', 'theme']
-    inlines = [ActivityPhotoInline, CompetitionInline]
+    inlines = [ActivityPhotoInline, ActivityResourceInline, CompetitionInline]
+    fieldsets = (
+        ('Informations générales', {
+            'fields': ('club', 'title', 'description', 'theme', 'cover_image')
+        }),
+        ('Date et lieu', {
+            'fields': ('date', 'time', 'location')
+        }),
+        ('Statut', {
+            'fields': ('status', 'otp_enabled')
+        }),
+        ('Complétion', {
+            'fields': ('difficulties', 'completion_date'),
+            'classes': ('collapse',)
+        }),
+        ('Annulation', {
+            'fields': ('cancellation_comment', 'cancellation_date'),
+            'classes': ('collapse',)
+        }),
+    )
 
 
 @admin.register(ActivityPhoto)
@@ -75,6 +100,13 @@ class ActivityPhotoAdmin(admin.ModelAdmin):
     list_display = ['activity', 'caption', 'uploaded_by', 'created_at']
     list_filter = ['activity__club', 'created_at']
     search_fields = ['caption', 'activity__title']
+
+
+@admin.register(ActivityResource)
+class ActivityResourceAdmin(admin.ModelAdmin):
+    list_display = ['title', 'activity', 'resource_type', 'uploaded_by', 'created_at']
+    list_filter = ['activity__club', 'resource_type', 'created_at']
+    search_fields = ['title', 'description', 'activity__title']
 
 
 class WinnerInline(admin.TabularInline):

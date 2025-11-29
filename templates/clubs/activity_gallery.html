@@ -3,40 +3,255 @@
 {% block title %}Galerie - {{ activity.title }} - AESI Platform{% endblock %}
 
 {% block content %}
-<div class="space-y-8">
-    <!-- Header -->
-    <div>
-        <nav class="text-sm mb-2">
-            <a href="{% url 'clubs:club_detail' slug=activity.club.slug %}" class="text-primary hover:text-primary-dark">{{ activity.club.name }}</a>
-            <span class="text-gray-500 mx-2">/</span>
-            <a href="{% url 'clubs:activity_detail' pk=activity.pk %}" class="text-primary hover:text-primary-dark">{{ activity.title }}</a>
-            <span class="text-gray-500 mx-2">/</span>
-            <span class="text-gray-600">Galerie</span>
-        </nav>
-        <h1 class="text-4xl font-bold text-neutral-dark">Galerie - {{ activity.title }}</h1>
-    </div>
-
-    <!-- Photos Grid -->
-    {% if photos %}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for photo in photos %}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-            <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="w-full h-64 object-cover">
-            {% if photo.caption %}
-            <div class="p-4">
-                <p class="text-gray-700">{{ photo.caption }}</p>
-                {% if photo.uploaded_by %}
-                <p class="text-sm text-gray-500 mt-2">Par {{ photo.uploaded_by.get_full_name }}</p>
-                {% endif %}
+<div class="min-h-screen bg-gradient-to-b from-purple-50 to-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <nav class="text-sm mb-4">
+                <a href="{% url 'clubs:club_detail' slug=activity.club.slug %}" class="text-purple-600 hover:text-purple-800">{{ activity.club.name }}</a>
+                <span class="text-gray-400 mx-2">/</span>
+                <a href="{% url 'clubs:activity_detail' pk=activity.pk %}" class="text-purple-600 hover:text-purple-800">{{ activity.title }}</a>
+                <span class="text-gray-400 mx-2">/</span>
+                <span class="text-gray-600">Galerie</span>
+            </nav>
+            
+            <div class="bg-white rounded-2xl shadow-xl p-6 border border-purple-100">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl shadow-lg">
+                            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900">{{ activity.title }}</h1>
+                            <p class="text-gray-600 mt-1">Galerie photos complète</p>
+                        </div>
+                    </div>
+                    {% if photos %}
+                    <div class="flex items-center gap-3">
+                        <span class="px-4 py-2 bg-purple-100 text-purple-700 text-lg font-bold rounded-full shadow-sm">
+                            {{ photos.count }} photo{{ photos.count|pluralize }}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
         </div>
-        {% endfor %}
+        
+        {% if photos %}
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for photo in photos %}
+            <div class="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transform transition-all duration-300 hover:scale-105 cursor-pointer"
+                 onclick="openLightbox({{ forloop.counter0 }})">
+                <div class="aspect-square overflow-hidden">
+                    <img src="{{ photo.image.url }}" 
+                         alt="{{ photo.caption|default:'Photo de l\'activité' }}" 
+                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                
+                <!-- Overlay on hover -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="transform scale-0 group-hover:scale-100 transition-transform duration-300 bg-white rounded-full p-4 shadow-xl">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Caption and author info -->
+                {% if photo.caption or photo.uploaded_by %}
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/90 to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    {% if photo.caption %}
+                    <p class="text-white font-medium text-sm line-clamp-2">{{ photo.caption }}</p>
+                    {% endif %}
+                    {% if photo.uploaded_by %}
+                    <p class="text-gray-300 text-xs mt-1">Par {{ photo.uploaded_by.get_full_name }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <!-- Photo number badge -->
+                <div class="absolute top-3 right-3 bg-black/70 text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm">
+                    #{{ forloop.counter }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Info box -->
+        <div class="mt-8 bg-white rounded-xl shadow-md p-6 border border-purple-100">
+            <div class="flex items-start gap-4">
+                <div class="p-2 bg-purple-100 rounded-lg">
+                    <svg class="h-6 w-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">💡 Navigation dans la galerie</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <span class="text-purple-600">•</span>
+                            <span>Cliquez sur une photo pour la voir en grand format</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-purple-600">•</span>
+                            <span>Utilisez les flèches ← → pour naviguer entre les photos</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-purple-600">•</span>
+                            <span>Appuyez sur ESC pour fermer la vue agrandie</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        {% else %}
+        <!-- Empty state -->
+        <div class="bg-white rounded-xl shadow-md p-12 text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-4">
+                <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Aucune photo disponible</h3>
+            <p class="text-gray-600">Cette activité n'a pas encore de photos dans sa galerie.</p>
+        </div>
+        {% endif %}
     </div>
-    {% else %}
-    <div class="bg-white rounded-lg shadow-md p-12 text-center text-gray-500">
-        <p class="text-lg">Aucune photo pour le moment.</p>
-    </div>
-    {% endif %}
 </div>
+
+<!-- Lightbox Modal -->
+{% if photos %}
+<div id="lightbox" class="fixed inset-0 z-50 hidden bg-black bg-opacity-95 flex items-center justify-center p-4" onclick="closeLightbox(event)">
+    <button onclick="closeLightbox(event)" class="absolute top-4 right-4 text-white hover:text-gray-300 transition z-50 bg-black/50 rounded-full p-2 backdrop-blur-sm hover:bg-black/70">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+    </button>
+    
+    <!-- Previous button -->
+    <button onclick="previousPhoto(event)" class="absolute left-4 text-white hover:text-gray-300 transition z-50 bg-black/50 rounded-full p-3 backdrop-blur-sm hover:bg-black/70 hover:scale-110">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+    </button>
+    
+    <!-- Next button -->
+    <button onclick="nextPhoto(event)" class="absolute right-4 text-white hover:text-gray-300 transition z-50 bg-black/50 rounded-full p-3 backdrop-blur-sm hover:bg-black/70 hover:scale-110">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+    </button>
+    
+    <div class="max-w-7xl w-full max-h-full flex flex-col items-center" onclick="event.stopPropagation()">
+        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
+        <div id="lightbox-caption" class="text-white text-center mt-6 text-xl font-medium max-w-3xl"></div>
+        <div id="lightbox-author" class="text-gray-400 text-sm mt-2"></div>
+        <div id="lightbox-counter" class="text-gray-400 text-sm mt-3 bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm"></div>
+    </div>
+</div>
+
+<script>
+    const photos = [
+        {% for photo in photos %}
+        {
+            url: "{{ photo.image.url }}",
+            caption: "{{ photo.caption|default:'Photo de l\'activité'|escapejs }}",
+            author: "{% if photo.uploaded_by %}{{ photo.uploaded_by.get_full_name|escapejs }}{% endif %}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+    
+    let currentPhotoIndex = 0;
+    
+    function openLightbox(index) {
+        currentPhotoIndex = index;
+        updateLightboxContent();
+        document.getElementById('lightbox').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        
+        // Add fade-in animation
+        const lightbox = document.getElementById('lightbox');
+        lightbox.style.opacity = '0';
+        setTimeout(() => {
+            lightbox.style.transition = 'opacity 0.3s';
+            lightbox.style.opacity = '1';
+        }, 10);
+    }
+    
+    function closeLightbox(event) {
+        event.stopPropagation();
+        const lightbox = document.getElementById('lightbox');
+        lightbox.style.opacity = '0';
+        setTimeout(() => {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }, 300);
+    }
+    
+    function previousPhoto(event) {
+        event.stopPropagation();
+        currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+        updateLightboxContent();
+    }
+    
+    function nextPhoto(event) {
+        event.stopPropagation();
+        currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+        updateLightboxContent();
+    }
+    
+    function updateLightboxContent() {
+        const photo = photos[currentPhotoIndex];
+        const img = document.getElementById('lightbox-img');
+        
+        // Fade out current image
+        img.style.opacity = '0';
+        
+        setTimeout(() => {
+            img.src = photo.url;
+            img.alt = photo.caption;
+            document.getElementById('lightbox-caption').textContent = photo.caption;
+            document.getElementById('lightbox-author').textContent = photo.author ? `Par ${photo.author}` : '';
+            document.getElementById('lightbox-counter').textContent = `${currentPhotoIndex + 1} / ${photos.length}`;
+            
+            // Fade in new image
+            img.style.transition = 'opacity 0.3s';
+            img.style.opacity = '1';
+        }, 150);
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(event) {
+        if (!document.getElementById('lightbox').classList.contains('hidden')) {
+            if (event.key === 'Escape') {
+                closeLightbox(event);
+            } else if (event.key === 'ArrowLeft') {
+                previousPhoto(event);
+            } else if (event.key === 'ArrowRight') {
+                nextPhoto(event);
+            }
+        }
+    });
+    
+    // Preload adjacent images for smoother navigation
+    function preloadAdjacentImages() {
+        if (photos.length > 1) {
+            const nextIndex = (currentPhotoIndex + 1) % photos.length;
+            const prevIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+            
+            const img1 = new Image();
+            const img2 = new Image();
+            img1.src = photos[nextIndex].url;
+            img2.src = photos[prevIndex].url;
+        }
+    }
+    
+    // Call preload when opening lightbox
+    document.getElementById('lightbox').addEventListener('transitionend', preloadAdjacentImages);
+</script>
+{% endif %}
 {% endblock %}

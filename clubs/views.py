@@ -10,7 +10,7 @@ from django.utils import timezone
 import json
 from rest_framework import viewsets, permissions
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Club, Activity, ActionPlan, Task, Competition, ClubMember
+from .models import Club, Activity, ActionPlan, Task, Competition, ClubMember, ActivityPhoto, ActivityResource, Winner
 from .serializers import (
     ClubSerializer, ActivitySerializer, ActionPlanSerializer,
     TaskSerializer, CompetitionSerializer
@@ -215,8 +215,13 @@ def club_budget(request, slug):
     total_expenses = expense_qs.aggregate(total=Sum('amount'))['total'] or 0
     balance = total_income - total_expenses
     
-    # Get all expenses
-    expenses = expense_qs.select_related('activity').order_by('-transaction_date')
+    # Get all expenses with pagination
+    from django.core.paginator import Paginator
+    
+    expenses_list = expense_qs.select_related('activity').order_by('-transaction_date')
+    expenses_paginator = Paginator(expenses_list, 10)  # 10 expenses per page
+    expenses_page_number = request.GET.get('expenses_page', 1)
+    expenses = expenses_paginator.get_page(expenses_page_number)
     
     # Get available years for filter
     available_years = Transaction.objects.filter(
@@ -666,12 +671,17 @@ def club_participants(request, slug):
             'attendance_percentage': attendance_percentage
         })
     
-    # Table 2: Competition winners
-    winners = Winner.objects.filter(
+    # Table 2: Competition winners with pagination
+    winners_list = Winner.objects.filter(
         competition__activity__club=club
     ).select_related('participant', 'competition', 'competition__activity').order_by('rank')
     if year_filter:
-        winners = winners.filter(competition__activity__date__year=year_filter)
+        winners_list = winners_list.filter(competition__activity__date__year=year_filter)
+    
+    # Pagination for winners
+    winners_paginator = Paginator(winners_list, 10)  # 10 winners per page
+    winners_page_number = request.GET.get('winners_page', 1)
+    winners = winners_paginator.get_page(winners_page_number)
     
     # Table 3: All participants with pagination
     all_participants = base_participations.select_related('user', 'activity').order_by('-created_at')
@@ -711,11 +721,13 @@ def activity_detail(request, pk):
     """Activity detail page"""
     activity = get_object_or_404(Activity, pk=pk)
     photos = activity.photos.all()
+    resources = activity.resources.all()
     competitions = activity.competitions.all()
     
     context = {
         'activity': activity,
         'photos': photos,
+        'resources': resources,
         'competitions': competitions,
     }
     return render(request, 'clubs/activity_detail.html', context)
@@ -731,6 +743,251 @@ def activity_gallery(request, pk):
         'photos': photos,
     }
     return render(request, 'clubs/activity_gallery.html', context)
+
+
+@login_required
+def complete_activity(request, slug, activity_id):
+    """Mark an activity as completed and add completion details"""
+    from .forms import CompleteActivityForm, ActivityPhotoForm, ActivityResourceForm, CompetitionForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Vous n'avez pas la permission de marquer cette activité comme terminée.")
+        return redirect('clubs:activity_detail', pk=activity_id)
+    
+    # Check if activity can be completed (must be PLANNED or ONGOING)
+    if activity.status not in ['PLANNED', 'ONGOING']:
+        messages.error(request, f"Cette activité est déjà {activity.get_status_display().lower()}.")
+        return redirect('clubs:activity_detail', pk=activity_id)
+    
+    if request.method == 'POST':
+        form = CompleteActivityForm(request.POST, instance=activity)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.status = 'COMPLETED'
+            activity.completion_date = timezone.now()
+            activity.updated_by = request.user
+            activity.save()
+            
+            messages.success(request, f'L\'activité "{activity.title}" a été marquée comme terminée!')
+            return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    else:
+        form = CompleteActivityForm(instance=activity)
+    
+    context = {
+        'club': club,
+        'activity': activity,
+        'form': form,
+    }
+    return render(request, 'clubs/complete_activity.html', context)
+
+
+@login_required
+def cancel_activity(request, slug, activity_id):
+    """Cancel an activity with a comment"""
+    from .forms import CancelActivityForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Vous n'avez pas la permission d'annuler cette activité.")
+        return redirect('clubs:activity_detail', pk=activity_id)
+    
+    # Check if activity can be cancelled (must be PLANNED or ONGOING)
+    if activity.status not in ['PLANNED', 'ONGOING']:
+        messages.error(request, f"Cette activité est déjà {activity.get_status_display().lower()}.")
+        return redirect('clubs:activity_detail', pk=activity_id)
+    
+    if request.method == 'POST':
+        form = CancelActivityForm(request.POST, instance=activity)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.status = 'CANCELLED'
+            activity.cancellation_date = timezone.now()
+            activity.updated_by = request.user
+            activity.save()
+            
+            messages.success(request, f'L\'activité "{activity.title}" a été annulée.')
+            return redirect('clubs:club_activities', slug=slug)
+    else:
+        form = CancelActivityForm(instance=activity)
+    
+    context = {
+        'club': club,
+        'activity': activity,
+        'form': form,
+    }
+    return render(request, 'clubs/cancel_activity.html', context)
+
+
+@login_required
+def activity_completion_details(request, slug, activity_id):
+    """Add photos, resources, and competition winners to a completed activity"""
+    from .forms import ActivityPhotoForm, ActivityResourceForm, CompetitionForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Vous n'avez pas la permission d'accéder à cette page.")
+        return redirect('clubs:activity_detail', pk=activity_id)
+    
+    # Check if activity is completed
+    if activity.status != 'COMPLETED':
+        messages.error(request, "Cette activité n'est pas encore terminée.")
+        return redirect('clubs:activity_detail', pk=activity_id)
+    
+    photo_form = ActivityPhotoForm()
+    resource_form = ActivityResourceForm()
+    competition_form = CompetitionForm()
+    
+    # Get existing data
+    photos = activity.photos.all()
+    resources = activity.resources.all()
+    competitions = activity.competitions.prefetch_related('winners__participant').all()
+    
+    context = {
+        'club': club,
+        'activity': activity,
+        'photo_form': photo_form,
+        'resource_form': resource_form,
+        'competition_form': competition_form,
+        'photos': photos,
+        'resources': resources,
+        'competitions': competitions,
+    }
+    return render(request, 'clubs/activity_completion_details.html', context)
+
+
+@login_required
+@require_http_methods(["POST"])
+def add_activity_photo(request, slug, activity_id):
+    """Add a photo to an activity (AJAX)"""
+    from .forms import ActivityPhotoForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Permission refusée.")
+        return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    
+    form = ActivityPhotoForm(request.POST, request.FILES)
+    if form.is_valid():
+        photo = form.save(commit=False)
+        photo.activity = activity
+        photo.uploaded_by = request.user
+        photo.save()
+        messages.success(request, 'Photo ajoutée avec succès!')
+    else:
+        messages.error(request, 'Erreur lors de l\'ajout de la photo.')
+    
+    return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+
+
+@login_required
+@require_http_methods(["POST"])
+def add_activity_resource(request, slug, activity_id):
+    """Add a resource to an activity"""
+    from .forms import ActivityResourceForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Permission refusée.")
+        return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    
+    form = ActivityResourceForm(request.POST, request.FILES)
+    if form.is_valid():
+        resource = form.save(commit=False)
+        resource.activity = activity
+        resource.uploaded_by = request.user
+        resource.save()
+        messages.success(request, 'Ressource ajoutée avec succès!')
+    else:
+        messages.error(request, 'Erreur lors de l\'ajout de la ressource.')
+    
+    return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+
+
+@login_required
+@require_http_methods(["POST"])
+def add_competition(request, slug, activity_id):
+    """Add a competition to an activity"""
+    from .forms import CompetitionForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Permission refusée.")
+        return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    
+    form = CompetitionForm(request.POST)
+    if form.is_valid():
+        competition = form.save(commit=False)
+        competition.activity = activity
+        competition.created_by = request.user
+        competition.save()
+        messages.success(request, f'Compétition "{competition.name}" créée avec succès!')
+    else:
+        messages.error(request, 'Erreur lors de la création de la compétition.')
+    
+    return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+
+
+@login_required
+def add_winner(request, slug, activity_id, competition_id):
+    """Add a winner to a competition"""
+    from .forms import WinnerForm
+    from participation.models import Participation
+    
+    club = get_object_or_404(Club, slug=slug)
+    activity = get_object_or_404(Activity, id=activity_id, club=club)
+    competition = get_object_or_404(Competition, id=competition_id, activity=activity)
+    
+    # Check permissions
+    if not (request.user.is_club_executive or request.user.is_aesi_executive or request.user.is_staff):
+        messages.error(request, "Permission refusée.")
+        return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    
+    if request.method == 'POST':
+        form = WinnerForm(request.POST)
+        if form.is_valid():
+            winner = form.save(commit=False)
+            winner.competition = competition
+            winner.save()
+            messages.success(request, f'Gagnant ajouté: {winner.participant.get_full_name()} - Rang {winner.rank}')
+            return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    else:
+        # Get participants of this activity for the dropdown
+        participants = Participation.objects.filter(
+            activity=activity,
+            otp_verified=True
+        ).select_related('user').values_list('user', flat=True)
+        
+        form = WinnerForm()
+        # Filter participant choices to only show activity participants
+        from users.models import User
+        form.fields['participant'].queryset = User.objects.filter(id__in=participants)
+    
+    context = {
+        'club': club,
+        'activity': activity,
+        'competition': competition,
+        'form': form,
+    }
+    return render(request, 'clubs/add_winner.html', context)
 
 
 @login_required

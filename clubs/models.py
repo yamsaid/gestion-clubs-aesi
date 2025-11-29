@@ -208,8 +208,15 @@ class Activity(AuditModel):
     # OTP for participation
     otp_enabled = models.BooleanField(_('OTP activé'), default=True)
     
-    # Difficulties and feedback
+    # Difficulties and feedback (for completed activities)
     difficulties = models.TextField(_('difficultés rencontrées'), blank=True)
+    
+    # Cancellation comment (for cancelled activities)
+    cancellation_comment = models.TextField(_('commentaire d\'annulation'), blank=True)
+    cancellation_date = models.DateTimeField(_('date d\'annulation'), blank=True, null=True)
+    
+    # Completion date
+    completion_date = models.DateTimeField(_('date de complétion'), blank=True, null=True)
     
     # Cover image
     cover_image = models.ImageField(
@@ -310,6 +317,59 @@ class Winner(TimeStampedModel):
     
     def __str__(self):
         return f"{self.participant.get_full_name()} - Rang {self.rank}"
+
+
+class ActivityResource(TimeStampedModel):
+    """Model for activity resources (documents, files, etc.)"""
+    
+    RESOURCE_TYPES = [
+        ('PDF', 'Document PDF'),
+        ('DOC', 'Document Word'),
+        ('XLS', 'Document Excel'),
+        ('PPT', 'Présentation PowerPoint'),
+        ('ZIP', 'Archive ZIP'),
+        ('OTHER', 'Autre'),
+    ]
+    
+    activity = models.ForeignKey(
+        Activity,
+        on_delete=models.CASCADE,
+        related_name='resources',
+        verbose_name=_('activité')
+    )
+    title = models.CharField(_('titre'), max_length=200)
+    description = models.TextField(_('description'), blank=True)
+    file = models.FileField(
+        _('fichier'),
+        upload_to='activities/resources/',
+        help_text=_('PDF, Word, Excel, PowerPoint, ZIP, etc.')
+    )
+    resource_type = models.CharField(
+        _('type de ressource'),
+        max_length=20,
+        choices=RESOURCE_TYPES,
+        default='OTHER'
+    )
+    uploaded_by = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name=_('téléchargé par')
+    )
+    
+    class Meta:
+        verbose_name = _('ressource d\'activité')
+        verbose_name_plural = _('ressources d\'activités')
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.title} - {self.activity.title}"
+    
+    @property
+    def file_extension(self):
+        """Get file extension"""
+        import os
+        return os.path.splitext(self.file.name)[1].lower()
 
 
 class MemberAttendance(TimeStampedModel):

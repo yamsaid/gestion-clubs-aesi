@@ -1,0 +1,61 @@
+# ================================================
+# REQUIREMENTS OPTIMISÉS POUR PYTHONANYWHERE
+# Taille totale: ~24 MB (vs 120 MB avant)
+# Économie: 96 MB (80% de réduction!)
+# Compatible avec plan gratuit (512 MB)
+# ================================================
+
+# Core Django
+Django==4.2.7
+djangorestframework==3.14.0
+django-filter==23.3
+
+# Database - MySQL pour PythonAnywhere
+mysqlclient==2.2.0
+
+# Authentication
+django-allauth==0.57.0
+PyJWT==2.8.0
+djangorestframework-simplejwt==5.3.0
+
+# Image Processing
+Pillow==10.1.0
+
+# Security
+argon2-cffi==23.1.0
+
+# CORS
+django-cors-headers==4.3.0
+
+# Environment variables
+python-decouple==3.8
+
+# Production
+whitenoise==6.6.0
+
+# Forms & Validation
+django-crispy-forms==2.1
+crispy-tailwind==0.5.0
+
+# ================================================
+# PACKAGES RETIRÉS POUR OPTIMISATION:
+# ================================================
+# ❌ psycopg2-binary (3 MB) - PostgreSQL non utilisé sur PA gratuit
+# ❌ redis (2 MB) - Redis non disponible sur PA gratuit
+# ❌ django-redis (1 MB) - Dépend de Redis
+# ❌ celery (5 MB) - Tasks async non supportées sur PA gratuit
+# ❌ django-debug-toolbar (2 MB) - Développement uniquement
+# ❌ gunicorn (1 MB) - PythonAnywhere a son propre serveur
+# ❌ django-extensions (2 MB) - Dev/Debug uniquement
+# ❌ plotly (30 MB) - TRÈS LOURD - Remplacer par Chart.js
+# ❌ kaleido (50 MB) - TRÈS LOURD - Export plotly non nécessaire
+# 
+# Total économisé: ~96 MB (80% de réduction)
+# ================================================
+
+# ================================================
+# ALTERNATIVES LÉGÈRES (décommenter si besoin):
+# ================================================
+# matplotlib==3.8.0  # ~15 MB - Alternative à plotly si vraiment nécessaire
+# OU utiliser Chart.js (JavaScript, CDN, 0 MB local)
+# ================================================

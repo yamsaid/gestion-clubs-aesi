@@ -2,7 +2,7 @@
 Forms for clubs app
 """
 from django import forms
-from .models import Activity, Club
+from .models import Activity, Club, ActivityPhoto, ActivityResource, Competition, Winner
 
 
 class ActivityForm(forms.ModelForm):
@@ -61,4 +61,150 @@ class ActivityForm(forms.ModelForm):
             'status': 'Statut',
             'otp_enabled': 'Activer l\'OTP pour cette activité',
             'cover_image': 'Image de couverture',
+        }
+
+
+class CompleteActivityForm(forms.ModelForm):
+    """Form for completing an activity"""
+    
+    class Meta:
+        model = Activity
+        fields = ['difficulties']
+        widgets = {
+            'difficulties': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent',
+                'placeholder': 'Décrivez les difficultés rencontrées (optionnel)...',
+                'rows': 4
+            }),
+        }
+        labels = {
+            'difficulties': 'Difficultés rencontrées',
+        }
+
+
+class CancelActivityForm(forms.ModelForm):
+    """Form for cancelling an activity"""
+    
+    class Meta:
+        model = Activity
+        fields = ['cancellation_comment']
+        widgets = {
+            'cancellation_comment': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-transparent',
+                'placeholder': 'Expliquez les raisons de l\'annulation...',
+                'rows': 4
+            }),
+        }
+        labels = {
+            'cancellation_comment': 'Raison de l\'annulation',
+        }
+    
+    def clean_cancellation_comment(self):
+        comment = self.cleaned_data.get('cancellation_comment')
+        if not comment or len(comment.strip()) < 10:
+            raise forms.ValidationError('Veuillez fournir une raison détaillée (au moins 10 caractères).')
+        return comment
+
+
+class ActivityPhotoForm(forms.ModelForm):
+    """Form for adding photos to an activity"""
+    
+    class Meta:
+        model = ActivityPhoto
+        fields = ['image', 'caption']
+        widgets = {
+            'image': forms.FileInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'accept': 'image/*'
+            }),
+            'caption': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'placeholder': 'Légende de la photo (optionnel)'
+            }),
+        }
+        labels = {
+            'image': 'Photo',
+            'caption': 'Légende',
+        }
+
+
+class ActivityResourceForm(forms.ModelForm):
+    """Form for adding resources to an activity"""
+    
+    class Meta:
+        model = ActivityResource
+        fields = ['title', 'description', 'file', 'resource_type']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'placeholder': 'Titre du document'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'placeholder': 'Description (optionnel)',
+                'rows': 3
+            }),
+            'file': forms.FileInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'accept': '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar'
+            }),
+            'resource_type': forms.Select(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent'
+            }),
+        }
+        labels = {
+            'title': 'Titre',
+            'description': 'Description',
+            'file': 'Fichier',
+            'resource_type': 'Type de ressource',
+        }
+
+
+class CompetitionForm(forms.ModelForm):
+    """Form for creating competitions"""
+    
+    class Meta:
+        model = Competition
+        fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'placeholder': 'Nom de la compétition'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'placeholder': 'Description (optionnel)',
+                'rows': 3
+            }),
+        }
+        labels = {
+            'name': 'Nom',
+            'description': 'Description',
+        }
+
+
+class WinnerForm(forms.ModelForm):
+    """Form for adding winners"""
+    
+    class Meta:
+        model = Winner
+        fields = ['participant', 'rank', 'prize']
+        widgets = {
+            'participant': forms.Select(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent'
+            }),
+            'rank': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'placeholder': 'Rang (1, 2, 3...)',
+                'min': '1'
+            }),
+            'prize': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
+                'placeholder': 'Prix ou récompense (optionnel)'
+            }),
+        }
+        labels = {
+            'participant': 'Participant',
+            'rank': 'Rang',
+            'prize': 'Prix',
         }

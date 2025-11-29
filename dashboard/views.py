@@ -22,6 +22,7 @@ def global_dashboard(request):
     """Global dashboard page with comprehensive statistics"""
     import json
     from decimal import Decimal
+    from django.core.paginator import Paginator
     
     # Get cached data or compute
     cache_key = 'global_dashboard_data'
@@ -134,9 +135,10 @@ def global_dashboard(request):
             })
         
         # ==================== RECENT WINNERS ====================
-        recent_winners = Winner.objects.select_related(
+        # Note: Winners pagination is handled outside the cache
+        all_winners = Winner.objects.select_related(
             'participant', 'competition', 'competition__activity', 'competition__activity__club'
-        ).order_by('-created_at')[:10]
+        ).order_by('-created_at')
         
         # ==================== ACTIVITY PROGRESSION (LAST 6 MONTHS) ====================
         six_months_ago = timezone.now() - timedelta(days=180)
@@ -268,8 +270,8 @@ def global_dashboard(request):
             # Top participants
             'top_participants': top_participants,
             
-            # Recent winners
-            'recent_winners': recent_winners,
+            # Winners data (not paginated yet)
+            'all_winners': all_winners,
             
             # Recent activities
             'recent_activities': recent_activities,
@@ -285,7 +287,15 @@ def global_dashboard(request):
         # Cache for 5 minutes
         cache.set(cache_key, dashboard_data, 300)
     
-    context = dashboard_data
+    # Handle winners pagination outside of cache
+    all_winners = dashboard_data.get('all_winners')
+    winners_paginator = Paginator(all_winners, 10)
+    winners_page_number = request.GET.get('winners_page', 1)
+    recent_winners = winners_paginator.get_page(winners_page_number)
+    
+    # Update context with paginated winners
+    context = dashboard_data.copy()
+    context['recent_winners'] = recent_winners
     
     return render(request, 'dashboard/global_dashboard.html', context)
 
