@@ -1,0 +1,553 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Guide Utilisateur - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-b from-purple-50 to-white">
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">📚 Guide Utilisateur</h1>
+                <p class="text-xl text-purple-100">Tout ce que vous devez savoir sur la plateforme AESI</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Rapide -->
+    <div class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex overflow-x-auto py-4 space-x-4" id="guide-nav">
+                <a href="#introduction" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-700 whitespace-nowrap transition">
+                    🎯 Introduction
+                </a>
+                <a href="#premiers-pas" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-700 whitespace-nowrap transition">
+                    🚀 Premiers Pas
+                </a>
+                <a href="#etudiant" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-700 whitespace-nowrap transition">
+                    👨‍🎓 Guide Étudiant
+                </a>
+                <a href="#executif" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-700 whitespace-nowrap transition">
+                    🏛️ Membre Exécutif
+                </a>
+                <a href="#tresorier" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-700 whitespace-nowrap transition">
+                    💰 Trésorier AESI
+                </a>
+                <a href="#faq" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-purple-100 hover:text-purple-700 whitespace-nowrap transition">
+                    ❓ FAQ
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Section Introduction -->
+        <section id="introduction" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-purple-100">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="text-4xl mr-3">🎯</span>
+                    Introduction
+                </h2>
+                
+                <div class="prose max-w-none">
+                    <p class="text-lg text-gray-700 mb-4">
+                        Bienvenue sur la <strong>plateforme AESI</strong>, votre solution complète pour gérer les activités étudiantes, 
+                        suivre les participations, et gérer les finances des clubs.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mt-8">
+                        <div class="bg-purple-50 rounded-lg p-6">
+                            <h3 class="text-xl font-bold text-purple-900 mb-4">🎨 Fonctionnalités Principales</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 mr-2">✓</span>
+                                    Gestion des activités et événements
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 mr-2">✓</span>
+                                    Suivi des participations avec OTP
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 mr-2">✓</span>
+                                    Gestion financière des clubs
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 mr-2">✓</span>
+                                    Galerie photos moderne
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 mr-2">✓</span>
+                                    Système de compétitions
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 mr-2">✓</span>
+                                    Statistiques en temps réel
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-lg p-6">
+                            <h3 class="text-xl font-bold text-blue-900 mb-4">👥 Rôles Utilisateurs</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <span class="text-2xl mr-3">👨‍🎓</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Étudiant</p>
+                                        <p class="text-sm text-gray-600">Consultation et participation</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-2xl mr-3">🏛️</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Membre Exécutif</p>
+                                        <p class="text-sm text-gray-600">Gestion de son club</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-2xl mr-3">💰</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Trésorier AESI</p>
+                                        <p class="text-sm text-gray-600">Finances de tous les clubs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Premiers Pas -->
+        <section id="premiers-pas" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-purple-100">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="text-4xl mr-3">🚀</span>
+                    Premiers Pas
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- Créer un compte -->
+                    <div class="border-l-4 border-purple-500 pl-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">1. Créer un compte</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li>Cliquez sur <strong>"S'inscrire"</strong> dans le menu</li>
+                            <li>Remplissez le formulaire avec vos informations</li>
+                            <li>Utilisez votre email <strong>@esi.dz</strong></li>
+                            <li>Créez un mot de passe sécurisé (minimum 8 caractères)</li>
+                            <li>Validez votre compte par email</li>
+                        </ol>
+                    </div>
+                    
+                    <!-- Se connecter -->
+                    <div class="border-l-4 border-blue-500 pl-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">2. Se connecter</h3>
+                        <p class="text-gray-700 mb-2">Accédez à votre compte avec vos identifiants.</p>
+                        <div class="bg-blue-50 rounded-lg p-4 mt-3">
+                            <p class="text-sm text-blue-900"><strong>💡 Astuce :</strong> Cochez "Se souvenir de moi" pour rester connecté</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Compléter le profil -->
+                    <div class="border-l-4 border-green-500 pl-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">3. Compléter votre profil</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li>Ajoutez une photo de profil</li>
+                            <li>Renseignez votre promotion</li>
+                            <li>Complétez votre biographie</li>
+                            <li>Indiquez vos compétences et centres d'intérêt</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Matrice des Permissions -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl shadow-lg p-8 text-white">
+                <h2 class="text-3xl font-bold mb-6 flex items-center">
+                    <span class="text-4xl mr-3">🔐</span>
+                    Matrice des Permissions
+                </h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b-2 border-purple-400">
+                                <th class="py-3 px-4 font-semibold">Fonctionnalité</th>
+                                <th class="py-3 px-4 font-semibold text-center">👨‍🎓 Étudiant</th>
+                                <th class="py-3 px-4 font-semibold text-center">🏛️ Membre Exec</th>
+                                <th class="py-3 px-4 font-semibold text-center">💰 Trésorier</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-white">
+                            <tr class="border-b border-purple-400">
+                                <td class="py-3 px-4">Voir les activités</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅</td>
+                            </tr>
+                            <tr class="border-b border-purple-400">
+                                <td class="py-3 px-4">Participer aux activités</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅</td>
+                            </tr>
+                            <tr class="border-b border-purple-400">
+                                <td class="py-3 px-4">Créer/Modifier activités</td>
+                                <td class="py-3 px-4 text-center text-red-300">❌</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅ (son club)</td>
+                                <td class="py-3 px-4 text-center text-red-300">❌</td>
+                            </tr>
+                            <tr class="border-b border-purple-400">
+                                <td class="py-3 px-4">Voir les finances</td>
+                                <td class="py-3 px-4 text-center text-red-300">❌</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅ (son club)</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅ (tous)</td>
+                            </tr>
+                            <tr class="border-b border-purple-400">
+                                <td class="py-3 px-4">Modifier les finances</td>
+                                <td class="py-3 px-4 text-center text-red-300">❌</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅ (son club)</td>
+                                <td class="py-3 px-4 text-center text-red-300">❌</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">Ajouter photos/docs</td>
+                                <td class="py-3 px-4 text-center text-red-300">❌</td>
+                                <td class="py-3 px-4 text-center text-green-300">✅ (son club)</td>
+                                <td class="py-3 px-4 text-center text-red-300">❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Guide Étudiant -->
+        <section id="etudiant" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-purple-100">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="text-4xl mr-3">👨‍🎓</span>
+                    Guide Étudiant
+                </h2>
+                
+                <div class="space-y-8">
+                    <!-- Voir les clubs -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">🏛️ Découvrir les Clubs</h3>
+                        <p class="text-gray-700 mb-4">Accédez à <code class="bg-gray-100 px-2 py-1 rounded">/clubs/</code> pour voir tous les clubs AESI.</p>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="font-semibold text-gray-900 mb-2">Ce que vous pouvez faire :</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Voir la liste complète des clubs</li>
+                                <li>Consulter les détails de chaque club</li>
+                                <li>Voir les activités récentes</li>
+                                <li>Accéder aux galeries photos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Participer à une activité -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">🎟️ Participer à une Activité</h3>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-900 mb-2">📝 Étapes de participation :</p>
+                            <ol class="list-decimal list-inside space-y-2 text-blue-900">
+                                <li>Cliquez sur une activité pour voir les détails</li>
+                                <li>Vérifiez que le statut est "Planifiée" ou "En cours"</li>
+                                <li>Cliquez sur le bouton bleu <strong>"Participer à cette activité"</strong></li>
+                                <li>Entrez le code OTP à 6 chiffres (demandez aux organisateurs)</li>
+                                <li>Remplissez le formulaire si demandé</li>
+                                <li>Confirmez votre participation ✅</li>
+                            </ol>
+                        </div>
+                        <div class="bg-yellow-50 rounded-lg p-4">
+                            <p class="text-sm text-yellow-900"><strong>💡 Astuce :</strong> Le code OTP est affiché par les organisateurs au début de l'activité.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Galerie photos -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">📸 Galerie Photos</h3>
+                        <p class="text-gray-700 mb-4">Visualisez les photos des activités avec une expérience moderne.</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-purple-50 rounded-lg p-4">
+                                <p class="font-semibold text-purple-900 mb-2">🖱️ Navigation souris :</p>
+                                <ul class="text-sm text-purple-900 space-y-1">
+                                    <li>• Cliquer sur une photo pour l'agrandir</li>
+                                    <li>• Utiliser les flèches ← → pour naviguer</li>
+                                    <li>• Cliquer sur le fond pour fermer</li>
+                                </ul>
+                            </div>
+                            <div class="bg-indigo-50 rounded-lg p-4">
+                                <p class="font-semibold text-indigo-900 mb-2">⌨️ Raccourcis clavier :</p>
+                                <ul class="text-sm text-indigo-900 space-y-1">
+                                    <li>• <kbd class="bg-white px-2 py-1 rounded border">←</kbd> Photo précédente</li>
+                                    <li>• <kbd class="bg-white px-2 py-1 rounded border">→</kbd> Photo suivante</li>
+                                    <li>• <kbd class="bg-white px-2 py-1 rounded border">ESC</kbd> Fermer</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Guide Membre Exécutif -->
+        <section id="executif" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-purple-100">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="text-4xl mr-3">🏛️</span>
+                    Guide Membre Exécutif du Club
+                </h2>
+                
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+                    <p class="text-green-900"><strong>✨ Vous avez accès à toutes les fonctionnalités de gestion de votre club !</strong></p>
+                </div>
+                
+                <div class="space-y-8">
+                    <!-- Créer une activité -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">➕ Créer une Activité</h3>
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <p class="font-semibold text-gray-900 mb-3">📝 Informations requises :</p>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+                                <div>
+                                    <p class="font-semibold mb-2">Champs obligatoires :</p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>Titre *</li>
+                                        <li>Description *</li>
+                                        <li>Date *</li>
+                                        <li>Heure *</li>
+                                        <li>Lieu *</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="font-semibold mb-2">Champs optionnels :</p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>Thème</li>
+                                        <li>Image de couverture</li>
+                                        <li>Activer l'OTP</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Marquer comme terminée -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">✅ Marquer une Activité comme Terminée</h3>
+                        <p class="text-gray-700 mb-4">Une fois l'activité déroulée, vous pouvez la marquer comme terminée.</p>
+                        <div class="bg-green-50 rounded-lg p-4">
+                            <p class="font-semibold text-green-900 mb-2">Après avoir marqué comme terminée, vous pouvez :</p>
+                            <ul class="list-disc list-inside space-y-1 text-green-900">
+                                <li>📸 Ajouter des photos de l'activité</li>
+                                <li>📄 Télécharger des documents (PDF, Word, Excel, etc.)</li>
+                                <li>🏆 Créer des compétitions</li>
+                                <li>👥 Ajouter les gagnants</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Gérer les finances -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">💰 Gérer les Finances</h3>
+                        <p class="text-gray-700 mb-4">Accédez au budget de votre club pour gérer les dépenses et revenus.</p>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                                <div class="text-3xl mb-2">💵</div>
+                                <p class="font-semibold text-blue-900">Revenus</p>
+                                <p class="text-sm text-blue-700">Voir les entrées d'argent</p>
+                            </div>
+                            <div class="bg-red-50 rounded-lg p-4 text-center">
+                                <div class="text-3xl mb-2">💸</div>
+                                <p class="font-semibold text-red-900">Dépenses</p>
+                                <p class="text-sm text-red-700">Ajouter les dépenses</p>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4 text-center">
+                                <div class="text-3xl mb-2">💰</div>
+                                <p class="font-semibold text-green-900">Solde</p>
+                                <p class="text-sm text-green-700">Voir le solde actuel</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Guide Trésorier -->
+        <section id="tresorier" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-purple-100">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="text-4xl mr-3">💰</span>
+                    Guide Trésorier AESI
+                </h2>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
+                    <p class="text-yellow-900"><strong>📖 Accès en LECTURE SEULE aux finances de tous les clubs</strong></p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">🔍 Ce que vous pouvez faire :</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2 mt-1">✓</span>
+                                <span>Voir les budgets de <strong>tous les clubs</strong></span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2 mt-1">✓</span>
+                                <span>Consulter toutes les dépenses et revenus</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2 mt-1">✓</span>
+                                <span>Voir les statistiques financières globales</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2 mt-1">✓</span>
+                                <span>Exporter les données en CSV</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">❌ Ce que vous NE pouvez PAS faire :</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <span class="text-red-600 mr-2 mt-1">✗</span>
+                                <span>Modifier les dépenses</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-600 mr-2 mt-1">✗</span>
+                                <span>Ajouter ou supprimer des transactions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-600 mr-2 mt-1">✗</span>
+                                <span>Gérer les activités des clubs</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="font-semibold text-blue-900 mb-2">💡 Cas d'usage :</p>
+                        <p class="text-sm text-blue-900">Supervision financière, audit des dépenses, rapports consolidés, transparence financière.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section FAQ -->
+        <section id="faq" class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-purple-100">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="text-4xl mr-3">❓</span>
+                    Questions Fréquentes (FAQ)
+                </h2>
+                
+                <div class="space-y-4">
+                    <!-- FAQ Item -->
+                    <details class="bg-gray-50 rounded-lg p-4 cursor-pointer">
+                        <summary class="font-semibold text-gray-900">J'ai oublié mon mot de passe, que faire ?</summary>
+                        <p class="mt-2 text-gray-700">Cliquez sur "Mot de passe oublié" sur la page de connexion, entrez votre email, et suivez les instructions.</p>
+                    </details>
+                    
+                    <details class="bg-gray-50 rounded-lg p-4 cursor-pointer">
+                        <summary class="font-semibold text-gray-900">Comment obtenir le code OTP pour participer ?</summary>
+                        <p class="mt-2 text-gray-700">Le code OTP est communiqué par les organisateurs de l'activité au début de l'événement. Demandez-leur le code à 6 chiffres.</p>
+                    </details>
+                    
+                    <details class="bg-gray-50 rounded-lg p-4 cursor-pointer">
+                        <summary class="font-semibold text-gray-900">Pourquoi je ne vois pas la section Budget ?</summary>
+                        <p class="mt-2 text-gray-700">Seuls les membres exécutifs des clubs et le trésorier AESI ont accès aux finances. Les étudiants ne peuvent pas voir cette section.</p>
+                    </details>
+                    
+                    <details class="bg-gray-50 rounded-lg p-4 cursor-pointer">
+                        <summary class="font-semibold text-gray-900">Comment naviguer dans la galerie photos ?</summary>
+                        <p class="mt-2 text-gray-700">Cliquez sur une photo pour l'agrandir, puis utilisez les flèches ← → ou votre clavier pour naviguer. Appuyez sur ESC pour fermer.</p>
+                    </details>
+                    
+                    <details class="bg-gray-50 rounded-lg p-4 cursor-pointer">
+                        <summary class="font-semibold text-gray-900">Le trésorier AESI peut-il modifier les finances ?</summary>
+                        <p class="mt-2 text-gray-700">Non, le trésorier AESI a un accès en <strong>lecture seule</strong>. Il peut voir toutes les finances mais ne peut pas les modifier.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl shadow-lg p-8 text-white text-center">
+                <h2 class="text-3xl font-bold mb-4">🆘 Besoin d'Aide ?</h2>
+                <p class="text-lg mb-6">Notre équipe est là pour vous aider !</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="mailto:support@aesi-platform.dz" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                        📧 Contacter le Support
+                    </a>
+                    <a href="#" class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/30 transition">
+                        💬 Discord
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer du guide -->
+        <div class="text-center text-gray-600 text-sm">
+            <p>Dernière mise à jour : Novembre 2025 • Version 1.0</p>
+            <p class="mt-2">Développé avec ❤️ pour la communauté ESI</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Smooth scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Active nav item */
+    #guide-nav a.active {
+        background-color: #e9d5ff;
+        color: #6b21a8;
+    }
+    
+    /* Details/Summary styling */
+    details summary {
+        list-style: none;
+    }
+    details summary::-webkit-details-marker {
+        display: none;
+    }
+    details[open] summary {
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<script>
+    // Highlight active section in navigation
+    document.addEventListener('DOMContentLoaded', function() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('#guide-nav a');
+        
+        function highlightNavigation() {
+            let scrollY = window.pageYOffset;
+            
+            sections.forEach(current => {
+                const sectionHeight = current.offsetHeight;
+                const sectionTop = current.offsetTop - 100;
+                const sectionId = current.getAttribute('id');
+                
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', highlightNavigation);
+    });
+</script>
+{% endblock %}
