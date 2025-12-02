@@ -16,63 +16,63 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-blue-500 text-white rounded-lg shadow-lg p-6">
-            <p class="text-sm opacity-90">Total Clubs</p>
+        <div class="bg-gradient-to-br from-primary to-accent text-white rounded-lg shadow-lg p-6 hover-lift">
+            <p class="text-sm opacity-90 font-medium">Total Clubs</p>
             <p class="text-4xl font-bold mt-2">{{ total_clubs }}</p>
         </div>
         
-        <div class="bg-green-500 text-white rounded-lg shadow-lg p-6">
-            <p class="text-sm opacity-90">Activites Realisees</p>
+        <div class="bg-gradient-to-br from-success to-green-600 text-white rounded-lg shadow-lg p-6 hover-lift">
+            <p class="text-sm opacity-90 font-medium">Activites Realisees</p>
             <p class="text-4xl font-bold mt-2">{{ total_activities }}</p>
         </div>
         
-        <div class="bg-purple-500 text-white rounded-lg shadow-lg p-6">
-            <p class="text-sm opacity-90">Participants</p>
+        <div class="bg-gradient-to-br from-secondary to-accent text-neutral-dark rounded-lg shadow-lg p-6 hover-lift">
+            <p class="text-sm opacity-90 font-semibold">Participants</p>
             <p class="text-4xl font-bold mt-2">{{ total_participants }}</p>
-            <p class="text-xs opacity-90 mt-1">{{ total_participations }} participations</p>
+            <p class="text-xs opacity-90 mt-1 font-medium">{{ total_participations }} participations</p>
         </div>
         
-        <div class="bg-{% if total_budget >= 0 %}emerald{% else %}red{% endif %}-500 text-white rounded-lg shadow-lg p-6">
-            <p class="text-sm opacity-90">Budget Total</p>
+        <div class="bg-gradient-to-br from-{% if total_budget >= 0 %}success to-green-600{% else %}danger to-danger-dark{% endif %} text-white rounded-lg shadow-lg p-6 hover-lift">
+            <p class="text-sm opacity-90 font-medium">Budget Total</p>
             <p class="text-3xl font-bold mt-2">{{ total_budget|floatformat:0 }} FCFA</p>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div class="bg-white rounded-lg shadow-lg p-6">
-            <h2 class="text-2xl font-bold mb-4">Comparaison des Clubs</h2>
+        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
+            <h2 class="text-2xl font-bold mb-4 text-gradient-primary">Comparaison des Clubs</h2>
             <div id="clubComparisonChart" style="height: 400px;"></div>
         </div>
         
-        <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-accent">
             <h2 class="text-2xl font-bold mb-4">Taux d Execution</h2>
             <div id="executionRateChart" style="height: 400px;"></div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-success">
             <h2 class="text-2xl font-bold mb-4">Budget par Club</h2>
             <div id="budgetComparisonChart" style="height: 400px;"></div>
         </div>
         
-        <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-info">
             <h2 class="text-2xl font-bold mb-4">Repartition des Participations</h2>
             <div id="participationDistributionChart" style="height: 400px;"></div>
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-secondary">
         <h2 class="text-2xl font-bold mb-4">Progression des Activites (6 derniers mois)</h2>
         <div id="progressionChart" style="height: 350px;"></div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {% for stat in club_stats %}
-        <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
+        <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary card-hover">
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-xl font-bold">{{ stat.club.name }}</h3>
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">{{ stat.execution_rate }}%</span>
+                <span class="badge-primary">{{ stat.execution_rate }}%</span>
             </div>
             
             <div class="grid grid-cols-2 gap-4 mb-4">
@@ -116,13 +116,13 @@
         {% endfor %}
     </div>
 
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 class="text-2xl font-bold mb-6">TOP 5 Participants les Plus Actifs</h2>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-primary">
+        <h2 class="text-2xl font-bold mb-6 text-gradient-primary">TOP 5 Participants les Plus Actifs</h2>
         <div class="space-y-4">
             {% for participant in top_participants %}
-            <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+            <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg hover-lift border border-gray-200">
                 <div class="flex items-center space-x-4">
-                    <div class="w-10 h-10 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold">
+                    <div class="w-10 h-10 bg-gradient-to-br from-secondary to-accent text-neutral-dark rounded-full flex items-center justify-center font-bold shadow-md">
                         {{ forloop.counter }}
                     </div>
                     <div>
@@ -149,7 +149,7 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-accent">
         <h2 class="text-2xl font-bold mb-6">Gagnants Recents</h2>
         <div class="overflow-x-auto">
             <table class="min-w-full">
@@ -230,13 +230,13 @@
         {% endif %}
     </div>
 
-    <div class="bg-white rounded-lg shadow-lg p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-info">
         <h2 class="text-2xl font-bold mb-6">Activites Recentes</h2>
         {% if recent_activities %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {% for activity in recent_activities %}
             <a href="{% url 'clubs:activity_detail' pk=activity.pk %}" 
-               class="block p-4 border-2 border-gray-200 rounded-lg hover:border-blue-400 hover:shadow transition">
+               class="block p-4 border-2 border-gray-200 rounded-lg hover:border-primary hover:shadow-lg transition card-hover">
                 <h3 class="font-bold mb-1">{{ activity.title }}</h3>
                 <p class="text-sm text-gray-600 mb-2">{{ activity.theme }}</p>
                 <div class="flex items-center space-x-2 text-xs text-gray-500">

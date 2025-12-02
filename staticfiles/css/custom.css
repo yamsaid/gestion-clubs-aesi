@@ -1,29 +1,53 @@
-/* Custom CSS for AESI Platform */
+/* ===================================
+   AESI Platform - Custom CSS
+   Palette de couleurs harmonisée:
+   - #F28705 (Orange principal)
+   - #FEEB2D (Jaune vif)
+   - #F2BE22 (Jaune doré)
+   - #BF1304 (Rouge)
+   - #5C0201 (Rouge foncé)
+   =================================== */
 
-/* Smooth transitions */
-* {
-    transition: all 0.3s ease;
+/* ===== Variables CSS ===== */
+:root {
+    --primary: #F28705;
+    --primary-light: #FFA94D;
+    --primary-dark: #C46D04;
+    --secondary: #FEEB2D;
+    --accent: #F2BE22;
+    --danger: #BF1304;
+    --danger-dark: #5C0201;
+    --success: #38A169;
+    --neutral-dark: #2D3748;
+    --neutral-light: #F7FAFC;
+    --border-radius: 0.5rem;
+    --transition: all 0.3s ease;
 }
 
-/* Custom scrollbar */
+/* ===== Reset & Base ===== */
+* {
+    transition: var(--transition);
+}
+
+/* ===== Custom Scrollbar ===== */
 ::-webkit-scrollbar {
     width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f7fafc;
+    background: var(--neutral-light);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #ff6b35;
+    background: var(--primary);
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #cc552a;
+    background: var(--primary-dark);
 }
 
-/* Line clamp utility */
+/* ===== Utility Classes ===== */
 .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -38,10 +62,10 @@
     overflow: hidden;
 }
 
-/* Loading spinner */
+/* ===== Loading Spinner ===== */
 .spinner {
-    border: 3px solid #f7fafc;
-    border-top: 3px solid #ff6b35;
+    border: 3px solid var(--neutral-light);
+    border-top: 3px solid var(--primary);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -53,43 +77,83 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Card hover effects */
+/* ===== Modern Card Styles ===== */
 .card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: var(--border-radius);
 }
 
 .card-hover:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(242, 135, 5, 0.15);
 }
 
-/* Button animations */
+/* ===== Buttons ===== */
 .btn-primary {
-    background-color: #ff6b35;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
+    border-radius: var(--border-radius);
     font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    transition: var(--transition);
+    border: none;
+    box-shadow: 0 4px 6px rgba(242, 135, 5, 0.2);
 }
 
 .btn-primary:hover {
-    background-color: #cc552a;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    box-shadow: 0 6px 12px rgba(242, 135, 5, 0.3);
+    transform: translateY(-2px);
 }
 
 .btn-primary:active {
-    transform: scale(0.95);
+    transform: translateY(0);
 }
 
-/* Toast notifications */
+.btn-secondary {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    color: var(--neutral-dark);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    box-shadow: 0 4px 6px rgba(254, 235, 45, 0.2);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+    box-shadow: 0 6px 12px rgba(254, 235, 45, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    box-shadow: 0 4px 6px rgba(191, 19, 4, 0.2);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, var(--danger-dark) 0%, var(--danger) 100%);
+    box-shadow: 0 6px 12px rgba(191, 19, 4, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ===== Toast Notifications ===== */
 .toast {
     position: fixed;
     bottom: 20px;
     right: 20px;
     background: white;
     padding: 1rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid var(--primary);
     z-index: 1000;
     animation: slideIn 0.3s ease;
 }
@@ -105,11 +169,12 @@
     }
 }
 
-/* Skeleton loading */
+/* ===== Skeleton Loading ===== */
 .skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
+    border-radius: var(--border-radius);
 }
 
 @keyframes loading {
@@ -119,4 +184,202 @@
     100% {
         background-position: -200% 0;
     }
+}
+
+/* ===== Badge Styles ===== */
+.badge-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-secondary {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    color: var(--neutral-dark);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #38A169 0%, #48BB78 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ===== Progress Bars ===== */
+.progress-bar {
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: var(--border-radius);
+    transition: width 0.6s ease;
+}
+
+/* ===== Form Elements ===== */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    border: 2px solid #E2E8F0;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(242, 135, 5, 0.1);
+    outline: none;
+}
+
+/* ===== Gradient Backgrounds ===== */
+.gradient-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+}
+
+.gradient-secondary {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+}
+
+.gradient-danger {
+    background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+}
+
+/* ===== Text Gradients ===== */
+.text-gradient-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== Hover Effects ===== */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Animation Classes ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+/* ===== Mobile Optimizations ===== */
+@media (max-width: 640px) {
+    /* Prevent horizontal scroll */
+    body {
+        overflow-x: hidden;
+    }
+    
+    /* Better touch targets */
+    button, a {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Optimize font sizes */
+    h1 {
+        font-size: 1.75rem;
+        line-height: 1.2;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+    }
+    
+    /* Improve readability */
+    p {
+        line-height: 1.6;
+    }
+    
+    /* Better card spacing */
+    .card-hover {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Optimize images */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ===== Tablet Optimizations ===== */
+@media (min-width: 641px) and (max-width: 1024px) {
+    /* Adjust container padding */
+    .max-w-7xl {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    /* Better grid layouts */
+    .grid {
+        gap: 1.5rem;
+    }
+}
+
+/* ===== Smooth Scrolling ===== */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ===== Focus Visible for Accessibility ===== */
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* ===== Better Text Selection ===== */
+::selection {
+    background-color: var(--primary);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: var(--primary);
+    color: white;
 }

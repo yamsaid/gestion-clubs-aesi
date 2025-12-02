@@ -28,3 +28,17 @@ def user_guide(request):
     User guide page
     """
     return render(request, 'core/user_guide.html')
+
+
+def style_guide(request):
+    """
+    Style guide view - demonstration of all UI components
+    """
+    return render(request, 'core/style_guide.html')
+
+
+def mobile_test(request):
+    """
+    Mobile responsive test view
+    """
+    return render(request, 'core/mobile_test.html')

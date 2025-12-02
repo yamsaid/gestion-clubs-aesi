@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Guide de Style - AESI Platform{% endblock %}
+
+{% block content %}
+<div class="space-y-12">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-primary to-accent rounded-lg shadow-xl p-8 text-white">
+        <h1 class="text-4xl font-bold mb-2">Guide de Style AESI</h1>
+        <p class="text-lg opacity-90">Palette de couleurs harmonisée et composants modernes</p>
+    </div>
+
+    <!-- Palette de Couleurs -->
+    <section>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">🎨 Palette de Couleurs</h2>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+            <div class="text-center">
+                <div class="h-24 rounded-lg shadow-lg bg-primary mb-3"></div>
+                <p class="font-semibold text-gray-800">#F28705</p>
+                <p class="text-sm text-gray-600">Principal</p>
+            </div>
+            <div class="text-center">
+                <div class="h-24 rounded-lg shadow-lg bg-secondary mb-3"></div>
+                <p class="font-semibold text-gray-800">#FEEB2D</p>
+                <p class="text-sm text-gray-600">Secondaire</p>
+            </div>
+            <div class="text-center">
+                <div class="h-24 rounded-lg shadow-lg bg-accent mb-3"></div>
+                <p class="font-semibold text-gray-800">#F2BE22</p>
+                <p class="text-sm text-gray-600">Accent</p>
+            </div>
+            <div class="text-center">
+                <div class="h-24 rounded-lg shadow-lg bg-danger mb-3"></div>
+                <p class="font-semibold text-gray-800">#BF1304</p>
+                <p class="text-sm text-gray-600">Danger</p>
+            </div>
+            <div class="text-center">
+                <div class="h-24 rounded-lg shadow-lg bg-danger-dark mb-3"></div>
+                <p class="font-semibold text-gray-800">#5C0201</p>
+                <p class="text-sm text-gray-600">Danger Foncé</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Boutons -->
+    <section>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">🔘 Boutons</h2>
+        <div class="flex flex-wrap gap-4">
+            <button class="btn-primary">Bouton Principal</button>
+            <button class="btn-secondary">Bouton Secondaire</button>
+            <button class="btn-danger">Bouton Danger</button>
+            <button class="bg-success text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition">Bouton Success</button>
+        </div>
+    </section>
+
+    <!-- Badges -->
+    <section>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">🏷️ Badges</h2>
+        <div class="flex flex-wrap gap-3">
+            <span class="badge-primary">Badge Principal</span>
+            <span class="badge-secondary">Badge Secondaire</span>
+            <span class="badge-success">Badge Success</span>
+            <span class="badge-danger">Badge Danger</span>
+        </div>
+    </section>
+
+    <!-- Cartes -->
+    <section>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">📇 Cartes</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Carte Standard</h3>
+                <p class="text-gray-600 mb-4">Bordures réduites et effet hover élégant.</p>
+                <span class="badge-primary">Nouveau</span>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Carte avec Bordure</h3>
+                <p class="text-gray-600 mb-4">Bordure colorée à gauche pour l'accent.</p>
+                <span class="badge-secondary">Tendance</span>
+            </div>
+            
+            <div class="bg-gradient-to-br from-primary to-accent rounded-lg shadow-lg p-6 text-white">
+                <h3 class="text-xl font-bold mb-3">Carte Gradient</h3>
+                <p class="opacity-90 mb-4">Fond dégradé pour mettre en valeur.</p>
+                <span class="bg-white text-primary px-3 py-1 rounded-full text-xs font-semibold">Premium</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistiques -->
+    <section>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">📊 Cartes Statistiques</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="bg-white rounded-lg shadow-md p-6 hover-lift border-l-4 border-primary">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                            <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-5">
+                        <p class="text-gray-500 text-sm font-medium">Total</p>
+                        <p class="text-3xl font-bold text-gradient-primary">124</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-primary to-accent text-white rounded-lg shadow-lg p-6 hover-lift">
+                <p class="text-sm opacity-90 font-medium">Activités</p>
+                <p class="text-4xl font-bold mt-2">48</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-secondary to-accent text-neutral-dark rounded-lg shadow-lg p-6 hover-lift">
+                <p class="text-sm opacity-90 font-semibold">Participants</p>
+                <p class="text-4xl font-bold mt-2">856</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-success to-green-600 text-white rounded-lg shadow-lg p-6 hover-lift">
+                <p class="text-sm opacity-90 font-medium">Budget</p>
+                <p class="text-3xl font-bold mt-2">2.5M FCFA</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Barres de Progression -->
+    <section>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">📈 Barres de Progression</h2>
+        <div class="space-y-4 bg-white rounded-lg shadow-md p-6">
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-semibold text-gray-600">Taux d'exécution</span>
+                    <span class="text-sm font-bold text-primary">85%</span>
+                </div>
+                <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="progress-bar h-full rounded-full transition-all duration-500" style="width: 85%"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-semibold text-gray-600">Participation</span>
+                    <span class="text-sm font-bold text-success">92%</span>
+                </div>
+                <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-success to-green-600 rounded-full transition-all duration-500" style="width: 92%"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-semibold text-gray-600">Budget utilisé</span>
+                    <span class="text-sm font-bold text-danger">68%</span>
+                </div>
+                <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-danger to-danger-dark rounded-full transition-all duration-500" style="width: 68%"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulaires -->
+    <section>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">📝 Éléments de Formulaire</h2>
+        <div class="bg-white rounded-lg shadow-md p-6 max-w-2xl">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nom complet</label>
+                    <input type="text" placeholder="Entrez votre nom" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                    <input type="email" placeholder="exemple@email.com" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                    <textarea rows="3" placeholder="Votre message..." class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition"></textarea>
+                </div>
+                <button class="btn-primary w-full">Envoyer</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Textes avec Gradients -->
+    <section>
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">✨ Textes avec Gradients</h2>
+        <div class="space-y-3">
+            <h1 class="text-5xl font-extrabold text-gradient-primary">Titre Principal</h1>
+            <h2 class="text-4xl font-bold text-gradient-primary">Sous-titre Important</h2>
+            <p class="text-2xl font-semibold text-gradient-primary">Texte accentué</p>
+        </div>
+    </section>
+
+    <!-- Animations -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold text-neutral-dark mb-6">🎬 Effets Hover</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover text-center">
+                <div class="text-4xl mb-3">🎨</div>
+                <h3 class="font-bold text-lg">Card Hover</h3>
+                <p class="text-sm text-gray-600">Survole pour voir l'effet</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 hover-lift text-center">
+                <div class="text-4xl mb-3">🚀</div>
+                <h3 class="font-bold text-lg">Hover Lift</h3>
+                <p class="text-sm text-gray-600">Effet de levée</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-primary to-accent rounded-lg shadow-lg p-6 text-center text-white hover:shadow-2xl transition duration-300 transform hover:scale-105">
+                <div class="text-4xl mb-3">⚡</div>
+                <h3 class="font-bold text-lg">Scale Effect</h3>
+                <p class="text-sm opacity-90">Agrandissement</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
