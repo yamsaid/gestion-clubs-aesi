@@ -68,10 +68,13 @@ def add_activity(request, slug):
         return redirect('clubs:club_activities', slug=slug)
     
     # Additional check: club executives can only add activities to their own club
-    if request.user.is_club_executive and hasattr(request.user, 'club_member'):
-        if request.user.club_member.club != club:
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
             messages.error(request, "Vous ne pouvez ajouter des activités que pour votre propre club.")
-            return redirect('clubs:club_activities', slug=slug)
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     if request.method == 'POST':
         form = ActivityForm(request.POST, request.FILES)
@@ -113,10 +116,13 @@ def edit_activity(request, slug, activity_id):
         return redirect('clubs:club_activities', slug=slug)
     
     # Additional check for club executives
-    if request.user.is_club_executive and hasattr(request.user, 'club_member'):
-        if request.user.club_member.club != club:
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
             messages.error(request, "Vous ne pouvez modifier que les activités de votre propre club.")
-            return redirect('clubs:club_activities', slug=slug)
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     if request.method == 'POST':
         form = ActivityForm(request.POST, request.FILES, instance=activity)
@@ -156,10 +162,13 @@ def delete_activity(request, slug, activity_id):
         return redirect('clubs:club_activities', slug=slug)
     
     # Additional check for club executives
-    if request.user.is_club_executive and hasattr(request.user, 'club_member'):
-        if request.user.club_member.club != club:
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
             messages.error(request, "Vous ne pouvez supprimer que les activités de votre propre club.")
-            return redirect('clubs:club_activities', slug=slug)
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     if request.method == 'POST':
         activity_title = activity.title
@@ -198,6 +207,7 @@ def club_bureau(request, slug):
     return render(request, 'clubs/club_bureau.html', context)
 
 
+@login_required
 def club_budget(request, slug):
     """Club budget page with expense tracking"""
     from django.db.models import Sum, Count
@@ -208,6 +218,21 @@ def club_budget(request, slug):
     
     club = get_object_or_404(Club, slug=slug)
     
+    # Check permissions - Students cannot access budget
+    if not request.user.can_view_finances(club):
+        messages.error(request, "Vous n'avez pas la permission d'accéder au budget de ce club.")
+        return redirect('clubs:club_detail', slug=slug)
+    
+
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez générer des formulaires que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_budget', slug=user_club.slug)
+            return redirect('clubs:club_detail')
+        
     # Get year filter from request
     year_filter = request.GET.get('year', '')
     
@@ -318,13 +343,9 @@ def add_expense(request, slug):
     
     club = get_object_or_404(Club, slug=slug)
     
-    # Check permissions
-    if not request.user.is_authenticated:
-        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
-        return redirect('account_login')
-    
-    if not request.user.can_manage_club(club):
-        messages.error(request, "Vous n'avez pas la permission d'ajouter une dépense.")
+    # Check permissions - Only club executives can modify finances (not treasurers)
+    if not request.user.can_modify_finances(club):
+        messages.error(request, "Vous n'avez pas la permission d'ajouter une dépense. Seuls les membres exécutifs du club peuvent modifier le budget.")
         return redirect('clubs:club_budget', slug=slug)
     
     if request.method == 'POST':
@@ -372,12 +393,21 @@ def club_form_generator(request, slug):
     
     # Check permissions
     if not request.user.is_authenticated:
-        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
+        messages.error(request, "Vous devez être connecté pour accéder à cette page.")
         return redirect('account_login')
     
     if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas accès au générateur de formulaires.")
         return redirect('clubs:club_detail', slug=slug)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez accéder qu'au générateur de votre propre club.")
+            if user_club:
+                return redirect('clubs:club_form_generator', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     # Get only non-completed activities (planned or ongoing)
     activities = club.activities.filter(
@@ -419,6 +449,15 @@ def generate_participation_form(request, slug):
         messages.error(request, "Vous n'avez pas la permission de générer un formulaire.")
         return redirect('clubs:club_form_generator', slug=slug)
     
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez générer des formulaires que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_form_generator', slug=user_club.slug)
+            return redirect('clubs:club_list')
+    
     if request.method == 'POST':
         activity_id = request.POST.get('activity')
         activity = get_object_or_404(Activity, id=activity_id, club=club)
@@ -455,6 +494,7 @@ def generate_participation_form(request, slug):
     return redirect('clubs:club_form_generator', slug=slug)
 
 
+@login_required
 def club_dashboard(request, slug):
     """Club dashboard with analytics"""
     from django.db.models import Sum, Count, Q
@@ -464,6 +504,15 @@ def club_dashboard(request, slug):
     import json
     
     club = get_object_or_404(Club, slug=slug)
+    
+    # Check permissions - Club executives can only view their own club dashboard
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez accéder qu'au tableau de bord de votre propre club.")
+            if user_club:
+                return redirect('clubs:club_dashboard', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     # Get all activities
     activities = club.activities.filter(status='COMPLETED')
@@ -788,6 +837,15 @@ def complete_activity(request, slug, activity_id):
         messages.error(request, "Vous n'avez pas la permission de marquer cette activité comme terminée.")
         return redirect('clubs:activity_detail', pk=activity_id)
     
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez gérer que les activités de votre propre club.")
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
+    
     # Check if activity can be completed (must be PLANNED or ONGOING)
     if activity.status not in ['PLANNED', 'ONGOING']:
         messages.error(request, f"Cette activité est déjà {activity.get_status_display().lower()}.")
@@ -832,6 +890,15 @@ def cancel_activity(request, slug, activity_id):
         messages.error(request, "Vous n'avez pas la permission d'annuler cette activité.")
         return redirect('clubs:activity_detail', pk=activity_id)
     
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez gérer que les activités de votre propre club.")
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
+    
     # Check if activity can be cancelled (must be PLANNED or ONGOING)
     if activity.status not in ['PLANNED', 'ONGOING']:
         messages.error(request, f"Cette activité est déjà {activity.get_status_display().lower()}.")
@@ -875,6 +942,15 @@ def activity_completion_details(request, slug, activity_id):
     if not request.user.can_manage_club(club):
         messages.error(request, "Vous n'avez pas la permission d'accéder à cette page.")
         return redirect('clubs:activity_detail', pk=activity_id)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez gérer que les activités de votre propre club.")
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     # Check if activity is completed
     if activity.status != 'COMPLETED':
@@ -922,6 +998,15 @@ def add_activity_photo(request, slug, activity_id):
         messages.error(request, "Permission refusée.")
         return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
     
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez ajouter des photos que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
+    
     form = ActivityPhotoForm(request.POST, request.FILES)
     if form.is_valid():
         photo = form.save(commit=False)
@@ -937,7 +1022,6 @@ def add_activity_photo(request, slug, activity_id):
 
 @login_required
 @require_http_methods(["POST"])
-@login_required
 def add_activity_resource(request, slug, activity_id):
     """Add a resource to an activity"""
     from .forms import ActivityResourceForm
@@ -946,13 +1030,18 @@ def add_activity_resource(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not request.user.is_authenticated:
-        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
-        return redirect('account_login')
-    
     if not request.user.can_manage_club(club):
         messages.error(request, "Permission refusée.")
         return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez ajouter des ressources que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     form = ActivityResourceForm(request.POST, request.FILES)
     if form.is_valid():
@@ -969,7 +1058,6 @@ def add_activity_resource(request, slug, activity_id):
 
 @login_required
 @require_http_methods(["POST"])
-@login_required
 def add_competition(request, slug, activity_id):
     """Add a competition to an activity"""
     from .forms import CompetitionForm
@@ -978,13 +1066,18 @@ def add_competition(request, slug, activity_id):
     activity = get_object_or_404(Activity, id=activity_id, club=club)
     
     # Check permissions
-    if not request.user.is_authenticated:
-        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
-        return redirect('account_login')
-    
     if not request.user.can_manage_club(club):
         messages.error(request, "Permission refusée.")
         return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez ajouter des compétitions que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     form = CompetitionForm(request.POST)
     if form.is_valid():
@@ -1010,13 +1103,18 @@ def add_winner(request, slug, activity_id, competition_id):
     competition = get_object_or_404(Competition, id=competition_id, activity=activity)
     
     # Check permissions
-    if not request.user.is_authenticated:
-        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
-        return redirect('account_login')
-    
     if not request.user.can_manage_club(club):
         messages.error(request, "Permission refusée.")
         return redirect('clubs:activity_completion_details', slug=slug, activity_id=activity_id)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez ajouter des gagnants que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_activities', slug=user_club.slug)
+            return redirect('clubs:club_list')
     
     if request.method == 'POST':
         form = WinnerForm(request.POST)

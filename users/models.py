@@ -147,7 +147,12 @@ class User(AbstractUser):
         """
         from clubs.models import ClubMember
         try:
-            club_member = ClubMember.objects.filter(user=self, is_executive=True).first()
+            # Get club member - ClubMember uses OneToOneField so we can use club_member directly
+            club_member = ClubMember.objects.filter(
+                user=self,
+                is_active=True,
+                position__in=['PRESIDENT', 'VICE_PRESIDENT', 'SECRETARY', 'TREASURER', 'COMMUNICATION']
+            ).first()
             return club_member.club if club_member else None
         except:
             return None

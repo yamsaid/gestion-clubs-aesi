@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load user_tags %}
 
 {% block title %}Budget - {{ club.name }} - AESI Platform{% endblock %}
 
@@ -76,7 +77,7 @@
     </div>
 
     <!-- Add Expense Form -->
-    {% if user.is_authenticated and user.is_club_executive %}
+    {% if user|can_modify_finances:club %}
     <div class="bg-white rounded-lg shadow-md p-6" x-data="{ showForm: false }">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-neutral-dark">Ajouter une Dépense</h2>
@@ -134,7 +135,25 @@
             </form>
         </div>
     </div>
+    {% else %}
+    <!-- No access message for students -->
     {% endif %}
+    
+    {% if user.is_aesi_treasurer %}
+    <!-- Message for AESI Treasurer (Read-Only) -->
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
+        <div class="flex items-center">
+            <svg class="h-6 w-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+                <h3 class="text-lg font-semibold text-blue-800">Accès en lecture seule</h3>
+                <p class="text-sm text-blue-700 mt-1">En tant que Trésorier de l'AESI, vous pouvez consulter le budget de tous les clubs mais ne pouvez pas le modifier.</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
 
     <!-- Filters and Export -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
