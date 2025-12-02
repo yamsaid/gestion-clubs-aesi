@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Tableau de Bord Global - AESI Platform{% endblock %}
@@ -16,7 +16,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-blue-500 text-white rounded-lg shadow-lg p-6">
+        <div class="bg-primary text-white rounded-lg shadow-lg p-6">
             <p class="text-sm opacity-90">Total Clubs</p>
             <p class="text-4xl font-bold mt-2">{{ total_clubs }}</p>
         </div>
@@ -69,16 +69,16 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {% for stat in club_stats %}
-        <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
+        <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-primary">
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-xl font-bold">{{ stat.club.name }}</h3>
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">{{ stat.execution_rate }}%</span>
+                <span class="bg-blue-100 text-primary-dark px-3 py-1 rounded-full text-sm font-semibold">{{ stat.execution_rate }}%</span>
             </div>
             
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="bg-blue-50 p-3 rounded">
                     <p class="text-sm text-gray-600">Activites</p>
-                    <p class="text-2xl font-bold text-blue-600">{{ stat.activities_completed }}</p>
+                    <p class="text-2xl font-bold text-primary">{{ stat.activities_completed }}</p>
                     <p class="text-xs text-gray-500">/ {{ stat.activities_total }}</p>
                 </div>
                 
@@ -109,7 +109,7 @@
             </div>
             
             <a href="{% url 'clubs:club_dashboard' slug=stat.club.slug %}" 
-               class="mt-4 block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded transition">
+               class="mt-4 block w-full bg-primary hover:bg-blue-700 text-white text-center py-2 rounded transition">
                 Voir le Dashboard
             </a>
         </div>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="flex space-x-6 text-center">
                     <div>
-                        <p class="text-2xl font-bold text-blue-600">{{ participant.participation_count }}</p>
+                        <p class="text-2xl font-bold text-primary">{{ participant.participation_count }}</p>
                         <p class="text-xs text-gray-500">Participations</p>
                     </div>
                     <div>
@@ -185,7 +185,7 @@
                             <div class="text-xs text-gray-500">{{ winner.competition.activity.title }}</div>
                         </td>
                         <td class="px-4 py-3">
-                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">{{ winner.competition.activity.club.name }}</span>
+                            <span class="bg-blue-100 text-primary-dark px-2 py-1 rounded text-xs">{{ winner.competition.activity.club.name }}</span>
                         </td>
                         <td class="px-4 py-3 text-sm">{{ winner.prize }}</td>
                     </tr>
@@ -205,7 +205,7 @@
                 <h3 class="font-bold mb-1">{{ activity.title }}</h3>
                 <p class="text-sm text-gray-600 mb-2">{{ activity.theme }}</p>
                 <div class="flex items-center space-x-2 text-xs text-gray-500">
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">{{ activity.club.name }}</span>
+                    <span class="bg-blue-100 text-primary-dark px-2 py-1 rounded">{{ activity.club.name }}</span>
                     <span>{{ activity.date|date:"d/m/Y" }}</span>
                     <span>{{ activity.location }}</span>
                 </div>
@@ -266,3 +266,4 @@ Plotly.newPlot('progressionChart', progressionData, progressionLayout, {responsi
 </script>
 
 {% endblock %}
+

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Ajouter un Programme - {{ club.name }} - AESI Platform{% endblock %}
@@ -48,7 +48,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="id_start_date" class="block text-sm font-semibold text-gray-700 mb-2">
-                        Date de Début *
+                        Date de Désbut *
                     </label>
                     {{ form.start_date }}
                     {% if form.start_date.errors %}
@@ -75,26 +75,27 @@
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    Créer le Programme
+                    Créser le Programme
                 </button>
             </div>
         </form>
     </div>
     
     <!-- Info Box -->
-    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
+    <div class="bg-blue-50 border-l-4 border-primary p-4 rounded-lg">
         <div class="flex">
             <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
             <div class="ml-3">
                 <p class="text-sm text-blue-700">
-                    <strong>Conseil :</strong> Après avoir créé le programme, vous pourrez y ajouter des tâches et associer des activités.
+                    <strong>Conseil :</strong> AprÃ¨s avoir créséssle programme, vous pourrez y ajouter des tÃ¢ches et associer des activitéss.
                 </p>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+

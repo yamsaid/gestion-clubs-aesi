@@ -10,14 +10,16 @@
 
 /* ===== Variables CSS ===== */
 :root {
-    --primary: #F28705;
-    --primary-light: #FFA94D;
-    --primary-dark: #C46D04;
-    --secondary: #FEEB2D;
-    --accent: #F2BE22;
-    --danger: #BF1304;
-    --danger-dark: #5C0201;
-    --success: #38A169;
+    --primary: #1B8EF2;
+    --primary-light: #38BDF2;
+    --primary-dark: #1570C9;
+    --secondary: #1BA0F2;
+    --accent: #38BDF2;
+    --danger: #EF4444;
+    --danger-dark: #DC2626;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --info: #3B82F6;
     --neutral-dark: #2D3748;
     --neutral-light: #F7FAFC;
     --border-radius: 0.5rem;
@@ -302,6 +304,37 @@ select:focus {
     animation: fadeIn 0.5s ease;
 }
 
+/* ===== Toast Notifications Animation ===== */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.toast-enter {
+    animation: slideInRight 0.3s ease-out forwards;
+}
+
+.toast-leave {
+    animation: slideOutRight 0.2s ease-in forwards;
+}
+
 /* ===== Mobile Optimizations ===== */
 @media (max-width: 640px) {
     /* Prevent horizontal scroll */
@@ -346,6 +379,28 @@ select:focus {
         max-width: 100%;
         height: auto;
     }
+    
+    /* Hide scrollbar but keep functionality on mobile nav */
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Better table responsiveness */
+    table {
+        font-size: 0.875rem;
+    }
+    
+    /* Prevent text overflow */
+    .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 /* ===== Tablet Optimizations ===== */
@@ -365,6 +420,68 @@ select:focus {
 /* ===== Smooth Scrolling ===== */
 html {
     scroll-behavior: smooth;
+}
+
+/* ===== Responsive Text Utilities ===== */
+.text-responsive-xs {
+    font-size: 0.75rem; /* 12px */
+}
+
+.text-responsive-sm {
+    font-size: 0.875rem; /* 14px */
+}
+
+.text-responsive-base {
+    font-size: 1rem; /* 16px */
+}
+
+.text-responsive-lg {
+    font-size: 1.125rem; /* 18px */
+}
+
+.text-responsive-xl {
+    font-size: 1.25rem; /* 20px */
+}
+
+.text-responsive-2xl {
+    font-size: 1.5rem; /* 24px */
+}
+
+.text-responsive-3xl {
+    font-size: 1.875rem; /* 30px */
+}
+
+@media (min-width: 640px) {
+    .text-responsive-sm { font-size: 0.875rem; }
+    .text-responsive-base { font-size: 1rem; }
+    .text-responsive-lg { font-size: 1.25rem; }
+    .text-responsive-xl { font-size: 1.5rem; }
+    .text-responsive-2xl { font-size: 1.875rem; }
+    .text-responsive-3xl { font-size: 2.25rem; }
+}
+
+@media (min-width: 768px) {
+    .text-responsive-lg { font-size: 1.5rem; }
+    .text-responsive-xl { font-size: 1.875rem; }
+    .text-responsive-2xl { font-size: 2.25rem; }
+    .text-responsive-3xl { font-size: 3rem; }
+}
+
+/* ===== Responsive Spacing Utilities ===== */
+.space-responsive {
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+    .space-responsive {
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .space-responsive {
+        margin-bottom: 2rem;
+    }
 }
 
 /* ===== Focus Visible for Accessibility ===== */

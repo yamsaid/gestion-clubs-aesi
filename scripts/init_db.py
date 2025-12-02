@@ -50,7 +50,7 @@ def init_clubs():
             'name': 'Club de Sport',
             'slug': 'sport',
             'type': 'SPORT',
-            'description': 'Bien-être physique et mental à travers les activités sportives',
+            'description': 'Bien-être physique et mental à travers les activitésssportives',
             'email': 'sport@aesi.bf',
         },
     ]

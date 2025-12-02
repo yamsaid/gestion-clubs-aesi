@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
-{% block title %}Code OTP Généré - {{ activity.title }} - AESI Platform{% endblock %}
+{% block title %}Code OTP Gésnésréss- {{ activity.title }} - AESI Platform{% endblock %}
 
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-primary-light py-12 px-4 sm:px-6 lg:px-8">
@@ -14,7 +14,7 @@
                     </svg>
                 </div>
                 <h2 class="text-3xl font-extrabold text-neutral-dark">
-                    Code OTP Généré !
+                    Code OTP Gésnésréss!
                 </h2>
                 <p class="mt-2 text-sm text-gray-600">
                     Partagez ce code avec les participants
@@ -24,9 +24,9 @@
             <!-- Activity Info -->
             <div class="bg-blue-50 rounded-lg p-4 mb-6">
                 <h3 class="font-semibold text-blue-900 mb-2">{{ activity.title }}</h3>
-                <div class="text-sm text-blue-800 space-y-1">
-                    <p>📅 {{ activity.date|date:"d/m/Y" }} à {{ activity.time|date:"H:i"|default:"--:--" }}</p>
-                    <p>📍 {{ activity.location }}</p>
+                <div class="text-sm text-primary-dark space-y-1">
+                    <p>ðŸ“… {{ activity.date|date:"d/m/Y" }} Ã  {{ activity.time|date:"H:i"|default:"--:--" }}</p>
+                    <p>ðŸ“ {{ activity.location }}</p>
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
                     <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                     </svg>
-                    <span><strong>Expiration :</strong> {{ expiry_time|date:"d/m/Y à H:i" }}</span>
+                    <span><strong>Expiration :</strong> {{ expiry_time|date:"d/m/Y Ã  H:i" }}</span>
                 </div>
             </div>
             {% endif %}
@@ -77,8 +77,8 @@
             <div class="bg-gray-50 rounded-lg p-6">
                 <h4 class="font-semibold text-gray-900 mb-3">Instructions pour les Participants</h4>
                 <ol class="list-decimal list-inside text-sm text-gray-700 space-y-2">
-                    <li>Accéder au lien de participation ci-dessus</li>
-                    <li>Entrer le code OTP à 6 chiffres</li>
+                    <li>Accésder au lien de participation ci-dessus</li>
+                    <li>Entrer le code OTP Ã  6 chiffres</li>
                     <li>Remplir le formulaire de participation</li>
                     <li>Soumettre le formulaire</li>
                 </ol>
@@ -88,10 +88,10 @@
             <div class="mt-8 flex items-center justify-between">
                 <a href="{% url 'clubs:club_detail' slug=activity.club.slug %}" 
                    class="text-sm text-gray-600 hover:text-gray-900">
-                    ← Retour au club
+                    â† Retour au club
                 </a>
                 <a href="{% url 'participation:participant_list' activity_id=activity.id %}" 
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition">
+                   class="bg-primary hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition">
                     Voir les Participants
                 </a>
             </div>
@@ -102,7 +102,7 @@
 <script>
 function copyOTP(code) {
     navigator.clipboard.writeText(code).then(() => {
-        showNotification('Code OTP copié !');
+        showNotification('Code OTP copiéss!');
     });
 }
 
@@ -110,7 +110,7 @@ function copyLink() {
     const link = document.getElementById('participation-link');
     link.select();
     document.execCommand('copy');
-    showNotification('Lien copié !');
+    showNotification('Lien copiéss!');
 }
 
 function showNotification(message) {
@@ -132,3 +132,4 @@ function showNotification(message) {
 }
 </script>
 {% endblock %}
+

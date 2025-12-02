@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('location', models.CharField(max_length=200, verbose_name='lieu')),
                 ('status', models.CharField(choices=[('PLANNED', 'Planifiée'), ('ONGOING', 'En cours'), ('COMPLETED', 'Terminée'), ('CANCELLED', 'Annulée')], default='PLANNED', max_length=20, verbose_name='statut')),
                 ('otp_enabled', models.BooleanField(default=True, verbose_name='OTP activé')),
-                ('difficulties', models.TextField(blank=True, verbose_name='difficultés rencontrées')),
+                ('difficulties', models.TextField(blank=True, verbose_name='difficultéssrencontrées')),
                 ('cover_image', models.ImageField(blank=True, null=True, upload_to='activities/covers/', verbose_name='image de couverture')),
             ],
             options={
@@ -136,7 +136,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name': 'assiduité membre',
-                'verbose_name_plural': 'assiduités membres',
+                'verbose_name_plural': 'assiduitéssmembres',
                 'ordering': ['-created_at'],
             },
         ),

@@ -2,10 +2,10 @@
 Script complet et amélioré de génération de données de test pour la plateforme AESI
 Ce script crée des données réalistes et complètes pour tester TOUTES les fonctionnalités
 
-Fonctionnalités couvertes:
+Fonctionnalitésscouvertes:
 - Utilisateurs (étudiants, exécutifs club, exécutifs AESI)
 - Clubs et bureaux exécutifs
-- Activités (planifiées, en cours, terminées, annulées)
+- Activitéss(planifiées, en cours, terminées, annulées)
 - Participations avec OTP et feedback
 - Compétitions et gagnants
 - Programmes d'action et tâches
@@ -79,7 +79,7 @@ LAST_NAMES = [
     'Tiendrebéogo', 'Bambara', 'Kinda', 'Kinda', 'Lompo'
 ]
 
-# Thèmes d'activités par club avec détails
+# Thèmes d'activitésspar club avec détails
 ACTIVITY_THEMES = {
     'informatique': [
         {
@@ -324,16 +324,16 @@ SUGGESTION_TEXTS = [
     "Améliorer la communication avant l'événement.",
     "Prévoir des pauses entre les sessions.",
     "Diversifier les thèmes abordés.",
-    "Organiser des activités similaires pour les autres niveaux.",
+    "Organiser des activitésssimilaires pour les autres niveaux.",
 ]
 
 MISSION_TEMPLATES = {
-    'PRESIDENT': 'Représenter le club, coordonner les activités du bureau exécutif, superviser la mise en œuvre du programme d\'action',
+    'PRESIDENT': 'Représenter le club, coordonner les activitéssdu bureau exécutif, superviser la mise en œuvre du programme d\'action',
     'VICE_PRESIDENT': 'Assister le président dans ses fonctions, le remplacer en cas d\'absence, coordonner certains projets spécifiques',
     'SECRETARY': 'Gérer la documentation du club, rédiger les comptes-rendus, maintenir les archives',
     'TREASURER': 'Gérer les finances du club, tenir la comptabilité, préparer les rapports financiers',
     'COMMUNICATION': 'Gérer la communication interne et externe, animer les réseaux sociaux, créer les supports visuels',
-    'MEMBER': 'Participer activement aux activités du club, contribuer à la réalisation des objectifs'
+    'MEMBER': 'Participer activement aux activitéssdu club, contribuer à la réalisation des objectifs'
 }
 
 
@@ -529,7 +529,7 @@ def create_club_executives():
                 created.append(member)
                 print_item(f"{student.get_full_name()} - {member.get_position_display()}")
     
-    print_success(f"{len(created)} membres exécutifs créés pour {clubs.count()} clubs")
+    print_success(f"{len(created)} membres exécutifs créésspour {clubs.count()} clubs")
     return created
 
 
@@ -643,7 +643,7 @@ def create_cash_balances():
 # ==============================================================================
 
 def create_activities():
-    """Créer des activités variées pour tous les clubs"""
+    """Créer des activitéssvariées pour tous les clubs"""
     print_header("CRÉATION DES ACTIVITÉS")
     
     clubs = Club.objects.all()
@@ -657,7 +657,7 @@ def create_activities():
             print(f"  ⚠️  Pas de thèmes définis pour {club.slug}")
             continue
         
-        # Créer 10-12 activités par club
+        # Créer 10-12 activitésspar club
         num_activities = random.randint(10, 12)
         
         for i in range(num_activities):
@@ -706,7 +706,7 @@ def create_activities():
                 created.append(activity)
                 print_item(f"{activity.title} - {activity.get_status_display()} ({activity.date})")
     
-    print_success(f"{len(created)} activités créées")
+    print_success(f"{len(created)} activitésscréées")
     return created
 
 
@@ -715,7 +715,7 @@ def create_activities():
 # ==============================================================================
 
 def create_participations():
-    """Créer des participations pour les activités terminées"""
+    """Créer des participations pour les activitéssterminées"""
     print_header("CRÉATION DES PARTICIPATIONS")
     
     activities = Activity.objects.filter(status='COMPLETED')
@@ -796,7 +796,7 @@ def create_competitions():
     """Créer des compétitions et des gagnants"""
     print_header("CRÉATION DES COMPÉTITIONS")
     
-    # Activités propices aux compétitions
+    # Activitésspropices aux compétitions
     competitive_keywords = ['concours', 'compétition', 'tournoi', 'hackathon', 
                            'championnat', 'match', 'challenge', 'championship']
     
@@ -905,7 +905,7 @@ def create_action_plans():
                 club=club,
                 title=plan_title,
                 defaults={
-                    'description': f"Programme d'activités et objectifs stratégiques pour {club.name}. "
+                    'description': f"Programme d'activitésset objectifs stratégiques pour {club.name}. "
                                  f"Objectifs: développer les compétences, augmenter l'engagement, "
                                  f"organiser des événements de qualité.",
                     'start_date': start_date,
@@ -922,13 +922,13 @@ def create_action_plans():
                 num_tasks = random.randint(8, 15)
                 
                 task_templates = [
-                    'Organiser {count} activités de formation',
+                    'Organiser {count} activitéssde formation',
                     'Planifier et exécuter une compétition majeure',
                     'Recruter {count} nouveaux membres',
                     'Créer du contenu pour les réseaux sociaux',
                     'Établir des partenariats avec {count} organisations',
                     'Gérer le budget et les finances du club',
-                    'Préparer le rapport d\'activités semestriel',
+                    'Préparer le rapport d\'activitésssemestriel',
                     'Organiser une assemblée générale',
                     'Améliorer la communication interne',
                     'Développer le site web du club',
@@ -1012,7 +1012,7 @@ def create_transactions():
             )
             transactions_created.append(transaction)
         
-        # Créer des dépenses liées aux activités terminées
+        # Créer des dépenses liées aux activitéssterminées
         completed_activities = club.activities.filter(status='COMPLETED')
         
         for activity in completed_activities:
@@ -1068,7 +1068,7 @@ def create_dynamic_forms():
     """Créer des formulaires de participation dynamiques"""
     print_header("CRÉATION DES FORMULAIRES DE PARTICIPATION")
     
-    # Activités planifiées ou en cours
+    # Activitéssplanifiées ou en cours
     upcoming_activities = Activity.objects.filter(
         status__in=['PLANNED', 'ONGOING']
     )
@@ -1152,7 +1152,7 @@ def create_member_attendance():
         count = len([a for a in attendance_created if a.member.club == club])
         print_item(f"{count} enregistrements d'assiduité")
     
-    print_success(f"{len(attendance_created)} enregistrements d'assiduité créés au total")
+    print_success(f"{len(attendance_created)} enregistrements d'assiduité crééssau total")
     return attendance_created
 
 
@@ -1169,7 +1169,7 @@ def main():
     print("\n✨ Ce script va créer des données complètes pour tester:")
     print("  • Utilisateurs (étudiants, exécutifs clubs, exécutifs AESI)")
     print("  • Bureaux exécutifs des clubs")
-    print("  • Activités variées (terminées, en cours, planifiées, annulées)")
+    print("  • Activitéssvariées (terminées, en cours, planifiées, annulées)")
     print("  • Participations avec feedback et notes")
     print("  • Compétitions et gagnants")
     print("  • Programmes d'action et tâches")
@@ -1301,7 +1301,7 @@ def main():
         print("  3. Connectez-vous avec un des comptes ci-dessus")
         print("  4. Explorez les différentes fonctionnalités!")
         
-        print("\n💡 FONCTIONNALITÉS TESTABLES:")
+        print("\n💡 FONCTIONNALITÉSSTESTABLES:")
         print("  • Dashboard global et par club")
         print("  • Gestion des activités")
         print("  • Participations et OTP")

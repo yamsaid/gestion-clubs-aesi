@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Détails de complétion - {{ activity.title }}{% endblock %}
+{% block title %}DÃ©tails de complÃ©tion - {{ activity.title }}{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 py-8">
@@ -12,15 +12,15 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
-                Retour aux activités
+                Retour aux activitÉs
             </a>
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Détails de l'activité terminée</h1>
+                    <h1 class="text-3xl font-bold text-gray-900">DÉtails de l'activitÉ terminÉe</h1>
                     <p class="mt-2 text-gray-600">{{ activity.title }}</p>
                 </div>
                 <span class="px-4 py-2 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
-                    ✓ Terminée
+                    âœ“ TerminÉe
                 </span>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm text-green-700">
-                        Activité marquée comme terminée avec succès ! Vous pouvez maintenant ajouter des photos, documents et résultats de compétitions.
+                        ActivitÉ marquÉe comme terminÉe avec succÃ¨s ! Vous pouvez maintenant ajouter des photos, documents et rÉsultats de compÉtitions.
                     </p>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                                     {{ photo_form.image }}
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Légende (optionnel)</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">LÉgende (optionnel)</label>
                                     {{ photo_form.caption }}
                                 </div>
                                 <div class="flex justify-end space-x-3">
@@ -105,7 +105,7 @@
                         <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
-                        <p>Aucune photo ajoutée pour le moment</p>
+                        <p>Aucune photo ajoutÉe pour le moment</p>
                     </div>
                     {% endif %}
                 </div>
@@ -114,13 +114,13 @@
                 <div class="bg-white rounded-lg shadow-md p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-xl font-bold text-gray-900 flex items-center">
-                            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
                             Documents & Ressources ({{ resources.count }})
                         </h2>
                         <button onclick="document.getElementById('resource-form').classList.toggle('hidden')" 
-                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                                class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
                             + Ajouter un document
                         </button>
                     </div>
@@ -141,7 +141,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Fichier</label>
                                     {{ resource_form.file }}
-                                    <p class="mt-1 text-xs text-gray-500">Formats acceptés: PDF, Word, Excel, PowerPoint, ZIP</p>
+                                    <p class="mt-1 text-xs text-gray-500">Formats acceptÉs: PDF, Word, Excel, PowerPoint, ZIP</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Description (optionnel)</label>
@@ -152,7 +152,7 @@
                                             class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
                                         Annuler
                                     </button>
-                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
                                         Ajouter
                                     </button>
                                 </div>
@@ -172,7 +172,7 @@
                                         <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
                                     </svg>
                                     {% elif resource.resource_type == 'DOC' %}
-                                    <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
                                     </svg>
                                     {% else %}
@@ -183,12 +183,12 @@
                                 </div>
                                 <div>
                                     <p class="font-medium text-gray-900">{{ resource.title }}</p>
-                                    <p class="text-sm text-gray-500">{{ resource.get_resource_type_display }} • {{ resource.created_at|date:"d/m/Y" }}</p>
+                                    <p class="text-sm text-gray-500">{{ resource.get_resource_type_display }} â€¢ {{ resource.created_at|date:"d/m/Y" }}</p>
                                 </div>
                             </div>
                             <a href="{{ resource.file.url }}" target="_blank" download
-                               class="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition text-sm font-medium">
-                                Télécharger
+                               class="px-4 py-2 text-primary hover:bg-blue-50 rounded-lg transition text-sm font-medium">
+                                TÉlÉcharger
                             </a>
                         </div>
                         {% endfor %}
@@ -198,7 +198,7 @@
                         <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        <p>Aucun document ajouté pour le moment</p>
+                        <p>Aucun document ajoutÉ pour le moment</p>
                     </div>
                     {% endif %}
                 </div>
@@ -210,11 +210,11 @@
                             <svg class="w-6 h-6 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                             </svg>
-                            Compétitions ({{ competitions.count }})
+                            CompÉtitions ({{ competitions.count }})
                         </h2>
                         <button onclick="document.getElementById('competition-form').classList.toggle('hidden')" 
                                 class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition text-sm font-medium">
-                            + Ajouter une compétition
+                            + Ajouter une compÉtition
                         </button>
                     </div>
 
@@ -224,7 +224,7 @@
                             {% csrf_token %}
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nom de la compétition</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nom de la compÉtition</label>
                                     {{ competition_form.name }}
                                 </div>
                                 <div>
@@ -237,7 +237,7 @@
                                         Annuler
                                     </button>
                                     <button type="submit" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">
-                                        Créer
+                                        CrÉer
                                     </button>
                                 </div>
                             </div>
@@ -263,7 +263,7 @@
                             <!-- Winners -->
                             {% if competition.winners.all %}
                             <div class="bg-yellow-50 rounded-lg p-3">
-                                <h4 class="text-sm font-semibold text-gray-700 mb-2">🏆 Gagnants :</h4>
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2">ðŸ† Gagnants :</h4>
                                 <div class="space-y-2">
                                     {% for winner in competition.winners.all %}
                                     <div class="flex items-center justify-between text-sm">
@@ -281,7 +281,7 @@
                                 </div>
                             </div>
                             {% else %}
-                            <p class="text-sm text-gray-500 italic">Aucun gagnant ajouté</p>
+                            <p class="text-sm text-gray-500 italic">Aucun gagnant ajoutÉ</p>
                             {% endif %}
                         </div>
                         {% endfor %}
@@ -291,7 +291,7 @@
                         <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                         </svg>
-                        <p>Aucune compétition créée pour le moment</p>
+                        <p>Aucune compÉtition crÉÉe pour le moment</p>
                     </div>
                     {% endif %}
                 </div>
@@ -326,13 +326,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                             <div>
-                                <p class="text-gray-500">Terminée le</p>
-                                <p class="font-medium">{{ activity.completion_date|date:"d/m/Y à H:i" }}</p>
+                                <p class="text-gray-500">TerminÉe le</p>
+                                <p class="font-medium">{{ activity.completion_date|date:"d/m/Y Ã  H:i" }}</p>
                             </div>
                         </div>
                         {% if activity.difficulties %}
                         <div class="pt-3 border-t">
-                            <p class="text-gray-500 mb-1">Difficultés rencontrées</p>
+                            <p class="text-gray-500 mb-1">DifficultÉssrencontrÉes</p>
                             <p class="text-gray-700">{{ activity.difficulties }}</p>
                         </div>
                         {% endif %}
@@ -352,7 +352,7 @@
                             <p class="text-3xl font-bold">{{ resources.count }}</p>
                         </div>
                         <div>
-                            <p class="text-purple-200 text-sm">Compétitions</p>
+                            <p class="text-purple-200 text-sm">CompÉtitions</p>
                             <p class="text-3xl font-bold">{{ competitions.count }}</p>
                         </div>
                     </div>
@@ -362,3 +362,4 @@
     </div>
 </div>
 {% endblock %}
+

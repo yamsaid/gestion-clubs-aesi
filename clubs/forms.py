@@ -17,16 +17,16 @@ class ActivityForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Titre de l\'activitÃ©'
+                'placeholder': 'Titre de l\'activité'
             }),
             'description': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Description dÃ©taillÃ©e de l\'activitÃ©',
+                'placeholder': 'Description détaillée de l\'activité',
                 'rows': 4
             }),
             'theme': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'ThÃ¨me de l\'activitÃ©'
+                'placeholder': 'Thème de l\'activité'
             }),
             'date': forms.DateInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
@@ -38,7 +38,7 @@ class ActivityForm(forms.ModelForm):
             }),
             'location': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Lieu de l\'activitÃ©'
+                'placeholder': 'Lieu de l\'activité'
             }),
             'status': forms.Select(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent'
@@ -54,12 +54,12 @@ class ActivityForm(forms.ModelForm):
         labels = {
             'title': 'Titre',
             'description': 'Description',
-            'theme': 'ThÃ¨me',
+            'theme': 'Thème',
             'date': 'Date',
             'time': 'Heure',
             'location': 'Lieu',
             'status': 'Statut',
-            'otp_enabled': 'Activer l\'OTP pour cette activitÃ©',
+            'otp_enabled': 'Activer l\'OTP pour cette activité',
             'cover_image': 'Image de couverture',
         }
 
@@ -73,12 +73,12 @@ class CompleteActivityForm(forms.ModelForm):
         widgets = {
             'difficulties': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent',
-                'placeholder': 'DÃ©crivez les difficultÃ©s rencontrÃ©es (optionnel)...',
+                'placeholder': 'Décrivez les difficultéssrencontrées (optionnel)...',
                 'rows': 4
             }),
         }
         labels = {
-            'difficulties': 'DifficultÃ©s rencontrÃ©es',
+            'difficulties': 'Difficultéssrencontrées',
         }
 
 
@@ -102,7 +102,7 @@ class CancelActivityForm(forms.ModelForm):
     def clean_cancellation_comment(self):
         comment = self.cleaned_data.get('cancellation_comment')
         if not comment or len(comment.strip()) < 10:
-            raise forms.ValidationError('Veuillez fournir une raison dÃ©taillÃ©e (au moins 10 caractÃ¨res).')
+            raise forms.ValidationError('Veuillez fournir une raison détaillée (au moins 10 caractères).')
         return comment
 
 
@@ -119,12 +119,12 @@ class ActivityPhotoForm(forms.ModelForm):
             }),
             'caption': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'LÃ©gende de la photo (optionnel)'
+                'placeholder': 'Légende de la photo (optionnel)'
             }),
         }
         labels = {
             'image': 'Photo',
-            'caption': 'LÃ©gende',
+            'caption': 'Légende',
         }
 
 
@@ -169,7 +169,7 @@ class CompetitionForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Nom de la compÃ©tition'
+                'placeholder': 'Nom de la compétition'
             }),
             'description': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
@@ -200,7 +200,7 @@ class WinnerForm(forms.ModelForm):
             }),
             'prize': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Prix ou rÃ©compense (optionnel)'
+                'placeholder': 'Prix ou récompense (optionnel)'
             }),
         }
         labels = {

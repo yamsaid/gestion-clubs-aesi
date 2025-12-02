@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Annuler l'activité - {{ activity.title }}{% endblock %}
+{% block title %}Annuler l'activitéss- {{ activity.title }}{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 py-8">
@@ -12,9 +12,9 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
-                Retour aux activités
+                Retour aux activitéss
             </a>
-            <h1 class="text-3xl font-bold text-gray-900">Annuler l'activité</h1>
+            <h1 class="text-3xl font-bold text-gray-900">Annuler l'activités</h1>
             <p class="mt-2 text-gray-600">{{ activity.title }}</p>
         </div>
 
@@ -62,10 +62,10 @@
                 </div>
                 <div class="ml-3">
                     <h3 class="text-sm font-medium text-red-800">
-                        Attention : Action irréversible
+                        Attention : Action irrésversible
                     </h3>
                     <div class="mt-2 text-sm text-red-700">
-                        <p>Cette action marquera définitivement l'activité comme annulée. Veuillez fournir une raison détaillée pour l'annulation.</p>
+                        <p>Cette action marquera désfinitivement l'activitésscomme annulése. Veuillez fournir une raison déstaillése pour l'annulation.</p>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     </div>
                     <div>
                         <h2 class="text-xl font-semibold text-gray-900">Raison de l'annulation</h2>
-                        <p class="text-sm text-gray-600">Veuillez expliquer pourquoi cette activité est annulée</p>
+                        <p class="text-sm text-gray-600">Veuillez expliquer pourquoi cette activitéssest annulése</p>
                     </div>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                         <p class="mt-2 text-sm text-red-600">{{ form.cancellation_comment.errors.0 }}</p>
                     {% endif %}
                     <p class="mt-2 text-sm text-gray-500">
-                        Expliquez les raisons de l'annulation (contraintes logistiques, manque de participants, problèmes techniques, etc.)
+                        Expliquez les raisons de l'annulation (contraintes logistiques, manque de participants, problÃ¨mes techniques, etc.)
                     </p>
                 </div>
 
@@ -111,14 +111,14 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm font-medium text-blue-800">
+                            <h3 class="text-sm font-medium text-primary-dark">
                                 Recommandations
                             </h3>
                             <div class="mt-2 text-sm text-blue-700">
                                 <ul class="list-disc list-inside space-y-1">
                                     <li>Soyez transparent sur les raisons de l'annulation</li>
-                                    <li>Indiquez si l'activité sera reprogrammée</li>
-                                    <li>Mentionnez les leçons apprises pour éviter de futures annulations</li>
+                                    <li>Indiquez si l'activitésssera reprogrammése</li>
+                                    <li>Mentionnez les leÃ§ons apprises pour ésviter de futures annulations</li>
                                 </ul>
                             </div>
                         </div>
@@ -143,3 +143,4 @@
     </div>
 </div>
 {% endblock %}
+

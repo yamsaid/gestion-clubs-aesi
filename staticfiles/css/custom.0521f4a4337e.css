@@ -10,16 +10,14 @@
 
 /* ===== Variables CSS ===== */
 :root {
-    --primary: #1B8EF2;
-    --primary-light: #38BDF2;
-    --primary-dark: #1570C9;
-    --secondary: #1BA0F2;
-    --accent: #38BDF2;
-    --danger: #EF4444;
-    --danger-dark: #DC2626;
-    --success: #10B981;
-    --warning: #F59E0B;
-    --info: #3B82F6;
+    --primary: #F28705;
+    --primary-light: #FFA94D;
+    --primary-dark: #C46D04;
+    --secondary: #FEEB2D;
+    --accent: #F2BE22;
+    --danger: #BF1304;
+    --danger-dark: #5C0201;
+    --success: #38A169;
     --neutral-dark: #2D3748;
     --neutral-light: #F7FAFC;
     --border-radius: 0.5rem;

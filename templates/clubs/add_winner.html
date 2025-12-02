@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Ajouter un gagnant - {{ competition.name }}{% endblock %}
@@ -13,10 +13,10 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
-                Retour aux détails de l'activité
+                Retour aux déstails de l'activités
             </a>
             <h1 class="text-3xl font-bold text-gray-900">Ajouter un gagnant</h1>
-            <p class="mt-2 text-gray-600">Compétition : {{ competition.name }}</p>
+            <p class="mt-2 text-gray-600">Compéstition : {{ competition.name }}</p>
         </div>
 
         <!-- Competition Info -->
@@ -49,7 +49,7 @@
                         <p class="mt-2 text-sm text-red-600">{{ form.participant.errors.0 }}</p>
                     {% endif %}
                     <p class="mt-2 text-sm text-gray-500">
-                        Seuls les participants ayant validé leur présence à l'activité sont listés.
+                        Seuls les participants ayant validéssleur préssence Ã  l'activitésssont listéss.
                     </p>
                 </div>
 
@@ -62,7 +62,7 @@
                         <p class="mt-2 text-sm text-red-600">{{ form.rank.errors.0 }}</p>
                     {% endif %}
                     <p class="mt-2 text-sm text-gray-500">
-                        1 = Premier, 2 = Deuxième, 3 = Troisième, etc.
+                        1 = Premier, 2 = DeuxiÃ¨me, 3 = TroisiÃ¨me, etc.
                     </p>
                 </div>
 
@@ -75,7 +75,7 @@
                         <p class="mt-2 text-sm text-red-600">{{ form.prize.errors.0 }}</p>
                     {% endif %}
                     <p class="mt-2 text-sm text-gray-500">
-                        Exemple : Trophée, Médaille d'or, 50 000 FCFA, etc. (optionnel)
+                        Exemple : Trophése, Mésdaille d'or, 50 000 FCFA, etc. (optionnel)
                     </p>
                 </div>
 
@@ -87,7 +87,7 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm font-medium text-blue-800">
+                            <h3 class="text-sm font-medium text-primary-dark">
                                 Conseil
                             </h3>
                             <div class="mt-2 text-sm text-blue-700">
@@ -115,3 +115,4 @@
     </div>
 </div>
 {% endblock %}
+

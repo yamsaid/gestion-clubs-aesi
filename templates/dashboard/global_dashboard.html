@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Tableau de Bord Global - AESI Platform{% endblock %}
@@ -11,59 +11,59 @@
 <div class="container mx-auto px-4 py-8">
     
     <div class="mb-8">
-        <h1 class="text-4xl font-bold text-gray-900">Tableau de Bord Global</h1>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Tableau de Bord Global</h1>
         <p class="text-gray-600 mt-2">Vue d ensemble des activites de tous les clubs AESI</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-gradient-to-br from-primary to-accent text-white rounded-lg shadow-lg p-6 hover-lift">
+        <div class="bg-gradient-to-br from-primary to-accent text-white rounded-lg shadow-lg p-4 sm:p-6 hover-lift">
             <p class="text-sm opacity-90 font-medium">Total Clubs</p>
-            <p class="text-4xl font-bold mt-2">{{ total_clubs }}</p>
+            <p class="text-2xl sm:text-3xl md:text-4xl font-bold mt-2">{{ total_clubs }}</p>
         </div>
         
-        <div class="bg-gradient-to-br from-success to-green-600 text-white rounded-lg shadow-lg p-6 hover-lift">
+        <div class="bg-gradient-to-br from-success to-green-600 text-white rounded-lg shadow-lg p-4 sm:p-6 hover-lift">
             <p class="text-sm opacity-90 font-medium">Activites Realisees</p>
-            <p class="text-4xl font-bold mt-2">{{ total_activities }}</p>
+            <p class="text-2xl sm:text-3xl md:text-4xl font-bold mt-2">{{ total_activities }}</p>
         </div>
         
-        <div class="bg-gradient-to-br from-secondary to-accent text-neutral-dark rounded-lg shadow-lg p-6 hover-lift">
+        <div class="bg-gradient-to-br from-secondary to-accent text-neutral-dark rounded-lg shadow-lg p-4 sm:p-6 hover-lift">
             <p class="text-sm opacity-90 font-semibold">Participants</p>
-            <p class="text-4xl font-bold mt-2">{{ total_participants }}</p>
+            <p class="text-2xl sm:text-3xl md:text-4xl font-bold mt-2">{{ total_participants }}</p>
             <p class="text-xs opacity-90 mt-1 font-medium">{{ total_participations }} participations</p>
         </div>
         
-        <div class="bg-gradient-to-br from-{% if total_budget >= 0 %}success to-green-600{% else %}danger to-danger-dark{% endif %} text-white rounded-lg shadow-lg p-6 hover-lift">
+        <div class="bg-gradient-to-br from-{% if total_budget >= 0 %}success to-green-600{% else %}danger to-danger-dark{% endif %} text-white rounded-lg shadow-lg p-4 sm:p-6 hover-lift">
             <p class="text-sm opacity-90 font-medium">Budget Total</p>
-            <p class="text-3xl font-bold mt-2">{{ total_budget|floatformat:0 }} FCFA</p>
+            <p class="text-xl sm:text-2xl md:text-3xl font-bold mt-2">{{ total_budget|floatformat:0 }} FCFA</p>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
-            <h2 class="text-2xl font-bold mb-4 text-gradient-primary">Comparaison des Clubs</h2>
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4 text-gradient-primary">Comparaison des Clubs</h2>
             <div id="clubComparisonChart" style="height: 400px;"></div>
         </div>
         
         <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-accent">
-            <h2 class="text-2xl font-bold mb-4">Taux d Execution</h2>
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4">Taux d Execution</h2>
             <div id="executionRateChart" style="height: 400px;"></div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-success">
-            <h2 class="text-2xl font-bold mb-4">Budget par Club</h2>
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4">Budget par Club</h2>
             <div id="budgetComparisonChart" style="height: 400px;"></div>
         </div>
         
         <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-info">
-            <h2 class="text-2xl font-bold mb-4">Repartition des Participations</h2>
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4">Repartition des Participations</h2>
             <div id="participationDistributionChart" style="height: 400px;"></div>
         </div>
     </div>
 
     <div class="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-secondary">
-        <h2 class="text-2xl font-bold mb-4">Progression des Activites (6 derniers mois)</h2>
+        <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4">Progression des Activites (6 derniers mois)</h2>
         <div id="progressionChart" style="height: 350px;"></div>
     </div>
 
@@ -78,24 +78,24 @@
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="bg-blue-50 p-3 rounded">
                     <p class="text-sm text-gray-600">Activites</p>
-                    <p class="text-2xl font-bold text-blue-600">{{ stat.activities_completed }}</p>
+                    <p class="text-lg sm:text-xl md:text-2xl font-bold text-primary">{{ stat.activities_completed }}</p>
                     <p class="text-xs text-gray-500">/ {{ stat.activities_total }}</p>
                 </div>
                 
                 <div class="bg-green-50 p-3 rounded">
                     <p class="text-sm text-gray-600">Participations</p>
-                    <p class="text-2xl font-bold text-green-600">{{ stat.participants_count }}</p>
+                    <p class="text-lg sm:text-xl md:text-2xl font-bold text-green-600">{{ stat.participants_count }}</p>
                     <p class="text-xs text-gray-500">{{ stat.participants_unique }} uniques</p>
                 </div>
                 
                 <div class="bg-purple-50 p-3 rounded">
                     <p class="text-sm text-gray-600">Gagnants</p>
-                    <p class="text-2xl font-bold text-purple-600">{{ stat.winners_count }}</p>
+                    <p class="text-lg sm:text-xl md:text-2xl font-bold text-purple-600">{{ stat.winners_count }}</p>
                 </div>
                 
                 <div class="bg-yellow-50 p-3 rounded">
                     <p class="text-sm text-gray-600">Note Moyenne</p>
-                    <p class="text-2xl font-bold text-yellow-600">{{ stat.average_rating }}/5</p>
+                    <p class="text-lg sm:text-xl md:text-2xl font-bold text-yellow-600">{{ stat.average_rating }}/5</p>
                 </div>
             </div>
             
@@ -109,7 +109,7 @@
             </div>
             
             <a href="{% url 'clubs:club_dashboard' slug=stat.club.slug %}" 
-               class="mt-4 block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded transition">
+               class="mt-4 block w-full bg-primary hover:bg-blue-700 text-white text-center py-2 rounded transition">
                 Voir le Dashboard
             </a>
         </div>
@@ -117,7 +117,7 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-primary">
-        <h2 class="text-2xl font-bold mb-6 text-gradient-primary">TOP 5 Participants les Plus Actifs</h2>
+        <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-6 text-gradient-primary">TOP 5 Participants les Plus Actifs</h2>
         <div class="space-y-4">
             {% for participant in top_participants %}
             <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg hover-lift border border-gray-200">
@@ -132,15 +132,15 @@
                 </div>
                 <div class="flex space-x-6 text-center">
                     <div>
-                        <p class="text-2xl font-bold text-blue-600">{{ participant.participation_count }}</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-bold text-primary">{{ participant.participation_count }}</p>
                         <p class="text-xs text-gray-500">Participations</p>
                     </div>
                     <div>
-                        <p class="text-2xl font-bold text-yellow-600">{{ participant.wins_count }}</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-bold text-yellow-600">{{ participant.wins_count }}</p>
                         <p class="text-xs text-gray-500">Victoires</p>
                     </div>
                     <div>
-                        <p class="text-2xl font-bold text-purple-600">{{ participant.avg_rating }}/5</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-bold text-purple-600">{{ participant.avg_rating }}/5</p>
                         <p class="text-xs text-gray-500">Note</p>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-accent">
-        <h2 class="text-2xl font-bold mb-6">Gagnants Recents</h2>
+        <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-6">Gagnants Recents</h2>
         <div class="overflow-x-auto">
             <table class="min-w-full">
                 <thead class="bg-gray-50">
@@ -185,7 +185,7 @@
                             <div class="text-xs text-gray-500">{{ winner.competition.activity.title }}</div>
                         </td>
                         <td class="px-4 py-3">
-                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">{{ winner.competition.activity.club.name }}</span>
+                            <span class="bg-blue-100 text-primary-dark px-2 py-1 rounded text-xs">{{ winner.competition.activity.club.name }}</span>
                         </td>
                         <td class="px-4 py-3 text-sm">{{ winner.prize }}</td>
                     </tr>
@@ -206,7 +206,7 @@
                         </svg>
                     </a>
                     <a href="?winners_page={{ recent_winners.previous_page_number }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                        Précédent
+                        Préscésdent
                     </a>
                 {% endif %}
                 
@@ -231,7 +231,7 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-info">
-        <h2 class="text-2xl font-bold mb-6">Activites Recentes</h2>
+        <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-6">Activites Recentes</h2>
         {% if recent_activities %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {% for activity in recent_activities %}
@@ -240,7 +240,7 @@
                 <h3 class="font-bold mb-1">{{ activity.title }}</h3>
                 <p class="text-sm text-gray-600 mb-2">{{ activity.theme }}</p>
                 <div class="flex items-center space-x-2 text-xs text-gray-500">
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">{{ activity.club.name }}</span>
+                    <span class="bg-blue-100 text-primary-dark px-2 py-1 rounded">{{ activity.club.name }}</span>
                     <span>{{ activity.date|date:"d/m/Y" }}</span>
                     <span>{{ activity.location }}</span>
                 </div>
@@ -301,3 +301,5 @@ Plotly.newPlot('progressionChart', progressionData, progressionLayout, {responsi
 </script>
 
 {% endblock %}
+
+

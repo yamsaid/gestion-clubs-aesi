@@ -55,7 +55,7 @@ LAST_NAMES = [
     'Koné', 'Barro', 'Yé', 'Somé', 'Nacro'
 ]
 
-# Thèmes d'activités par club
+# Thèmes d'activitésspar club
 ACTIVITY_THEMES = {
     'informatique': [
         ('Atelier Python', 'Programmation avancée en Python', 'Salle informatique'),
@@ -195,7 +195,7 @@ def create_club_executives():
 
 
 def create_activities():
-    """Créer des activités pour tous les clubs"""
+    """Créer des activitésspour tous les clubs"""
     print(f"\n{'='*60}")
     print("CRÉATION DES ACTIVITÉS")
     print(f"{'='*60}")
@@ -210,19 +210,19 @@ def create_activities():
             ('Activité générale', 'Description générale', 'Salle ISSP')
         ])
         
-        # Créer 7-10 activités par club
+        # Créer 7-10 activitésspar club
         num_activities = random.randint(7, 10)
         
         for i in range(num_activities):
-            # Alterner entre activités passées et futures
-            if i < 6:  # 6 activités terminées
+            # Alterner entre activitésspassées et futures
+            if i < 6:  # 6 activitéssterminées
                 days_ago = random.randint(10, 180)
                 activity_date = date.today() - timedelta(days=days_ago)
                 status = 'COMPLETED'
-            elif i < 8:  # 2 activités en cours
+            elif i < 8:  # 2 activitéssen cours
                 activity_date = date.today()
                 status = 'ONGOING'
-            else:  # Activités futures
+            else:  # Activitéssfutures
                 days_ahead = random.randint(5, 60)
                 activity_date = date.today() + timedelta(days=days_ahead)
                 status = 'PLANNED'
@@ -248,12 +248,12 @@ def create_activities():
                 activities_created.append(activity)
                 print(f"  ✓ {activity.title} - {activity.get_status_display()} ({activity.date})")
     
-    print(f"\n✅ {len(activities_created)} activités créées")
+    print(f"\n✅ {len(activities_created)} activitésscréées")
     return activities_created
 
 
 def create_participations():
-    """Créer des participations pour les activités terminées"""
+    """Créer des participations pour les activitéssterminées"""
     print(f"\n{'='*60}")
     print("CRÉATION DES PARTICIPATIONS")
     print(f"{'='*60}")
@@ -299,7 +299,7 @@ def create_competitions():
     print("CRÉATION DES COMPÉTITIONS")
     print(f"{'='*60}")
     
-    # Activités propices aux compétitions
+    # Activitésspropices aux compétitions
     competitive_activities = Activity.objects.filter(
         status='COMPLETED'
     ).filter(
@@ -393,7 +393,7 @@ def create_action_plans():
                 club=club,
                 title=plan_title,
                 defaults={
-                    'description': f"Programme d'activités et objectifs pour {club.name}",
+                    'description': f"Programme d'activitésset objectifs pour {club.name}",
                     'start_date': start_date,
                     'end_date': end_date
                 }
@@ -497,7 +497,7 @@ def create_dynamic_forms():
     print("CRÉATION DES FORMULAIRES DE PARTICIPATION")
     print(f"{'='*60}")
     
-    # Activités planifiées ou en cours
+    # Activitéssplanifiées ou en cours
     upcoming_activities = Activity.objects.filter(
         status__in=['PLANNED', 'ONGOING']
     )[:10]
@@ -580,7 +580,7 @@ def main():
     print("="*60)
     print("\nCe script va créer des données complètes pour tester:")
     print("  ✓ Utilisateurs et membres exécutifs")
-    print("  ✓ Activités pour tous les clubs (dont Art Oratoire)")
+    print("  ✓ Activitésspour tous les clubs (dont Art Oratoire)")
     print("  ✓ Participations et évaluations")
     print("  ✓ Compétitions et gagnants")
     print("  ✓ Programmes d'action et tâches")

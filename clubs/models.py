@@ -92,7 +92,7 @@ class ClubMember(AuditModel):
     missions = models.TextField(
         _('missions spécifiques'),
         blank=True,
-        help_text=_('Décrivez les missions et responsabilités spécifiques de ce membre')
+        help_text=_('Décrivez les missions et responsabilitéssspécifiques de ce membre')
     )
     start_date = models.DateField(_('date de début'))
     end_date = models.DateField(_('date de fin'), blank=True, null=True)
@@ -209,7 +209,7 @@ class Activity(AuditModel):
     otp_enabled = models.BooleanField(_('OTP activé'), default=True)
     
     # Difficulties and feedback (for completed activities)
-    difficulties = models.TextField(_('difficultés rencontrées'), blank=True)
+    difficulties = models.TextField(_('difficultéssrencontrées'), blank=True)
     
     # Cancellation comment (for cancelled activities)
     cancellation_comment = models.TextField(_('commentaire d\'annulation'), blank=True)
@@ -398,7 +398,7 @@ class MemberAttendance(TimeStampedModel):
     
     class Meta:
         verbose_name = _('assiduité membre')
-        verbose_name_plural = _('assiduités membres')
+        verbose_name_plural = _('assiduitéssmembres')
         ordering = ['-created_at']
         unique_together = ['member', 'activity']
     

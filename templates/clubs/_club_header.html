@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!-- Modern Club Header Component -->
 <div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 rounded-2xl shadow-2xl overflow-hidden">
     <!-- Animated Background Pattern -->
@@ -25,22 +25,22 @@
     <!-- Oratory Pattern for Art Oratoire Club -->
     {% if club.slug == 'art-oratoire' %}
     <div class="absolute inset-0 opacity-5">
-        <div class="absolute top-5 left-5 text-white text-6xl">💬</div>
-        <div class="absolute top-20 right-20 text-white text-5xl">🎤</div>
+        <div class="absolute top-5 left-5 text-white text-6xl">ðŸ’¬</div>
+        <div class="absolute top-20 right-20 text-white text-5xl">ðŸŽ¤</div>
         <div class="absolute bottom-10 left-20 text-white text-7xl font-serif">"</div>
         <div class="absolute bottom-20 right-10 text-white text-6xl font-serif">"</div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl opacity-20">🗣️</div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl opacity-20">ðŸ—£ï¸</div>
     </div>
     {% endif %}
     
     <!-- Sport Pattern for Sport Club -->
     {% if club.slug == 'sport' %}
     <div class="absolute inset-0 opacity-5">
-        <div class="absolute top-5 left-5 text-white text-6xl">⚽</div>
-        <div class="absolute top-20 right-20 text-white text-5xl">🏀</div>
-        <div class="absolute bottom-10 left-20 text-white text-7xl">🏃</div>
-        <div class="absolute bottom-20 right-10 text-white text-6xl">🏆</div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl opacity-20">⚡</div>
+        <div class="absolute top-5 left-5 text-white text-6xl">âš½</div>
+        <div class="absolute top-20 right-20 text-white text-5xl">ðŸ€</div>
+        <div class="absolute bottom-10 left-20 text-white text-7xl">ðŸƒ</div>
+        <div class="absolute bottom-20 right-10 text-white text-6xl">ðŸ†</div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl opacity-20">âš¡</div>
     </div>
     {% endif %}
     
@@ -121,7 +121,7 @@
             {% if show_stats %}
             <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:bg-white/15 transition duration-300">
                 <div class="text-center">
-                    <div class="text-blue-200 text-sm font-medium mb-1">Taux d'exécution</div>
+                    <div class="text-blue-200 text-sm font-medium mb-1">Taux d'exÃ©cution</div>
                     <div class="text-5xl font-bold text-white mb-1">{{ club.execution_rate }}%</div>
                     <div class="h-2 bg-white/20 rounded-full overflow-hidden mt-3">
                         <div class="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500" style="width: {{ club.execution_rate }}%"></div>
@@ -148,3 +148,4 @@
     animation: spin-slow 20s linear infinite;
 }
 </style>
+

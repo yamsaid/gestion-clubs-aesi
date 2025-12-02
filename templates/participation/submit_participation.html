@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}Soumettre Participation - {{ activity.title }} - AESI Platform{% endblock %}
 
@@ -13,15 +13,15 @@
                 </svg>
             </div>
             
-            <h1 class="text-3xl font-bold text-neutral-dark mb-4">Participation Enregistrée !</h1>
-            <p class="text-gray-600 mb-8">Votre participation à <strong>{{ activity.title }}</strong> a été confirmée avec succès.</p>
+            <h1 class="text-3xl font-bold text-neutral-dark mb-4">Participation Enregistrése !</h1>
+            <p class="text-gray-600 mb-8">Votre participation Ã  <strong>{{ activity.title }}</strong> a éstéssconfirmése avec succÃ¨s.</p>
             
             <div class="bg-blue-50 rounded-lg p-6 mb-8">
-                <h3 class="font-semibold text-blue-900 mb-3">Détails de l'Activité</h3>
-                <div class="text-sm text-blue-800 space-y-2">
-                    <p>📅 <strong>Date :</strong> {{ activity.date|date:"d/m/Y" }} à {{ activity.time|date:"H:i"|default:"--:--" }}</p>
-                    <p>📍 <strong>Lieu :</strong> {{ activity.location }}</p>
-                    <p>🏛️ <strong>Club :</strong> {{ activity.club.name }}</p>
+                <h3 class="font-semibold text-blue-900 mb-3">Déstails de l'Activités</h3>
+                <div class="text-sm text-primary-dark space-y-2">
+                    <p>ðŸ“… <strong>Date :</strong> {{ activity.date|date:"d/m/Y" }} Ã  {{ activity.time|date:"H:i"|default:"--:--" }}</p>
+                    <p>ðŸ“ <strong>Lieu :</strong> {{ activity.location }}</p>
+                    <p>ðŸ›ï¸ <strong>Club :</strong> {{ activity.club.name }}</p>
                 </div>
             </div>
             
@@ -32,14 +32,14 @@
                 </a>
                 <a href="{% url 'clubs:club_activities' slug=activity.club.slug %}" 
                    class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-lg text-sm font-medium text-white bg-primary hover:bg-primary-dark transition">
-                    Voir Plus d'Activités
+                    Voir Plus d'Activitéss
                 </a>
             </div>
         </div>
         
         <!-- Additional Info -->
         <div class="mt-6 bg-white rounded-lg shadow-md p-6">
-            <h4 class="font-semibold text-gray-900 mb-4">Prochaines Étapes</h4>
+            <h4 class="font-semibold text-gray-900 mb-4">Prochaines Ã‰tapes</h4>
             <ul class="space-y-2 text-sm text-gray-700">
                 <li class="flex items-start">
                     <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -51,7 +51,7 @@
                     <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                     </svg>
-                    Votre participation est enregistrée dans votre profil
+                    Votre participation est enregistrése dans votre profil
                 </li>
                 <li class="flex items-start">
                     <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -64,3 +64,4 @@
     </div>
 </div>
 {% endblock %}
+

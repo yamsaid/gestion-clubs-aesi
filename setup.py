@@ -34,7 +34,7 @@ def create_clubs():
             'name': "Club d'Anglais",
             'slug': 'anglais',
             'type': 'ANGLAIS',
-            'description': "Le Club d'Anglais offre un cadre idéal pour l'apprentissage et la pratique de l'anglais. À travers des sessions de conversation, des débats et des activités ludiques, nous aidons les étudiants à améliorer leur maîtrise de la langue anglaise.",
+            'description': "Le Club d'Anglais offre un cadre idéal pour l'apprentissage et la pratique de l'anglais. À travers des sessions de conversation, des débats et des activitéssludiques, nous aidons les étudiants à améliorer leur maîtrise de la langue anglaise.",
             'email': 'anglais@aesi.bf',
         },
         {
@@ -48,7 +48,7 @@ def create_clubs():
             'name': 'Club de Sport',
             'slug': 'sport',
             'type': 'SPORT',
-            'description': "Le Club de Sport promeut le bien-être physique et mental à travers diverses activités sportives. Football, basketball, athlétisme... nous organisons des compétitions et des séances d'entraînement régulières pour maintenir nos membres en forme.",
+            'description': "Le Club de Sport promeut le bien-être physique et mental à travers diverses activitésssportives. Football, basketball, athlétisme... nous organisons des compétitions et des séances d'entraînement régulières pour maintenir nos membres en forme.",
             'email': 'sport@aesi.bf',
         },
     ]

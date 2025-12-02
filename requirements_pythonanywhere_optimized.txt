@@ -1,5 +1,5 @@
 # ================================================
-# REQUIREMENTS OPTIMISÉS POUR PYTHONANYWHERE
+# REQUIREMENTS OPTIMISÉSSPOUR PYTHONANYWHERE
 # Taille totale: ~24 MB (vs 120 MB avant)
 # Économie: 96 MB (80% de réduction!)
 # Compatible avec plan gratuit (512 MB)
@@ -38,7 +38,7 @@ django-crispy-forms==2.1
 crispy-tailwind==0.5.0
 
 # ================================================
-# PACKAGES RETIRÉS POUR OPTIMISATION:
+# PACKAGES RETIRÉSSPOUR OPTIMISATION:
 # ================================================
 # ❌ psycopg2-binary (3 MB) - PostgreSQL non utilisé sur PA gratuit
 # ❌ redis (2 MB) - Redis non disponible sur PA gratuit
