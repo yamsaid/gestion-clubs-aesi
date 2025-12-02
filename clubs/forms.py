@@ -1,8 +1,8 @@
-"""
+﻿"""
 Forms for clubs app
 """
 from django import forms
-from .models import Activity, Club, ActivityPhoto, ActivityResource, Competition, Winner
+from .models import Activity, Club, ActivityPhoto, ActivityResource, Competition, Winner, ActionPlan, Task
 
 
 class ActivityForm(forms.ModelForm):
@@ -17,16 +17,16 @@ class ActivityForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Titre de l\'activité'
+                'placeholder': 'Titre de l\'activitÃ©'
             }),
             'description': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Description détaillée de l\'activité',
+                'placeholder': 'Description dÃ©taillÃ©e de l\'activitÃ©',
                 'rows': 4
             }),
             'theme': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Thème de l\'activité'
+                'placeholder': 'ThÃ¨me de l\'activitÃ©'
             }),
             'date': forms.DateInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
@@ -38,7 +38,7 @@ class ActivityForm(forms.ModelForm):
             }),
             'location': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Lieu de l\'activité'
+                'placeholder': 'Lieu de l\'activitÃ©'
             }),
             'status': forms.Select(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent'
@@ -54,12 +54,12 @@ class ActivityForm(forms.ModelForm):
         labels = {
             'title': 'Titre',
             'description': 'Description',
-            'theme': 'Thème',
+            'theme': 'ThÃ¨me',
             'date': 'Date',
             'time': 'Heure',
             'location': 'Lieu',
             'status': 'Statut',
-            'otp_enabled': 'Activer l\'OTP pour cette activité',
+            'otp_enabled': 'Activer l\'OTP pour cette activitÃ©',
             'cover_image': 'Image de couverture',
         }
 
@@ -73,12 +73,12 @@ class CompleteActivityForm(forms.ModelForm):
         widgets = {
             'difficulties': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent',
-                'placeholder': 'Décrivez les difficultés rencontrées (optionnel)...',
+                'placeholder': 'DÃ©crivez les difficultÃ©s rencontrÃ©es (optionnel)...',
                 'rows': 4
             }),
         }
         labels = {
-            'difficulties': 'Difficultés rencontrées',
+            'difficulties': 'DifficultÃ©s rencontrÃ©es',
         }
 
 
@@ -102,7 +102,7 @@ class CancelActivityForm(forms.ModelForm):
     def clean_cancellation_comment(self):
         comment = self.cleaned_data.get('cancellation_comment')
         if not comment or len(comment.strip()) < 10:
-            raise forms.ValidationError('Veuillez fournir une raison détaillée (au moins 10 caractères).')
+            raise forms.ValidationError('Veuillez fournir une raison dÃ©taillÃ©e (au moins 10 caractÃ¨res).')
         return comment
 
 
@@ -119,12 +119,12 @@ class ActivityPhotoForm(forms.ModelForm):
             }),
             'caption': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Légende de la photo (optionnel)'
+                'placeholder': 'LÃ©gende de la photo (optionnel)'
             }),
         }
         labels = {
             'image': 'Photo',
-            'caption': 'Légende',
+            'caption': 'LÃ©gende',
         }
 
 
@@ -169,7 +169,7 @@ class CompetitionForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Nom de la compétition'
+                'placeholder': 'Nom de la compÃ©tition'
             }),
             'description': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
@@ -200,7 +200,7 @@ class WinnerForm(forms.ModelForm):
             }),
             'prize': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent',
-                'placeholder': 'Prix ou récompense (optionnel)'
+                'placeholder': 'Prix ou rÃ©compense (optionnel)'
             }),
         }
         labels = {
@@ -208,3 +208,64 @@ class WinnerForm(forms.ModelForm):
             'rank': 'Rang',
             'prize': 'Prix',
         }
+
+
+class ActionPlanForm(forms.ModelForm):
+    """Form for creating/editing action plans (programmes)"""
+    
+    class Meta:
+        model = ActionPlan
+        fields = ['title', 'description', 'start_date', 'end_date']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
+                'placeholder': 'Titre du programme'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
+                'rows': 4,
+                'placeholder': 'Description du programme'
+            }),
+            'start_date': forms.DateInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
+                'type': 'date'
+            }),
+            'end_date': forms.DateInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
+                'type': 'date'
+            })
+        }
+
+
+class TaskForm(forms.ModelForm):
+    """Form for creating/editing tasks"""
+    
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'assigned_to', 'due_date']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
+                'placeholder': 'Titre de la tÃ¢che'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
+                'rows': 3,
+                'placeholder': 'Description de la tÃ¢che'
+            }),
+            'assigned_to': forms.Select(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary'
+            }),
+            'due_date': forms.DateInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
+                'type': 'date'
+            })
+        }
+    
+    def __init__(self, *args, club=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if club:
+            from clubs.models import ClubMember
+            self.fields['assigned_to'].queryset = ClubMember.objects.filter(club=club, is_active=True)
+        self.fields['assigned_to'].required = False
+

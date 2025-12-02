@@ -1147,17 +1147,29 @@ def add_winner(request, slug, activity_id, competition_id):
 
 @login_required
 @require_http_methods(["POST"])
+@login_required
 def toggle_task_completion(request, task_id):
     """Toggle task completion status (AJAX endpoint)"""
-    # Check permissions
-    if not request.user.is_authenticated:
-        messages.error(request, "Vous devez �tre connect� pour acc�der � cette page.")
-        return redirect('account_login')
-    
-    if not request.user.can_manage_club(club):
-        return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
-    
     task = get_object_or_404(Task, id=task_id)
+    club = task.action_plan.club
+    
+    # Check permissions
+    if not request.user.can_manage_club(club):
+        return JsonResponse({'success': False, 'error': 'Permission refusée'}, status=403)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            return JsonResponse({'success': False, 'error': 'Vous ne pouvez gérer que votre propre club'}, status=403)
+    
+    task.is_completed = not task.is_completed
+    task.save()
+    
+    return JsonResponse({
+        'success': True,
+        'is_completed': task.is_completed
+    })
     
     try:
         data = json.loads(request.body)
@@ -1180,6 +1192,127 @@ def toggle_task_completion(request, task_id):
         })
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+@login_required
+def add_action_plan(request, slug):
+    """Add a new action plan (programme) to a club"""
+    from .forms import ActionPlanForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    
+    # Check permissions
+    if not request.user.can_manage_club(club):
+        messages.error(request, "Vous n'avez pas la permission d'ajouter un programme.")
+        return redirect('clubs:club_programs', slug=slug)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez ajouter des programmes que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_programs', slug=user_club.slug)
+            return redirect('clubs:club_list')
+    
+    if request.method == 'POST':
+        form = ActionPlanForm(request.POST)
+        if form.is_valid():
+            action_plan = form.save(commit=False)
+            action_plan.club = club
+            action_plan.created_by = request.user
+            action_plan.save()
+            
+            messages.success(request, f'Le programme "{action_plan.title}" a été créé avec succès!')
+            return redirect('clubs:club_programs', slug=slug)
+        else:
+            messages.error(request, "Erreur lors de la création du programme. Veuillez vérifier les champs.")
+    else:
+        form = ActionPlanForm()
+    
+    context = {
+        'club': club,
+        'form': form,
+    }
+    return render(request, 'clubs/add_action_plan.html', context)
+
+
+@login_required
+@require_http_methods(["POST"])
+def add_task(request, slug, plan_id):
+    """Add a task to an action plan"""
+    from .forms import TaskForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    action_plan = get_object_or_404(ActionPlan, id=plan_id, club=club)
+    
+    # Check permissions
+    if not request.user.can_manage_club(club):
+        messages.error(request, "Permission refusée.")
+        return redirect('clubs:club_programs', slug=slug)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez ajouter des tâches que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_programs', slug=user_club.slug)
+            return redirect('clubs:club_list')
+    
+    form = TaskForm(request.POST, club=club)
+    if form.is_valid():
+        task = form.save(commit=False)
+        task.action_plan = action_plan
+        task.created_by = request.user
+        task.save()
+        messages.success(request, f'Tâche "{task.title}" ajoutée avec succès!')
+    else:
+        messages.error(request, 'Erreur lors de l\'ajout de la tâche.')
+    
+    return redirect('clubs:club_programs', slug=slug)
+
+
+@login_required
+@require_http_methods(["POST"])
+def add_income(request, slug):
+    """Add income (entrée de caisse) to club budget"""
+    from finances.models import Transaction, CashBalance
+    from finances.forms import IncomeForm
+    
+    club = get_object_or_404(Club, slug=slug)
+    
+    # Check permissions - Only club executives can modify finances
+    if not request.user.can_modify_finances(club):
+        messages.error(request, "Vous n'avez pas la permission d'ajouter une entrée. Seuls les membres exécutifs du club peuvent modifier le budget.")
+        return redirect('clubs:club_budget', slug=slug)
+    
+    # Additional check for club executives
+    if request.user.is_club_executive:
+        user_club = request.user.get_user_club()
+        if not user_club or user_club.id != club.id:
+            messages.error(request, "Vous ne pouvez ajouter des entrées que pour votre propre club.")
+            if user_club:
+                return redirect('clubs:club_budget', slug=user_club.slug)
+            return redirect('clubs:club_list')
+    
+    form = IncomeForm(request.POST, request.FILES)
+    if form.is_valid():
+        transaction = form.save(commit=False)
+        transaction.club = club
+        transaction.transaction_type = 'INCOME'
+        transaction.created_by = request.user
+        transaction.save()
+        
+        # Update cash balance
+        cash_balance, created = CashBalance.objects.get_or_create(club=club)
+        cash_balance.update_balance()
+        
+        messages.success(request, f'Entrée de {transaction.amount} FCFA ajoutée avec succès!')
+    else:
+        messages.error(request, 'Erreur lors de l\'ajout de l\'entrée. Veuillez vérifier les champs.')
+    
+    return redirect('clubs:club_budget', slug=slug)
 
 
 # API ViewSets
@@ -1222,6 +1355,9 @@ class CompetitionViewSet(viewsets.ModelViewSet):
     serializer_class = CompetitionSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['activity']
+
+
+
 
 
 
