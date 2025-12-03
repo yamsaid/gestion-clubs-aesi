@@ -1,7 +1,7 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Marquer comme terminése - {{ activity.title }}{% endblock %}
+{% block title %}Marquer comme terminée - {{ activity.title }}{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 py-8">
@@ -12,9 +12,9 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
-                Retour aux activitéss
+                Retour aux Activités
             </a>
-            <h1 class="text-3xl font-bold text-gray-900">Marquer l'activitésscomme terminése</h1>
+            <h1 class="text-3xl font-bold text-gray-900">Marquer l'activitécomme terminée</h1>
             <p class="mt-2 text-gray-600">{{ activity.title }}</p>
         </div>
 
@@ -86,7 +86,7 @@
                         <p class="mt-2 text-sm text-red-600">{{ form.difficulties.errors.0 }}</p>
                     {% endif %}
                     <p class="mt-2 text-sm text-gray-500">
-                        Déscrivez les désfis, obstacles ou problÃ¨mes rencontrésspendant l'activités. Cela aidera Ã  amésliorer les futures activités.
+                        Décrivez les défis, obstacles ou problèmes rencontrés pendant l'activité. Cela aidera Ã  améliorer les futures activités.
                     </p>
                 </div>
 
@@ -102,11 +102,11 @@
                                 Prochaine éstape
                             </h3>
                             <div class="mt-2 text-sm text-green-700">
-                                <p>AprÃ¨s avoir marquéssl'activitésscomme terminése, vous pourrez :</p>
+                                <p>AprÃ¨s avoir marquél'activitécomme terminée, vous pourrez :</p>
                                 <ul class="list-disc list-inside mt-2 space-y-1">
-                                    <li>Ajouter des photos de l'activités</li>
-                                    <li>Tésléscharger des documents et ressources</li>
-                                    <li>Créser des compéstitions et ajouter les gagnants</li>
+                                    <li>Ajouter des photos de l'activité</li>
+                                    <li>Télécharger des documents et ressources</li>
+                                    <li>Créer des compétitions et ajouter les gagnants</li>
                                 </ul>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        Marquer comme terminése
+                        Marquer comme terminée
                     </button>
                 </div>
             </form>

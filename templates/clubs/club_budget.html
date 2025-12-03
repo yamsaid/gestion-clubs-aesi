@@ -72,7 +72,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
             </div>
-            <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-rose-600 bg-clip-text text-transparent">Ã‰volution des DÉpenses par ActivitÉ</h2>
+            <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-rose-600 bg-clip-text text-transparent">Évolution des Dépenses par Activité</h2>
         </div>
         <div id="expense-chart" style="width:100%;height:500px;"></div>
     </div>
@@ -81,9 +81,9 @@
     {% if user|can_modify_finances:club %}
     <div class="bg-white rounded-lg shadow-md p-6" x-data="{ showForm: false }">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-neutral-dark">Ajouter une DÉpense</h2>
+            <h2 class="text-2xl font-bold text-neutral-dark">Ajouter une Dépense</h2>
             <button @click="showForm = !showForm" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md transition">
-                <span x-show="!showForm">+ Nouvelle DÉpense</span>
+                <span x-show="!showForm">+ Nouvelle Dépense</span>
                 <span x-show="showForm">Annuler</span>
             </button>
         </div>
@@ -93,9 +93,9 @@
                 {% csrf_token %}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="activity" class="block text-sm font-medium text-gray-700 mb-2">ActivitÉ *</label>
+                        <label for="activity" class="block text-sm font-medium text-gray-700 mb-2">Activité *</label>
                         <select id="activity" name="activity" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-                            <option value="">SÉlectionner une activitÉ</option>
+                            <option value="">SÉlectionner une Activité</option>
                             {% for activity in activities %}
                             <option value="{{ activity.id }}">{{ activity.title }} - {{ activity.date|date:"d/m/Y" }}</option>
                             {% endfor %}
@@ -119,7 +119,7 @@
 
                     <div class="md:col-span-2">
                         <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Motif *</label>
-                        <input type="text" id="description" name="description" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Description de la dÉpense">
+                        <input type="text" id="description" name="description" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Description de la Dépense">
                     </div>
 
                     <div class="md:col-span-2">
@@ -130,7 +130,7 @@
 
                 <div class="mt-6 flex justify-end">
                     <button type="submit" class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-md transition">
-                        Enregistrer la DÉpense
+                        Enregistrer la Dépense
                     </button>
                 </div>
             </form>
@@ -212,7 +212,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
             <div>
-                <h3 class="text-lg font-semibold text-primary-dark">AccÃ¨s en lecture seule</h3>
+                <h3 class="text-lg font-semibold text-primary-dark">Accès en lecture seule</h3>
                 <p class="text-sm text-blue-700 mt-1">En tant que TrÉsorier de l'AESI, vous pouvez consulter le budget de tous les clubs mais ne pouvez pas le modifier.</p>
             </div>
         </div>
@@ -249,11 +249,11 @@
     <!-- Expenses Table with Filter -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-neutral-dark">Liste des DÉpenses</h2>
+            <h2 class="text-2xl font-bold text-neutral-dark">Liste des Dépenses</h2>
             <div class="flex items-center space-x-2">
-                <label for="expense-activity-filter" class="text-sm text-gray-700">Filtrer par activitÉ:</label>
+                <label for="expense-activity-filter" class="text-sm text-gray-700">Filtrer par Activité:</label>
                 <select id="expense-activity-filter" class="px-3 py-2 border border-gray-300 rounded-md text-sm" onchange="filterExpenses(this.value)">
-                    <option value="">Toutes les activitÉs</option>
+                    <option value="">Toutes les Activités</option>
                     {% for activity in activities %}
                     <option value="{{ activity.id }}">{{ activity.title }}</option>
                     {% endfor %}
@@ -290,7 +290,7 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ActivitÉ</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activité</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CatÉgorie</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Motif</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
@@ -380,12 +380,12 @@
             <div class="bg-gray-50 rounded-lg p-4">
                 <h4 class="font-semibold text-sm text-neutral-dark mb-2">{{ stat.activity__title }}</h4>
                 <p class="text-2xl font-bold text-red-600">{{ stat.total|floatformat:0 }} FCFA</p>
-                <p class="text-xs text-gray-500 mt-1">{{ stat.count }} dÉpense{{ stat.count|pluralize }}</p>
+                <p class="text-xs text-gray-500 mt-1">{{ stat.count }} Dépense{{ stat.count|pluralize }}</p>
             </div>
             {% endfor %}
         </div>
         {% else %}
-        <p class="text-center text-gray-500 py-8">Aucune dÉpense enregistrÉe pour le moment.</p>
+        <p class="text-center text-gray-500 py-8">Aucune Dépense enregistrÉe pour le moment.</p>
         {% endif %}
     </div>
 </div>
@@ -409,7 +409,7 @@ const enhancedExpenseData = expenseData.map(trace => ({
 const layout = {
     title: '',
     xaxis: { 
-        title: 'ActivitÉ',
+        title: 'Activité',
         tickangle: -45,
         tickfont: { size: 11 },
         showgrid: false

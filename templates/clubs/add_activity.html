@@ -1,7 +1,7 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Ajouter une activitéss- {{ club.name }} - AESI Platform{% endblock %}
+{% block title %}Ajouter une Activités- {{ club.name }} - AESI Platform{% endblock %}
 
 {% block content %}
 <div class="space-y-8">
@@ -14,7 +14,7 @@
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
-        <a href="{% url 'clubs:club_activities' slug=club.slug %}" class="hover:text-purple-600">Activitéss</a>
+        <a href="{% url 'clubs:club_activities' slug=club.slug %}" class="hover:text-purple-600">Activités</a>
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -145,7 +145,7 @@
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span>Ajouter l'activités</span>
+                    <span>Ajouter l'activité</span>
                 </button>
             </div>
         </form>
@@ -160,13 +160,13 @@
                 </svg>
             </div>
             <div>
-                <h3 class="font-bold text-blue-900 mb-2">Conseils pour créser une activités</h3>
+                <h3 class="font-bold text-blue-900 mb-2">Conseils pour Créer une activités</h3>
                 <ul class="text-sm text-primary-dark space-y-1">
-                    <li>â€¢ Choisissez un titre accrocheur et descriptif</li>
-                    <li>â€¢ Le thÃ¨me doit réssumer l'objectif principal de l'activités</li>
-                    <li>â€¢ Soyez préscis sur la date, l'heure et le lieu</li>
-                    <li>â€¢ L'OTP permet de valider la préssence des participants</li>
-                    <li>â€¢ Une image de couverture rend l'activitéssplus attractive</li>
+                    <li>• Choisissez un titre accrocheur et descriptif</li>
+                    <li>• Le Thème doit réssumer l'objectif principal de l'activité</li>
+                    <li>• Soyez préscis sur la date, l'heure et le lieu</li>
+                    <li>• L'OTP permet de valider la présence des participants</li>
+                    <li>• Une image de couverture rend l'activitéplus attractive</li>
                 </ul>
             </div>
         </div>

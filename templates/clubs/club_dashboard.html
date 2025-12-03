@@ -30,7 +30,7 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-500">Total Activitéss</p>
+                    <p class="text-sm font-medium text-gray-500">Total Activités</p>
                     <p class="text-3xl font-bold text-neutral-dark mt-2">{{ total_activities }}</p>
                 </div>
                 <div class="bg-green-100 rounded-full p-3">
@@ -115,7 +115,7 @@
 
         <!-- Winners List -->
         <div class="mb-8">
-            <h3 class="text-lg font-semibold text-neutral-dark mb-4">ðŸ† Gagnants de Compéstitions</h3>
+            <h3 class="text-lg font-semibold text-neutral-dark mb-4">ðŸ† Gagnants de compétitions</h3>
             {% if winners %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {% for winner in winners %}
@@ -178,7 +178,7 @@
         <!-- Financial Summary -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-500">
-                <p class="text-sm font-medium text-green-800">Total Entréses</p>
+                <p class="text-sm font-medium text-green-800">Total entrées</p>
                 <p class="text-2xl font-bold text-green-900 mt-1">{{ total_income|floatformat:0 }} FCFA</p>
             </div>
             <div class="bg-red-50 rounded-lg p-4 border-l-4 border-red-500">
@@ -193,7 +193,7 @@
 
         <!-- Expense Evolution Chart -->
         <div class="mb-8">
-            <h3 class="text-lg font-semibold text-neutral-dark mb-4">Ã‰volution des Déspenses par Activités</h3>
+            <h3 class="text-lg font-semibold text-neutral-dark mb-4">Ã‰volution des Dépenses par Activités</h3>
             <div id="expense-evolution-chart" style="width:100%;height:400px;"></div>
         </div>
     </div>

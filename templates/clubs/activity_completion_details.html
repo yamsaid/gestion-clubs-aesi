@@ -1,7 +1,7 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}DÃ©tails de complÃ©tion - {{ activity.title }}{% endblock %}
+{% block title %}DÉtails de complÉtion - {{ activity.title }}{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 py-8">
@@ -12,15 +12,15 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
-                Retour aux activitÉs
+                Retour aux Activités
             </a>
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">DÉtails de l'activitÉ terminÉe</h1>
+                    <h1 class="text-3xl font-bold text-gray-900">Détails de l'Activité terminée</h1>
                     <p class="mt-2 text-gray-600">{{ activity.title }}</p>
                 </div>
                 <span class="px-4 py-2 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
-                    âœ“ TerminÉe
+                    €œ“ terminée
                 </span>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm text-green-700">
-                        ActivitÉ marquÉe comme terminÉe avec succÃ¨s ! Vous pouvez maintenant ajouter des photos, documents et rÉsultats de compÉtitions.
+                        Activité marquÉe comme terminée avec succès ! Vous pouvez maintenant ajouter des photos, documents et résultats de compétitions.
                     </p>
                 </div>
             </div>
@@ -183,7 +183,7 @@
                                 </div>
                                 <div>
                                     <p class="font-medium text-gray-900">{{ resource.title }}</p>
-                                    <p class="text-sm text-gray-500">{{ resource.get_resource_type_display }} â€¢ {{ resource.created_at|date:"d/m/Y" }}</p>
+                                    <p class="text-sm text-gray-500">{{ resource.get_resource_type_display }}  {{ resource.created_at|date:"d/m/Y" }}</p>
                                 </div>
                             </div>
                             <a href="{{ resource.file.url }}" target="_blank" download
@@ -210,7 +210,7 @@
                             <svg class="w-6 h-6 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                             </svg>
-                            CompÉtitions ({{ competitions.count }})
+                            compétitions ({{ competitions.count }})
                         </h2>
                         <button onclick="document.getElementById('competition-form').classList.toggle('hidden')" 
                                 class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition text-sm font-medium">
@@ -326,7 +326,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                             <div>
-                                <p class="text-gray-500">TerminÉe le</p>
+                                <p class="text-gray-500">terminée le</p>
                                 <p class="font-medium">{{ activity.completion_date|date:"d/m/Y Ã  H:i" }}</p>
                             </div>
                         </div>
@@ -352,7 +352,7 @@
                             <p class="text-3xl font-bold">{{ resources.count }}</p>
                         </div>
                         <div>
-                            <p class="text-purple-200 text-sm">CompÉtitions</p>
+                            <p class="text-purple-200 text-sm">compétitions</p>
                             <p class="text-3xl font-bold">{{ competitions.count }}</p>
                         </div>
                     </div>
