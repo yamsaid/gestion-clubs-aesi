@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('first_name', models.CharField(max_length=150, verbose_name='prénom')),
                 ('last_name', models.CharField(max_length=150, verbose_name='nom')),
                 ('role', models.CharField(choices=[('STUDENT', 'Étudiant'), ('CLUB_EXECUTIVE', 'Membre exécutif de club'), ('AESI_EXECUTIVE', 'Membre exécutif AESI')], default='STUDENT', max_length=20, verbose_name='rôle')),
-                ('filiere', models.CharField(blank=True, choices=[('IDA', "Ingénieur d'Application"), ('ITS', 'Ingénieur Travaux Statistiques'), ('TSE', "Technicien Supérieur d'Économie"), ('TS', 'Technicien Supérieur de la Statistique'), ('AT', 'Agent Technique de la Statistique')], max_length=10, verbose_name='filière')),
+                ('filiere', models.CharField(blank=True, choices=[('IDA', "Licence Professionnelle en Analyse Statistique"), ('ITS', 'Ingénieur Economiste Statisticien(ne)'), ('TSE', "Licence en Santé et Population'Économie"), ('TS', 'Technicien Supérieur de la Statistique'), ('AT', 'Master de Recherche en Démographie')], max_length=10, verbose_name='filière')),
                 ('niveau', models.CharField(blank=True, choices=[('1', '1ère année'), ('2', '2ème année'), ('3', '3ème année'), ('4', '4ème année')], max_length=2, verbose_name='niveau')),
                 ('phone', models.CharField(blank=True, max_length=20, verbose_name='téléphone')),
                 ('profile_picture', models.ImageField(blank=True, null=True, upload_to='profiles/', verbose_name='photo de profil')),

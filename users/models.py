@@ -41,18 +41,17 @@ class User(AbstractUser):
     ]
     
     FILIERE_CHOICES = [
-        ('IDA', 'Ingénieur d\'Application'),
-        ('ITS', 'Ingénieur Travaux Statistiques'),
-        ('TSE', 'Technicien Supérieur d\'Économie'),
-        ('TS', 'Technicien Supérieur de la Statistique'),
-        ('AT', 'Agent Technique de la Statistique'),
+        ('IDA', 'Licence Professionnelle en Analyse Statistique'),
+        ('ITS', 'Ingénieur Economiste Statisticien(ne)'),
+        ('TSE', 'Licence en Santé et Population\'Économie'),
+        ('TS', 'Master Professionnelle en Démographie'),
+        ('AT', 'Master de Recherche en Démographie'),
     ]
     
     NIVEAU_CHOICES = [
         ('1', '1ère année'),
         ('2', '2ème année'),
         ('3', '3ème année'),
-        ('4', '4ème année'),
     ]
     
     GENDER_CHOICES = [
