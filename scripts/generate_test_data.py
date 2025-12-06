@@ -391,7 +391,7 @@ def create_aesi_executives():
             'email': 'secretaire@aesi.bf',
             'role': 'AESI_EXECUTIVE',
             'gender': 'F',
-            'bio': 'Secrétaire général de l\'AESI'
+            'bio': 'Secrétaire'
         },
         {
             'first_name': 'Trésorier',

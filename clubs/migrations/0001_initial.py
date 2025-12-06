@@ -99,7 +99,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Date de création')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Date de modification')),
-                ('position', models.CharField(choices=[('PRESIDENT', 'Président(e)'), ('VICE_PRESIDENT', 'Vice-président(e)'), ('SECRETARY', 'Secrétaire général(e)'), ('TREASURER', 'Trésorier(ère)'), ('COMMUNICATION', 'Responsable communication'), ('MEMBER', 'Membre')], max_length=20, verbose_name='poste')),
+                ('position', models.CharField(choices=[('PRESIDENT', 'Coordinateur(trice)'), ('SECRETARY', 'Secrétaire'), ('TREASURER', 'Trésorier(ère)'), ('COMMUNICATION', 'Organisateur(trice)'), ('MEMBER', 'Membre')], max_length=20, verbose_name='poste')),
                 ('start_date', models.DateField(verbose_name='date de début')),
                 ('end_date', models.DateField(blank=True, null=True, verbose_name='date de fin')),
                 ('is_active', models.BooleanField(default=True, verbose_name='actif')),
