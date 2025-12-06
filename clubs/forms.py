@@ -73,12 +73,12 @@ class CompleteActivityForm(forms.ModelForm):
         widgets = {
             'difficulties': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent',
-                'placeholder': 'Décrivez les difficultéssrencontrées (optionnel)...',
+                'placeholder': 'Décrivez les difficultés rencontrées (optionnel)...',
                 'rows': 4
             }),
         }
         labels = {
-            'difficulties': 'Difficultéssrencontrées',
+            'difficulties': 'Difficultés rencontrées',
         }
 
 
@@ -246,12 +246,12 @@ class TaskForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
-                'placeholder': 'Titre de la tÃ¢che'
+                'placeholder': 'Titre de la tâche'
             }),
             'description': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary',
                 'rows': 3,
-                'placeholder': 'Description de la tÃ¢che'
+                'placeholder': 'Description de la tâche'
             }),
             'assigned_to': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary'

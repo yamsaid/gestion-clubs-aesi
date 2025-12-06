@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='clubmember',
             name='missions',
-            field=models.TextField(blank=True, help_text='Décrivez les missions et responsabilitéssspécifiques de ce membre', verbose_name='missions spécifiques'),
+            field=models.TextField(blank=True, help_text='Décrivez les missions et responsabilités spécifiques de ce membre', verbose_name='missions spécifiques'),
         ),
     ]

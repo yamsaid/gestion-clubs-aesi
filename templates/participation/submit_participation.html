@@ -14,12 +14,12 @@
             </div>
             
             <h1 class="text-3xl font-bold text-neutral-dark mb-4">Participation Enregistrése !</h1>
-            <p class="text-gray-600 mb-8">Votre participation Ã  <strong>{{ activity.title }}</strong> a été confirmée avec succès.</p>
+            <p class="text-gray-600 mb-8">Votre participation à <strong>{{ activity.title }}</strong> a été confirmée avec succès.</p>
             
             <div class="bg-blue-50 rounded-lg p-6 mb-8">
                 <h3 class="font-semibold text-blue-900 mb-3">détails de l'Activités</h3>
                 <div class="text-sm text-primary-dark space-y-2">
-                    <p>ðŸ“… <strong>Date :</strong> {{ activity.date|date:"d/m/Y" }} Ã  {{ activity.time|date:"H:i"|default:"--:--" }}</p>
+                    <p>ðŸ“… <strong>Date :</strong> {{ activity.date|date:"d/m/Y" }} à {{ activity.time|date:"H:i"|default:"--:--" }}</p>
                     <p>ðŸ“ <strong>Lieu :</strong> {{ activity.location }}</p>
                     <p>ðŸ›ï¸ <strong>Club :</strong> {{ activity.club.name }}</p>
                 </div>

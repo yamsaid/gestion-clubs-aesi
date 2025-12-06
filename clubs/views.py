@@ -71,7 +71,7 @@ def add_activity(request, slug):
     if request.user.is_club_executive:
         user_club = request.user.get_user_club()
         if not user_club or user_club.id != club.id:
-            messages.error(request, "Vous ne pouvez ajouter des activitéssque pour votre propre club.")
+            messages.error(request, "Vous ne pouvez ajouter des activités que pour votre propre club.")
             if user_club:
                 return redirect('clubs:club_activities', slug=user_club.slug)
             return redirect('clubs:club_list')
@@ -119,7 +119,7 @@ def edit_activity(request, slug, activity_id):
     if request.user.is_club_executive:
         user_club = request.user.get_user_club()
         if not user_club or user_club.id != club.id:
-            messages.error(request, "Vous ne pouvez modifier que les activitéssde votre propre club.")
+            messages.error(request, "Vous ne pouvez modifier que les activités de votre propre club.")
             if user_club:
                 return redirect('clubs:club_activities', slug=user_club.slug)
             return redirect('clubs:club_list')
@@ -165,7 +165,7 @@ def delete_activity(request, slug, activity_id):
     if request.user.is_club_executive:
         user_club = request.user.get_user_club()
         if not user_club or user_club.id != club.id:
-            messages.error(request, "Vous ne pouvez supprimer que les activitéssde votre propre club.")
+            messages.error(request, "Vous ne pouvez supprimer que les activités de votre propre club.")
             if user_club:
                 return redirect('clubs:club_activities', slug=user_club.slug)
             return redirect('clubs:club_list')
@@ -841,7 +841,7 @@ def complete_activity(request, slug, activity_id):
     if request.user.is_club_executive:
         user_club = request.user.get_user_club()
         if not user_club or user_club.id != club.id:
-            messages.error(request, "Vous ne pouvez gérer que les activitéssde votre propre club.")
+            messages.error(request, "Vous ne pouvez gérer que les activités de votre propre club.")
             if user_club:
                 return redirect('clubs:club_activities', slug=user_club.slug)
             return redirect('clubs:club_list')
@@ -894,7 +894,7 @@ def cancel_activity(request, slug, activity_id):
     if request.user.is_club_executive:
         user_club = request.user.get_user_club()
         if not user_club or user_club.id != club.id:
-            messages.error(request, "Vous ne pouvez gérer que les activitéssde votre propre club.")
+            messages.error(request, "Vous ne pouvez gérer que les activités de votre propre club.")
             if user_club:
                 return redirect('clubs:club_activities', slug=user_club.slug)
             return redirect('clubs:club_list')
@@ -947,7 +947,7 @@ def activity_completion_details(request, slug, activity_id):
     if request.user.is_club_executive:
         user_club = request.user.get_user_club()
         if not user_club or user_club.id != club.id:
-            messages.error(request, "Vous ne pouvez gérer que les activitéssde votre propre club.")
+            messages.error(request, "Vous ne pouvez gérer que les activités de votre propre club.")
             if user_club:
                 return redirect('clubs:club_activities', slug=user_club.slug)
             return redirect('clubs:club_list')

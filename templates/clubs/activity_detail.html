@@ -119,7 +119,7 @@
                         <svg class="h-6 w-6 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                         </svg>
-                        <span>Participer Ã  cette activité</span>
+                        <span>Participer à cette activité</span>
                         <svg class="h-5 w-5 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
@@ -140,8 +140,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-green-800 mb-1">Activitésterminée</h3>
-                            <p class="text-green-700">cette activité est désjÃ  désroulése. Les participations ne sont plus acceptées.</p>
+                            <h3 class="text-lg font-bold text-green-800 mb-1">Activités terminée</h3>
+                            <p class="text-green-700">cette activité est déjà désroulése. Les participations ne sont plus acceptées.</p>
                         </div>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-red-800 mb-1">Activitésannulée</h3>
+                            <h3 class="text-lg font-bold text-red-800 mb-1">Activités nnulée</h3>
                             <p class="text-red-700">cette activité a été annulée. Les participations ne sont plus acceptées.</p>
                             {% if activity.cancellation_comment %}
                             <p class="text-sm text-red-600 mt-2"><strong>Raison :</strong> {{ activity.cancellation_comment }}</p>
@@ -167,7 +167,7 @@
             
             {% if activity.difficulties %}
             <div class="border-t pt-6 mt-6">
-                <h3 class="font-semibold text-neutral-dark mb-2">Difficultéssrencontréses:</h3>
+                <h3 class="font-semibold text-neutral-dark mb-2">Difficultés rencontréses:</h3>
                 <p class="text-gray-700">{{ activity.difficulties }}</p>
             </div>
             {% endif %}

@@ -141,7 +141,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Fichier</label>
                                     {{ resource_form.file }}
-                                    <p class="mt-1 text-xs text-gray-500">Formats acceptÉs: PDF, Word, Excel, PowerPoint, ZIP</p>
+                                    <p class="mt-1 text-xs text-gray-500">Formats acceptés: PDF, Word, Excel, PowerPoint, ZIP</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Description (optionnel)</label>
@@ -263,7 +263,7 @@
                             <!-- Winners -->
                             {% if competition.winners.all %}
                             <div class="bg-yellow-50 rounded-lg p-3">
-                                <h4 class="text-sm font-semibold text-gray-700 mb-2">ðŸ† Gagnants :</h4>
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2">🏆 Gagnants :</h4>
                                 <div class="space-y-2">
                                     {% for winner in competition.winners.all %}
                                     <div class="flex items-center justify-between text-sm">
@@ -327,7 +327,7 @@
                             </svg>
                             <div>
                                 <p class="text-gray-500">terminée le</p>
-                                <p class="font-medium">{{ activity.completion_date|date:"d/m/Y Ã  H:i" }}</p>
+                                <p class="font-medium">{{ activity.completion_date|date:"d/m/Y à H:i" }}</p>
                             </div>
                         </div>
                         {% if activity.difficulties %}

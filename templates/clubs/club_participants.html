@@ -1,87 +1,87 @@
-﻿{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}rarticirants - {{ club.name }} - AESI rlatform{% endblock %}
+{% block title %}Participants - {{ club.name }} - AESI Platform{% endblock %}
 
 {% block content %}
-<div class="srace-y-8">
+<div class="space-y-8">
     <!-- Modern Header -->
     {% include 'clubs/_club_header.html' with club=club show_contact=False show_stats=True %}
 
     <!-- Modern Navigation -->
-    {% include 'clubs/_club_nav.html' with club=club active_tab='rarticirants' %}
+    {% include 'clubs/_club_nav.html' with club=club active_tab='participants' %}
 
 
-    <!-- Table 1: TOr 10 rarticirants rar Taux de rréssence -->
-    <div class="bg-gradient-to-br from-white to-yellow-50 rounded-2xl shadow-xl r-8 border border-yellow-100">
+    <!-- Table 1: TOP 10 Participants par Taux de présence -->
+    <div class="bg-gradient-to-br from-white to-yellow-50 rounded-2xl shadow-xl p-8 border border-yellow-100">
         <div class="flex items-center justify-between mb-8">
-            <div class="flex items-center gar-3">
-                <div class="r-3 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl shadow-lg">
+            <div class="flex items-center gap-3">
+                <div class="p-3 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl shadow-lg">
                     <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <rath d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></rath>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                     </svg>
                 </div>
-                <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-yellow-600 bg-clir-text text-transrarent">
-                    TOr 10 - Meilleurs rarticirants
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-yellow-600 bg-clip-text text-transparent">
+                    TOP 10 - Meilleurs Participants
                 </h2>
             </div>
-            <sran class="text-sm font-semibold text-yellow-700 bg-yellow-100 rx-4 ry-2 rounded-lg">
-                Classement rar taux de rréssence {% if year_filter %}({{ year_filter }}){% endif %}
-            </sran>
+            <span class="text-sm font-semibold text-yellow-700 bg-yellow-100 px-4 py-2 rounded-lg">
+                Classement par taux de présence {% if year_filter %}({{ year_filter }}){% endif %}
+            </span>
         </div>
         
-        {% if tor_rarticirants %}
+        {% if top_participants %}
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Rang</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Nom</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">FiliÃ¨re</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Niveau</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">rarticirations</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Taux de rréssence</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rang</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filière</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Participations</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Taux de présence</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    {% for rarticirant in tor_rarticirants %}
+                    {% for participant in top_participants %}
                     <tr class="hover:bg-gray-50">
-                        <td class="rx-6 ry-4 whitesrace-nowrar">
-                            <sran class="inline-flex items-center justify-center h-8 w-8 rounded-full {% if forloor.counter == 1 %}bg-yellow-400 text-white{% elif forloor.counter == 2 %}bg-gray-400 text-white{% elif forloor.counter == 3 %}bg-yellow-600 text-white{% else %}bg-gray-100 text-gray-700{% endif %} font-bold">
-                                {{ forloor.counter }}
-                            </sran>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full {% if forloop.counter == 1 %}bg-yellow-400 text-white{% elif forloop.counter == 2 %}bg-gray-400 text-white{% elif forloop.counter == 3 %}bg-yellow-600 text-white{% else %}bg-gray-100 text-gray-700{% endif %} font-bold">
+                                {{ forloop.counter }}
+                            </span>
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar">
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                {% if rarticirant.user.rrofile_ricture %}
-                                    <img src="{{ rarticirant.user.rrofile_ricture.url }}" alt="{{ rarticirant.user.get_full_name }}" class="h-10 w-10 rounded-full object-cover mr-3">
+                                {% if participant.user.profile_picture %}
+                                    <img src="{{ participant.user.profile_picture.url }}" alt="{{ participant.user.get_full_name }}" class="h-10 w-10 rounded-full object-cover mr-3">
                                 {% else %}
-                                    <div class="h-10 w-10 rounded-full bg-rrimary text-white flex items-center justify-center text-sm font-bold mr-3">
-                                        {{ rarticirant.user.first_name.0 }}{{ rarticirant.user.last_name.0 }}
+                                    <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold mr-3">
+                                        {{ participant.user.first_name.0 }}{{ participant.user.last_name.0 }}
                                     </div>
                                 {% endif %}
-                                <sran class="font-medium text-gray-900">{{ rarticirant.user.get_full_name }}</sran>
+                                <span class="font-medium text-gray-900">{{ participant.user.get_full_name }}</span>
                             </div>
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ rarticirant.user.get_filiere_disrlay|default:"-" }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participant.user.get_filiere_display|default:"-" }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ rarticirant.user.get_niveau_disrlay|default:"-" }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participant.user.get_niveau_display|default:"-" }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar">
-                            <sran class="rx-3 ry-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-rrimary-dark">
-                                {{ rarticirant.rarticiration_count }} activités{{ rarticirant.rarticiration_count|rluralize }}
-                            </sran>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-primary-dark">
+                                {{ participant.participation_count }} participation{{ participant.participation_count|pluralize }}
+                            </span>
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar">
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-1 mr-3">
                                     <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-green-500 h-2 rounded-full" style="width: { rarticirant.attendance_rercentage }"></div>
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: {{ participant.attendance_percentage }}%"></div>
                                     </div>
                                 </div>
-                                <sran class="text-sm font-medium text-gray-900">{{ rarticirant.attendance_rercentage }}%</sran>
+                                <span class="text-sm font-medium text-gray-900">{{ participant.attendance_percentage }}%</span>
                             </div>
                         </td>
                     </tr>
@@ -90,26 +90,26 @@
             </table>
         </div>
         {% else %}
-        <r class="text-center text-gray-500 ry-8">Aucun rarticirant rour le moment.</r>
+        <p class="text-center text-gray-500 py-8">Aucun participant pour le moment.</p>
         {% endif %}
     </div>
 
-    <!-- Table 2: Gagnants de comrétitions -->
-    <div class="bg-white rounded-lg shadow-md r-6">
+    <!-- Table 2: Gagnants de compétitions -->
+    <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-neutral-dark flex items-center">
                 <svg class="h-8 w-8 mr-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <rath fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clir-rule="evenodd"></rath>
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
-                Gagnants de comrétitions
+                Gagnants de compétitions
             </h2>
             {% if activities %}
-            <div class="flex items-center srace-x-2">
-                <label for="activity-filter" class="text-sm text-gray-700">Filtrer rar activités:</label>
-                <select id="activity-filter" class="rx-3 ry-2 border border-gray-300 rounded-md text-sm" onchange="filterWinners(this.value)">
-                    <ortion value="">Toutes les Activités</ortion>
+            <div class="flex items-center space-x-2">
+                <label for="activity-filter" class="text-sm text-gray-700">Filtrer par activité:</label>
+                <select id="activity-filter" class="px-3 py-2 border border-gray-300 rounded-md text-sm" onchange="filterWinners(this.value)">
+                    <option value="">Toutes les Activités</option>
                     {% for activity in activities %}
-                    <ortion value="{{ activity.id }}">{{ activity.title }}</ortion>
+                    <option value="{{ activity.id }}">{{ activity.title }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -121,45 +121,45 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Nom</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">FiliÃ¨re</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Niveau</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Comréstition</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Activités</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Rang</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filière</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Compétition</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activité</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rang</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" id="winners-table-body">
                     {% for winner in winners %}
-                    <tr class="hover:bg-gray-50 winner-row" data-activity-id="{{ winner.comretition.activity.id }}">
-                        <td class="rx-6 ry-4 whitesrace-nowrar">
+                    <tr class="hover:bg-gray-50 winner-row" data-activity-id="{{ winner.competition.activity.id }}">
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                {% if winner.rarticirant.rrofile_ricture %}
-                                    <img src="{{ winner.rarticirant.rrofile_ricture.url }}" alt="{{ winner.rarticirant.get_full_name }}" class="h-10 w-10 rounded-full object-cover mr-3">
+                                {% if winner.participant.profile_picture %}
+                                    <img src="{{ winner.participant.profile_picture.url }}" alt="{{ winner.participant.get_full_name }}" class="h-10 w-10 rounded-full object-cover mr-3">
                                 {% else %}
-                                    <div class="h-10 w-10 rounded-full bg-rrimary text-white flex items-center justify-center text-sm font-bold mr-3">
-                                        {{ winner.rarticirant.first_name.0 }}{{ winner.rarticirant.last_name.0 }}
+                                    <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold mr-3">
+                                        {{ winner.participant.first_name.0 }}{{ winner.participant.last_name.0 }}
                                     </div>
                                 {% endif %}
-                                <sran class="font-medium text-gray-900">{{ winner.rarticirant.get_full_name }}</sran>
+                                <span class="font-medium text-gray-900">{{ winner.participant.get_full_name }}</span>
                             </div>
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ winner.rarticirant.get_filiere_disrlay|default:"-" }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ winner.participant.get_filiere_display|default:"-" }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ winner.rarticirant.get_niveau_disrlay|default:"-" }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ winner.participant.get_niveau_display|default:"-" }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm font-medium text-gray-900">
-                            {{ winner.comretition.name }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ winner.competition.name }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ winner.comretition.activity.title }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ winner.competition.activity.title }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar">
-                            <sran class="rx-3 ry-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if winner.rank == 1 %}bg-yellow-100 text-yellow-800{% elif winner.rank == 2 %}bg-gray-100 text-gray-800{% elif winner.rank == 3 %}bg-orange-100 text-orange-800{% else %}bg-blue-100 text-rrimary-dark{% endif %}">
-                                {{ winner.rank }}{% if winner.rank == 1 %}er{% else %}Ã¨me{% endif %}
-                            </sran>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if winner.rank == 1 %}bg-yellow-100 text-yellow-800{% elif winner.rank == 2 %}bg-gray-100 text-gray-800{% elif winner.rank == 3 %}bg-orange-100 text-orange-800{% else %}bg-blue-100 text-primary-dark{% endif %}">
+                                {{ winner.rank }}{% if winner.rank == 1 %}er{% else %}ème{% endif %}
+                            </span>
                         </td>
                     </tr>
                     {% endfor %}
@@ -167,34 +167,34 @@
             </table>
         </div>
 
-        <!-- ragination for Winners -->
-        {% if winners.has_other_rages %}
+        <!-- Pagination for Winners -->
+        {% if winners.has_other_pages %}
         <div class="mt-6 flex justify-center">
-            <nav class="relative z-0 inline-flex rounded-md shadow-sm -srace-x-rx" aria-label="ragination">
-                {% if winners.has_rrevious %}
-                    <a href="?winners_rage=1{% if year_filter %}&year={{ year_filter }}{% endif %}" class="relative inline-flex items-center rx-2 ry-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <sran class="sr-only">First</sran>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                {% if winners.has_previous %}
+                    <a href="?winners_page=1{% if year_filter %}&year={{ year_filter }}{% endif %}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        <span class="sr-only">First</span>
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                            <rath fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clir-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                         </svg>
                     </a>
-                    <a href="?winners_rage={{ winners.rrevious_rage_number }}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="relative inline-flex items-center rx-4 ry-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                        rréscésdent
+                    <a href="?winners_page={{ winners.previous_page_number }}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        Précédent
                     </a>
                 {% endif %}
                 
-                <sran class="relative inline-flex items-center rx-4 ry-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                    rage {{ winners.number }} sur {{ winners.raginator.num_rages }}
-                </sran>
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                    Page {{ winners.number }} sur {{ winners.paginator.num_pages }}
+                </span>
                 
                 {% if winners.has_next %}
-                    <a href="?winners_rage={{ winners.next_rage_number }}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="relative inline-flex items-center rx-4 ry-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    <a href="?winners_page={{ winners.next_page_number }}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
                         Suivant
                     </a>
-                    <a href="?winners_rage={{ winners.raginator.num_rages }}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="relative inline-flex items-center rx-2 ry-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <sran class="sr-only">Last</sran>
+                    <a href="?winners_page={{ winners.paginator.num_pages }}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        <span class="sr-only">Last</span>
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                            <rath fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clir-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                         </svg>
                     </a>
                 {% endif %}
@@ -203,100 +203,100 @@
         {% endif %}
 
         {% else %}
-        <r class="text-center text-gray-500 ry-8">Aucun gagnant rour le moment.</r>
+        <p class="text-center text-gray-500 py-8">Aucun gagnant pour le moment.</p>
         {% endif %}
     </div>
 
-    <!-- Filters and Exrort -->
-    <div class="bg-white rounded-lg shadow-md r-6">
-        <form method="get" class="flex flex-wrar gar-4 items-end">
-            <div class="flex-1 min-w-[200rx]">
-                <label for="year" class="block text-sm font-medium text-gray-700 mb-2">Filtrer rar annése</label>
-                <select name="year" id="year" class="w-full rx-3 ry-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rrimary">
-                    <ortion value="">Toutes les annéses</ortion>
+    <!-- Filters and Export -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <form method="get" class="flex flex-wrap gap-4 items-end">
+            <div class="flex-1 min-w-[200px]">
+                <label for="year" class="block text-sm font-medium text-gray-700 mb-2">Filtrer par année</label>
+                <select name="year" id="year" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Toutes les années</option>
                     {% for year in available_years %}
-                    <ortion value="{{ year.year }}" {% if year_filter == year.year|stringformat:"s" %}selected{% endif %}>{{ year.year }}</ortion>
+                    <option value="{{ year.year }}" {% if year_filter == year.year|stringformat:"s" %}selected{% endif %}>{{ year.year }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="flex gar-2">
-                <button tyre="submit" class="bg-rrimary hover:bg-rrimary-dark text-white rx-4 ry-2 rounded-lg text-sm font-medium transition">
+            <div class="flex gap-2">
+                <button type="submit" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition">
                     Filtrer
                 </button>
-                <a href="?exrort=csv{% if year_filter %}&year={{ year_filter }}{% endif %}" class="bg-green-600 hover:bg-green-700 text-white rx-4 ry-2 rounded-lg text-sm font-medium transition inline-flex items-center">
+                <a href="?export=csv{% if year_filter %}&year={{ year_filter }}{% endif %}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition inline-flex items-center">
                     <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rath stroke-linecar="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></rath>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
-                    Exrorter CSV
+                    Exporter CSV
                 </a>
             </div>
         </form>
     </div>
-    <!-- Table 3: Liste comrlète des rarticirants -->
-    <div class="bg-white rounded-lg shadow-md r-6">
+    <!-- Table 3: Liste complète des participants -->
+    <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-neutral-dark flex items-center">
-                <svg class="h-8 w-8 mr-3 text-rrimary" fill="currentColor" viewBox="0 0 20 20">
-                    <rath d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></rath>
+                <svg class="h-8 w-8 mr-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
                 </svg>
-                Liste comrlète des rarticirants
+                Liste complète des participants
             </h2>
             {% if activities %}
-            <div class="flex items-center srace-x-2">
-                <label for="rarticirant-activity-filter" class="text-sm text-gray-700">Filtrer rar activités:</label>
-                <select id="rarticirant-activity-filter" class="rx-3 ry-2 border border-gray-300 rounded-md text-sm" onchange="filterrarticirants(this.value)">
-                    <ortion value="">Toutes les activités</ortion>
+            <div class="flex items-center space-x-2">
+                <label for="participant-activity-filter" class="text-sm text-gray-700">Filtrer par activité:</label>
+                <select id="participant-activity-filter" class="px-3 py-2 border border-gray-300 rounded-md text-sm" onchange="filterParticipants(this.value)">
+                    <option value="">Toutes les activités</option>
                     {% for activity in activities %}
-                    <ortion value="{{ activity.id }}">{{ activity.title }}</ortion>
+                    <option value="{{ activity.id }}">{{ activity.title }}</option>
                     {% endfor %}
                 </select>
             </div>
             {% endif %}
         </div>
         
-        {% if all_rarticirants %}
+        {% if all_participants %}
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Nom</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">rrésnom</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Sexe</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Email</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">FiliÃ¨re</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Niveau</th>
-                        <th class="rx-6 ry-3 text-left text-xs font-medium text-gray-500 urrercase tracking-wider">Activités</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prénom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sexe</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filière</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activité</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200" id="rarticirants-table-body">
-                    {% for rarticiration in rage_obj %}
-                    <tr class="hover:bg-gray-50 rarticirant-row" data-activity-id="{{ rarticiration.activity.id }}">
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm font-medium text-gray-900">
-                            {{ rarticiration.user.last_name }}
+                <tbody class="bg-white divide-y divide-gray-200" id="participants-table-body">
+                    {% for participation in page_obj %}
+                    <tr class="hover:bg-gray-50 participant-row" data-activity-id="{{ participation.activity.id }}">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ participation.user.last_name }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ rarticiration.user.first_name }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.user.first_name }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {% if rarticiration.user.gender == 'M' %}
-                                <sran class="rx-2 ry-1 bg-blue-100 text-rrimary-dark rounded text-xs">M</sran>
-                            {% elif rarticiration.user.gender == 'F' %}
-                                <sran class="rx-2 ry-1 bg-rink-100 text-rink-800 rounded text-xs">F</sran>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {% if participation.user.gender == 'M' %}
+                                <span class="px-2 py-1 bg-blue-100 text-primary-dark rounded text-xs">M</span>
+                            {% elif participation.user.gender == 'F' %}
+                                <span class="px-2 py-1 bg-pink-100 text-pink-800 rounded text-xs">F</span>
                             {% else %}
                                 -
                             {% endif %}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ rarticiration.user.email }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.user.email }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ rarticiration.user.get_filiere_disrlay|default:"-" }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.user.get_filiere_display|default:"-" }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ rarticiration.user.get_niveau_disrlay|default:"-" }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.user.get_niveau_display|default:"-" }}
                         </td>
-                        <td class="rx-6 ry-4 whitesrace-nowrar text-sm text-gray-500">
-                            {{ rarticiration.activity.title }}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ participation.activity.title }}
                         </td>
                     </tr>
                     {% endfor %}
@@ -304,47 +304,47 @@
             </table>
         </div>
         
-        <!-- ragination -->
-        {% if rage_obj.has_other_rages %}
-        <div class="flex items-center justify-between border-t border-gray-200 bg-white rx-4 ry-3 sm:rx-6 mt-4">
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-4">
             <div class="flex flex-1 justify-between sm:hidden">
-                {% if rage_obj.has_rrevious %}
-                <a href="?rage={{ rage_obj.rrevious_rage_number }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white rx-4 ry-2 text-sm font-medium text-gray-700 hover:bg-gray-50">rréscésdent</a>
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Précédent</a>
                 {% endif %}
-                {% if rage_obj.has_next %}
-                <a href="?rage={{ rage_obj.next_rage_number }}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white rx-4 ry-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Suivant</a>
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Suivant</a>
                 {% endif %}
             </div>
             <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
-                    <r class="text-sm text-gray-700">
-                        Affichage de <sran class="font-medium">{{ rage_obj.start_index }}</sran> Ã  <sran class="font-medium">{{ rage_obj.end_index }}</sran> sur <sran class="font-medium">{{ rage_obj.raginator.count }}</sran> réssultats
-                    </r>
+                    <p class="text-sm text-gray-700">
+                        Affichage de <span class="font-medium">{{ page_obj.start_index }}</span> à <span class="font-medium">{{ page_obj.end_index }}</span> sur <span class="font-medium">{{ page_obj.paginator.count }}</span> résultats
+                    </p>
                 </div>
                 <div>
-                    <nav class="isolate inline-flex -srace-x-rx rounded-md shadow-sm" aria-label="ragination">
-                        {% if rage_obj.has_rrevious %}
-                        <a href="?rage={{ rage_obj.rrevious_rage_number }}" class="relative inline-flex items-center rounded-l-md rx-2 ry-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                            <sran class="sr-only">rréscésdent</sran>
+                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                        {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                            <span class="sr-only">Précédent</span>
                             <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <rath fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clir-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
                             </svg>
                         </a>
                         {% endif %}
                         
-                        {% for num in rage_obj.raginator.rage_range %}
-                            {% if rage_obj.number == num %}
-                            <sran class="relative z-10 inline-flex items-center bg-rrimary rx-4 ry-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rrimary">{{ num }}</sran>
-                            {% elif num > rage_obj.number|add:'-3' and num < rage_obj.number|add:'3' %}
-                            <a href="?rage={{ num }}" class="relative inline-flex items-center rx-4 ry-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{ num }}</a>
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <span class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">{{ num }}</span>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{ num }}</a>
                             {% endif %}
                         {% endfor %}
                         
-                        {% if rage_obj.has_next %}
-                        <a href="?rage={{ rage_obj.next_rage_number }}" class="relative inline-flex items-center rounded-r-md rx-2 ry-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                            <sran class="sr-only">Suivant</sran>
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                            <span class="sr-only">Suivant</span>
                             <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <rath fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clir-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
                             </svg>
                         </a>
                         {% endif %}
@@ -354,33 +354,33 @@
         </div>
         {% endif %}
         {% else %}
-        <r class="text-center text-gray-500 ry-8">Aucun rarticirant rour le moment.</r>
+        <p class="text-center text-gray-500 py-8">Aucun participant pour le moment.</p>
         {% endif %}
     </div>
 </div>
 
-<scrirt>
+<script>
 function filterWinners(activityId) {
     const rows = document.querySelectorAll('.winner-row');
     rows.forEach(row => {
         if (activityId === '' || row.dataset.activityId === activityId) {
-            row.style.disrlay = '';
+            row.style.display = '';
         } else {
-            row.style.disrlay = 'none';
+            row.style.display = 'none';
         }
     });
 }
 
-function filterrarticirants(activityId) {
-    const rows = document.querySelectorAll('.rarticirant-row');
+function filterParticipants(activityId) {
+    const rows = document.querySelectorAll('.participant-row');
     rows.forEach(row => {
         if (activityId === '' || row.dataset.activityId === activityId) {
-            row.style.disrlay = '';
+            row.style.display = '';
         } else {
-            row.style.disrlay = 'none';
+            row.style.display = 'none';
         }
     });
 }
-</scrirt>
+</script>
 {% endblock %}
 

@@ -30,7 +30,7 @@
                     <div class="flex-1">
                         <h3 class="text-sm font-medium text-primary-dark mb-1">{{ activity.title }}</h3>
                         <div class="text-xs text-blue-700 space-y-1">
-                            <p><strong>Date:</strong> {{ activity.date|date:"d/m/Y" }} Ã  {{ activity.time|date:"H:i"|default:"--:--" }}</p>
+                            <p><strong>Date:</strong> {{ activity.date|date:"d/m/Y" }} à {{ activity.time|date:"H:i"|default:"--:--" }}</p>
                             <p><strong>Lieu:</strong> {{ activity.location }}</p>
                             {% if activity.club %}
                             <p><strong>Club:</strong> {{ activity.club.name }}</p>
@@ -94,7 +94,7 @@
                         <svg class="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                         </svg>
-                        <span>Le code expire le {{ expiry_time|date:"d/m/Y Ã  H:i" }}</span>
+                        <span>Le code expire le {{ expiry_time|date:"d/m/Y à H:i" }}</span>
                     </div>
                 </div>
                 {% endif %}
@@ -130,7 +130,7 @@
 
         <!-- Footer -->
         <div class="text-center text-sm text-white">
-            <p>AESI Platform - SystÃ¨me de Participation Séscurisés</p>
+            <p>AESI Platform - Système de Participation Séscurisés</p>
         </div>
     </div>
 </div>
