@@ -1,11 +1,15 @@
 ﻿{% load static %}
 {% load user_tags %}
 <!-- Modern Navigation Tabs -->
-<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-    <nav class="flex space-x-1 px-3 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide" aria-label="Tabs" style="-webkit-overflow-scrolling: touch;">
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 min-h-[52px] sm:min-h-[60px] relative">
+    <!-- Indicateurs de défilement (uniquement visibles sur mobile) -->
+    <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white via-white/90 to-transparent pointer-events-none sm:hidden z-10"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/90 to-transparent pointer-events-none sm:hidden z-10"></div>
+
+    <nav class="flex space-x-1 px-2 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide" aria-label="Tabs" style="-webkit-overflow-scrolling: touch;">
         <a href="{% url 'clubs:club_detail' slug=club.slug %}" 
            class="{% if active_tab == 'overview' %}bg-gradient-to-r from-primary to-primary-dark text-white{% else %}text-gray-600 hover:text-primary hover:bg-blue-50{% endif %} 
-                  whitespace-nowrap py-3 sm:py-4 px-3 sm:px-4 md:px-6 font-semibold text-xs sm:text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 group">
+                  whitespace-nowrap py-2.5 sm:py-4 px-2 sm:px-4 md:px-6 font-semibold text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 group">
             <svg class="h-4 w-4 sm:h-5 sm:w-5 {% if active_tab == 'overview' %}text-white{% else %}text-gray-400 group-hover:text-primary{% endif %} transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
             </svg>
@@ -14,7 +18,7 @@
         
         <a href="{% url 'clubs:club_activities' slug=club.slug %}" 
            class="{% if active_tab == 'activities' %}bg-gradient-to-r from-primary to-primary-dark text-white{% else %}text-gray-600 hover:text-primary hover:bg-blue-50{% endif %} 
-                  whitespace-nowrap py-3 sm:py-4 px-3 sm:px-4 md:px-6 font-semibold text-xs sm:text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 group">
+                  whitespace-nowrap py-2.5 sm:py-4 px-2 sm:px-4 md:px-6 font-semibold text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 group">
             <svg class="h-4 w-4 sm:h-5 sm:w-5 {% if active_tab == 'activities' %}text-white{% else %}text-gray-400 group-hover:text-primary{% endif %} transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
             </svg>
@@ -23,7 +27,7 @@
         
         <a href="{% url 'clubs:club_bureau' slug=club.slug %}" 
            class="{% if active_tab == 'bureau' %}bg-gradient-to-r from-primary to-primary-dark text-white{% else %}text-gray-600 hover:text-primary hover:bg-blue-50{% endif %} 
-                  whitespace-nowrap py-3 sm:py-4 px-3 sm:px-4 md:px-6 font-semibold text-xs sm:text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 group">
+                  whitespace-nowrap py-2.5 sm:py-4 px-2 sm:px-4 md:px-6 font-semibold text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 group">
             <svg class="h-4 w-4 sm:h-5 sm:w-5 {% if active_tab == 'bureau' %}text-white{% else %}text-gray-400 group-hover:text-primary{% endif %} transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
             </svg>
@@ -32,7 +36,7 @@
         
         <a href="{% url 'clubs:club_participants' slug=club.slug %}" 
            class="{% if active_tab == 'participants' %}bg-gradient-to-r from-primary to-primary-dark text-white{% else %}text-gray-600 hover:text-primary hover:bg-blue-50{% endif %} 
-                  whitespace-nowrap py-3 sm:py-4 px-3 sm:px-4 md:px-6 font-semibold text-xs sm:text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 group">
+                  whitespace-nowrap py-2.5 sm:py-4 px-2 sm:px-4 md:px-6 font-semibold text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 group">
             <svg class="h-4 w-4 sm:h-5 sm:w-5 {% if active_tab == 'participants' %}text-white{% else %}text-gray-400 group-hover:text-primary{% endif %} transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
             </svg>
@@ -41,7 +45,7 @@
         
         <a href="{% url 'clubs:club_programs' slug=club.slug %}" 
            class="{% if active_tab == 'programs' %}bg-gradient-to-r from-primary to-primary-dark text-white{% else %}text-gray-600 hover:text-primary hover:bg-blue-50{% endif %} 
-                  whitespace-nowrap py-3 sm:py-4 px-3 sm:px-4 md:px-6 font-semibold text-xs sm:text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 group">
+                  whitespace-nowrap py-2.5 sm:py-4 px-2 sm:px-4 md:px-6 font-semibold text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 group">
             <svg class="h-4 w-4 sm:h-5 sm:w-5 {% if active_tab == 'programs' %}text-white{% else %}text-gray-400 group-hover:text-primary{% endif %} transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
             </svg>
@@ -51,7 +55,7 @@
         {% if user|can_view_finances:club %}
         <a href="{% url 'clubs:club_budget' slug=club.slug %}" 
            class="{% if active_tab == 'budget' %}bg-gradient-to-r from-primary to-primary-dark text-white{% else %}text-gray-600 hover:text-primary hover:bg-blue-50{% endif %} 
-                  whitespace-nowrap py-3 sm:py-4 px-3 sm:px-4 md:px-6 font-semibold text-xs sm:text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 group">
+                  whitespace-nowrap py-2.5 sm:py-4 px-2 sm:px-4 md:px-6 font-semibold text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 group">
             <svg class="h-4 w-4 sm:h-5 sm:w-5 {% if active_tab == 'budget' %}text-white{% else %}text-gray-400 group-hover:text-primary{% endif %} transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
@@ -62,7 +66,7 @@
         {% if user|can_manage_club:club %}
         <a href="{% url 'clubs:club_form_generator' slug=club.slug %}" 
            class="{% if active_tab == 'generator' %}bg-gradient-to-r from-primary to-primary-dark text-white{% else %}text-gray-600 hover:text-primary hover:bg-blue-50{% endif %} 
-                  whitespace-nowrap py-3 sm:py-4 px-3 sm:px-4 md:px-6 font-semibold text-xs sm:text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 group">
+                  whitespace-nowrap py-2.5 sm:py-4 px-2 sm:px-4 md:px-6 font-semibold text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 group">
             <svg class="h-4 w-4 sm:h-5 sm:w-5 {% if active_tab == 'generator' %}text-white{% else %}text-gray-400 group-hover:text-primary{% endif %} transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path>
             </svg>
@@ -73,7 +77,7 @@
         {% if user.is_authenticated %}
         <a href="{% url 'clubs:club_dashboard' slug=club.slug %}" 
            class="{% if active_tab == 'dashboard' %}bg-gradient-to-r from-primary to-primary-dark text-white{% else %}text-gray-600 hover:text-primary hover:bg-blue-50{% endif %} 
-                  whitespace-nowrap py-3 sm:py-4 px-3 sm:px-4 md:px-6 font-semibold text-xs sm:text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 group">
+                  whitespace-nowrap py-2.5 sm:py-4 px-2 sm:px-4 md:px-6 font-semibold text-sm rounded-t-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 group">
             <svg class="h-4 w-4 sm:h-5 sm:w-5 {% if active_tab == 'dashboard' %}text-white{% else %}text-gray-400 group-hover:text-primary{% endif %} transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
             </svg>
@@ -92,5 +96,3 @@
     scrollbar-width: none;
 }
 </style>
-
-
