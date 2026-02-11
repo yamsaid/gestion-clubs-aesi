@@ -22,13 +22,24 @@
     --info: #3B82F6;
     --neutral-dark: #2D3748;
     --neutral-light: #F7FAFC;
-    --border-radius: 0.5rem;
+    --border-radius: 0.1rem;
     --transition: all 0.3s ease;
 }
 
 /* ===== Reset & Base ===== */
-* {
+/* {
     box-sizing: border-box; /* Assure que le padding ne casse pas la largeur */
+/*    transition: var(--transition);
+}
+*/
+
+* {
+    box-sizing: border-box;
+    /* transition: var(--transition); À SUPPRIMER */
+}
+
+/* Ajoutez transition uniquement sur éléments interactifs */
+a, button, .card-hover, .btn-primary {
     transition: var(--transition);
 }
 
@@ -53,21 +64,28 @@ body {
 
 /* ===== Layout & Containers (NOUVEAU) ===== */
 .cards-grid {
-    display: flex;
-    flex-wrap: wrap; /* Force le passage à la ligne */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes desktop */
     gap: 1.5rem;
     width: 100%;
     padding: 1rem;
 }
 
 /* Menu de navigation horizontal (celui qui s'écrasait) */
-.nav-tabs-responsive {
-    display: flex;
-    overflow-x: auto; /* Active le scroll */
-    white-space: nowrap; /* Empêche le retour à la ligne du texte */
-    -webkit-overflow-scrolling: touch;
-    padding: 10px 0;
-    scrollbar-width: none; /* Cache la barre sur Firefox */
+
+.nav-tabs-container {
+    position: relative;
+}
+
+.nav-tabs-container::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    background: linear-gradient(to left, white, transparent);
+    pointer-events: none;
 }
 
 .nav-tabs-responsive::-webkit-scrollbar {
@@ -77,10 +95,12 @@ body {
 /* ===== Modern Card Styles ===== */
 .card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e2e8f0; /* Toutes tailles */
     border-radius: var(--border-radius);
     flex: 1 1 300px; /* Base 300px, s'étire si besoin */
     min-width: 0;    /* Sécurité anti-débordement flexbox */
     background: white;
+    
 }
 
 .card-hover:hover {
@@ -102,29 +122,6 @@ body {
     justify-content: center;
 }
 
-/* ===== Mobile Optimizations (MODIFIÉ) ===== */
-@media (max-width: 640px) {
-    h1 {
-        font-size: 1.5rem !important; /* Réduit le titre "D'INFORMATIQUE" */
-        word-wrap: break-word;
-    }
-    
-    .card-hover {
-        flex: 1 1 100%; /* Une seule carte par ligne sur petit mobile */
-        margin-bottom: 1rem;
-    }
-
-    /* Padding de sécurité pour le contenu */
-    .container, .main-content {
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-    }
-
-    button, a {
-        min-height: 44px; /* Zone tactile minimum */
-        min-width: 44px;
-    }
-}
 
 /* ===== Utility Classes ===== */
 .line-clamp-2 {
@@ -193,4 +190,39 @@ input:focus {
 /* ===== Smooth Scrolling ===== */
 html {
     scroll-behavior: smooth;
+}
+
+/* ===== Mobile Optimizations (MODIFIÉ) ===== */
+@media (max-width: 640px) {
+   
+    h1 {
+            font-size: 1.5rem !important; /* 24px - lisible */
+            line-height: 1.3;
+        }
+        
+        h2 {
+            font-size: 1.25rem !important; /* 20px */
+        }
+
+    .cards-grid {
+        grid-template-columns: 1fr !important; /* Force 1 colonne */
+    }
+    
+    .card-hover {
+        margin-bottom: 0; /* Le gap du parent suffit */
+        flex: none; /* Neutralise l'ancien comportement */
+        width: 100%;
+    }
+    
+
+    /* Padding de sécurité pour le contenu */
+    .container, .main-content {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    button, a {
+        min-height: 44px; /* Zone tactile minimum */
+        min-width: 44px;
+    }
 }
