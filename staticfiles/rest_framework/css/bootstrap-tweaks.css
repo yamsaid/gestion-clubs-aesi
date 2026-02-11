@@ -109,6 +109,12 @@ body {
 /* sticky footer and footer */
 html, body {
   height: 100%;
+  overflow-x: hidden;
+}
+
+img, svg, canvas {
+    max-width: 100%;
+    height: auto;
 }
 
 .wrapper {
