@@ -500,3 +500,63 @@ html {
     background-color: var(--primary);
     color: white;
 }
+
+/* =====Adaptation mobile ============== */
+/* Conteneur des onglets (Navigation) */
+.nav-tabs-responsive {
+    display: flex;
+    overflow-x: auto; /* Active le scroll horizontal */
+    white-space: nowrap; /* Empêche le texte de revenir à la ligne */
+    gap: 10px;
+    padding-bottom: 5px;
+    scrollbar-width: none; /* Cache la barre sur Firefox */
+}
+
+.nav-tabs-responsive::-webkit-scrollbar {
+    display: none; /* Cache la barre sur Chrome/Safari */
+}
+
+/* Style des onglets individuels pour mobile */
+.nav-item-custom {
+    flex: 0 0 auto; /* Empêche les onglets de rétrécir */
+}
+
+
+/* Conteneur de tes cartes */
+.cards-grid {
+    display: flex;
+    flex-wrap: wrap; /* TRÈS IMPORTANT : permet de passer à la ligne */
+    gap: 1.5rem;
+    width: 100%;
+}
+
+/* La carte elle-même */
+.card-hover {
+    flex: 1 1 300px; /* Base de 300px, mais peut s'étendre */
+    min-width: 0;    /* Évite que le contenu force la carte à déborder */
+    width: 100%;     /* Prend toute la largeur sur mobile */
+}
+
+@media (max-width: 640px) {
+    .card-hover {
+        flex: 1 1 100%; /* Sur tout petit écran, une carte par ligne */
+    }
+}
+
+
+@media (max-width: 640px) {
+    /* ... ton code existant ... */
+
+    /* Force le titre à ne pas déborder et réduit sa taille */
+    h1, .text-responsive-3xl {
+        font-size: 1.5rem !important; 
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+
+    /* Ajoute une marge de sécurité sur les côtés du conteneur principal */
+    .container, .main-wrapper {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}
