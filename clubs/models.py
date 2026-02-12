@@ -64,7 +64,7 @@ class ClubMember(AuditModel):
     """Model representing a club executive member"""
     
     POSITION_CHOICES = [
-        ('PRESIDENT', 'Coordinateur(trice)'),
+        ('PRESIDENT', 'Coordonateur(trice)'),
         ('SECRETARY', 'Secrétaire'),
         ('TREASURER', 'Trésorier(ère)'),
         ('COMMUNICATION', 'Organisateur(trice)'),
