@@ -40,7 +40,7 @@
         <div class="absolute top-20 right-20 text-white text-5xl">🏀</div>
         <div class="absolute bottom-10 left-20 text-white text-7xl">🏃</div>
         <div class="absolute bottom-20 right-10 text-white text-6xl">🏆</div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl opacity-20">âš¡</div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-9xl opacity-20">⚡</div>
     </div>
     {% endif %}
     
@@ -48,37 +48,57 @@
         <div class="flex flex-col md:flex-row items-center justify-between gap-8">
             <!-- Left: Logo and Info -->
             <div class="flex items-center gap-6 md:gap-8">
-                <!-- Club Logo -->
+                <!-- Club Logo - Version optimisée mobile -->
                 {% if club.logo %}
-                    <div class="relative group">
+                    <div class="relative group flex-shrink-0">
                         <div class="absolute -inset-1 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
                         <div class="relative bg-white rounded-2xl p-3 shadow-xl">
-                            <img src="{{ club.logo.url }}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                            <img src="{{ club.logo.url }}" 
+                                 alt="{{ club.name }}" 
+                                 class="h-20 w-20 md:h-24 md:w-24 object-contain"
+                                 loading="lazy"
+                                 decoding="async"
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'96\' height=\'96\' viewBox=\'0 0 96 96\'%3E%3Crect width=\'96\' height=\'96\' fill=\'%231B8EF2\'/%3E%3Ctext x=\'48\' y=\'54\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-weight=\'bold\'%3E{{ club.name.0 }}%3C/text%3E%3C/svg%3E';">
                         </div>
                     </div>
                 {% elif club.slug == 'informatique' %}
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                    <div class="relative group flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
                         <div class="relative bg-white rounded-2xl p-3 shadow-xl">
-                            <img src="{% static 'images/ci_logo.jpg' %}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                            <img src="{% static 'images/ci_logo.jpg' %}" 
+                                 alt="{{ club.name }}" 
+                                 class="h-20 w-20 md:h-24 md:w-24 object-contain"
+                                 loading="lazy"
+                                 decoding="async"
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'96\' height=\'96\' viewBox=\'0 0 96 96\'%3E%3Crect width=\'96\' height=\'96\' fill=\'%230F52A8\'/%3E%3Ctext x=\'48\' y=\'54\' font-size=\'32\' text-anchor=\'middle\' fill=\'white\' font-weight=\'bold\'%3ECI%3C/text%3E%3C/svg%3E';">
                         </div>
                     </div>
                 {% elif club.slug == 'art-oratoire' %}
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-purple-400 via-pink-500 to-red-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                    <div class="relative group flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-purple-400 via-pink-500 to-red-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
                         <div class="relative bg-white rounded-2xl p-3 shadow-xl">
-                            <img src="{% static 'images/ao_logo.jpg' %}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                            <img src="{% static 'images/ao_logo.jpg' %}" 
+                                 alt="{{ club.name }}" 
+                                 class="h-20 w-20 md:h-24 md:w-24 object-contain"
+                                 loading="lazy"
+                                 decoding="async"
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'96\' height=\'96\' viewBox=\'0 0 96 96\'%3E%3Crect width=\'96\' height=\'96\' fill=\'%23933EA5\'/%3E%3Ctext x=\'48\' y=\'54\' font-size=\'32\' text-anchor=\'middle\' fill=\'white\' font-weight=\'bold\'%3EAO%3C/text%3E%3C/svg%3E';">
                         </div>
                     </div>
                 {% elif club.slug == 'sport' %}
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-green-400 via-yellow-500 to-orange-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                    <div class="relative group flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-green-400 via-yellow-500 to-orange-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
                         <div class="relative bg-white rounded-2xl p-3 shadow-xl">
-                            <img src="{% static 'images/sport_logo.jpg' %}" alt="{{ club.name }}" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                            <img src="{% static 'images/sport_logo.jpg' %}" 
+                                 alt="{{ club.name }}" 
+                                 class="h-20 w-20 md:h-24 md:w-24 object-contain"
+                                 loading="lazy"
+                                 decoding="async"
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'96\' height=\'96\' viewBox=\'0 0 96 96\'%3E%3Crect width=\'96\' height=\'96\' fill=\'%2310B981\'/%3E%3Ctext x=\'48\' y=\'54\' font-size=\'32\' text-anchor=\'middle\' fill=\'white\' font-weight=\'bold\'%3ESP%3C/text%3E%3C/svg%3E';">
                         </div>
                     </div>
                 {% else %}
-                    <div class="h-24 w-24 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-white text-5xl font-bold shadow-xl">
+                    <div class="h-20 w-20 md:h-24 md:w-24 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-white text-3xl md:text-4xl font-bold shadow-xl flex-shrink-0">
                         {{ club.name.0 }}
                     </div>
                 {% endif %}
@@ -119,12 +139,12 @@
             
             <!-- Right: Stats Card -->
             {% if show_stats %}
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:bg-white/15 transition duration-300">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:bg-white/15 transition duration-300 w-full md:w-auto">
                 <div class="text-center">
                     <div class="text-blue-200 text-sm font-medium mb-1">Taux d'exécution</div>
-                    <div class="text-5xl font-bold text-white mb-1">{{ club.execution_rate }}%</div>
+                    <div class="text-4xl md:text-5xl font-bold text-white mb-1">{{ club.execution_rate|default:"0" }}%</div>
                     <div class="h-2 bg-white/20 rounded-full overflow-hidden mt-3">
-                        <div class="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500" style="width: {{ club.execution_rate }}%"></div>
+                        <div class="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500" style="width: {{ club.execution_rate|default:"0" }}%"></div>
                     </div>
                 </div>
             </div>
@@ -133,7 +153,7 @@
     </div>
 </div>
 
-<!-- Add custom animation -->
+<!-- Optimisations CSS spécifiques mobile pour les logos -->
 <style>
 @keyframes spin-slow {
     from {
@@ -147,5 +167,40 @@
 .animate-spin-slow {
     animation: spin-slow 20s linear infinite;
 }
-</style>
 
+/* Solutions spécifiques pour l'affichage des images sur mobile */
+@media (max-width: 640px) {
+    /* Force le rendu des images */
+    .group img {
+        content-visibility: auto;
+        contain: paint;
+        width: 80px;
+        height: 80px;
+    }
+    
+    /* Désactive les animations lourdes sur mobile */
+    .animate-pulse {
+        animation: none !important;
+    }
+    
+    .animate-spin-slow {
+        animation: none !important;
+    }
+    
+    /* Réduit les effets de flur pour améliorer les performances */
+    .blur-xl, .blur-2xl {
+        opacity: 0.3 !important;
+    }
+    
+    /* Assure que le conteneur du logo a une taille fixe */
+    .group {
+        min-width: 80px;
+        min-height: 80px;
+    }
+    
+    /* Améliore le contraste du fallback SVG */
+    .group img[src*="data:image/svg+xml"] {
+        background: transparent;
+    }
+}
+</style>
